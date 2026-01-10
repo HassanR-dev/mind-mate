@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mind Mate - User Profile</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@300..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec80",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102219",
+                        "surface-dark": "#162b21", // Slightly lighter than background-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<!-- External Stylesheet -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-white/10 bg-background-light dark:bg-background-dark px-6 py-3 lg:px-10">
+<div class="flex items-center gap-4">
+<div class="size-8 flex items-center justify-center text-primary">
+<svg class="w-full h-full" fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">Mind Mate</h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-medium leading-normal transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-medium leading-normal transition-colors" href="tasks.html">Tasks</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-medium leading-normal transition-colors" href="journal.html">Journal</a>
+<a class="text-slate-900 dark:text-white text-sm font-medium leading-normal border-b-2 border-primary" href="user-profile.html">Profile</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="relative text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-primary rounded-full"></span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar thumbnail" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdSUwc82qCUzdJe8GPLUBr1qnlfUU6anQ4dHac7qb1MjAS6XWG6TpRbftY4TH_g9U-6_ZF17Xfh_0GihrlPSqk_TLh9a-9YbbKrklNDK_8Oab3dTqKpImoDGkcucVlLVwjr6JRElgg0zHXqBV7wKxVd2dQtdG6Y4EDsTtun8C4qyFUJSUGulgs5SISt3McdRJe2CyDcDuGvz-xgufnqs05Rl6agfPtO9Tx9TvHl4taXWI4JbDWqUvKwTSX5QWw03AUCBicf8kiQzeb");'>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 w-full max-w-[1440px] mx-auto">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col w-72 shrink-0 border-r border-gray-200 dark:border-white/10 p-6 h-[calc(100vh-65px)] sticky top-[65px] overflow-y-auto">
+<div class="flex gap-4 items-center mb-8">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Sidebar user avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBV-N0dih5eDVQ__FiHraPjhNIiDqwVUgH8QPnaN0ZmmsMtB-ZM2DZFcHNfQr5EMIA1Z6f73tKssNPuVrKe-SC5_N5x6bfA11HnzAxXuTNyQ8XVocl5OMpjCAMKBbn7y9n5kr4HAu-_xhwzz0L5S-aX0XuTP7VVquHaef70k3u_9YNwVoMnDJvUOyPnLrOBX6c_dsCOdbNSuZFBZIKxty2NrxfiEWNSAW6rut7hHlMSi3FAGnlIN5RJXKedIkcFhTXBZiuONQypSTVj");'>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal">Hassan Rehan</h1>
+<p class="text-slate-500 dark:text-[#9db9ab] text-xs font-normal leading-normal">Software Engineering</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary dark:bg-primary text-slate-900 dark:text-black shadow-sm transition-all" href="user-profile.html">
+<span class="material-symbols-outlined">person</span>
+<p class="text-sm font-bold leading-normal">Profile Details</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="gpa.html">
+<span class="material-symbols-outlined">school</span>
+<p class="text-sm font-medium leading-normal">Academic Info</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="dashboard.html">
+<span class="material-symbols-outlined">notifications</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="insights.html">
+<span class="material-symbols-outlined">insights</span>
+<p class="text-sm font-medium leading-normal">Insights</p>
+</a>
+<div class="h-px w-full bg-gray-200 dark:bg-white/10 my-2"></div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="dashboard.html">
+<span class="material-symbols-outlined">help</span>
+<p class="text-sm font-medium leading-normal">Help &amp; Support</p>
+</a>
+</div>
+<div class="mt-auto pt-6">
+<button class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<div class="p-4 md:p-8 lg:p-12 max-w-5xl mx-auto w-full">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">My Profile</h1>
+<p class="text-slate-500 dark:text-[#9db9ab] text-base font-normal">Manage your personal information and preferences</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-white/10 text-slate-700 dark:text-white font-medium text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Cancel</button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
+</div>
+</div>
+<!-- Profile Header Card -->
+<div class="rounded-2xl bg-white dark:bg-surface-dark p-6 md:p-8 mb-8 border border-gray-200 dark:border-white/5 shadow-sm">
+<div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
+<div class="relative group">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-28 md:size-32 border-4 border-background-light dark:border-background-dark shadow-xl" data-alt="Large user profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAro_LBlAyApB7dnnuE2rZk10CNbWp5rGJWhAZJLY30zjNhgJ2SCFiY9iBz8mmsOiNE7VnBcsemdtY7T1bmHQAGsckPejS6C79eJNxCxUvMAi4YR6vllVHt5wkn_6bhwO5YUcAn4pHa7OqYKDgM68BM60B0XqmFY8IIkPxAH9Ul0XRbsA5owa42PMUMcK_lEzvL3iyvt9TVZRFnY53kba0Dg5QcDOemfTSd20SAfeXwl9nXWIZguWtMtHHOD4_bZkts3AFmZ0TbZOOL");'></div>
+<button aria-label="Edit photo" class="absolute bottom-0 right-0 p-2 bg-primary rounded-full text-black shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+</button>
+</div>
+<div class="flex flex-col flex-1 items-center md:items-start text-center md:text-left gap-2">
+<div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Hassan Rehan</h2>
+<p class="text-slate-500 dark:text-[#9db9ab] font-medium">Software Engineering</p>
+</div>
+<div class="flex gap-2 mt-2">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary-dark dark:text-primary text-xs font-bold uppercase tracking-wider">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                                    Online
+                                </span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-bold uppercase tracking-wider">
+                                    Focus Mode: Off
+                                </span>
+</div>
+</div>
+<div class="w-full md:w-auto mt-4 md:mt-0">
+<button class="w-full md:w-auto px-4 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">upload</span>
+                                Upload New Photo
+                            </button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Left Column: Personal Info -->
+<div class="xl:col-span-2 flex flex-col gap-8">
+<!-- Personal Information -->
+<section>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+                                Personal Information
+                            </h3>
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5 p-6 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">First Name</label>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="text" value="Hassan"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Last Name</label>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="text" value="Rehan"/>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Email Address</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-[20px]">mail</span>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg pl-11 pr-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="email" value="hassan729rehan@gmail.com"/>
+</div>
+</div>
+<div class="space-y-2 md:col-span-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Bio / Status Message</label>
+<textarea class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400 resize-none" rows="3">Debugging life </textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Academic Information -->
+<section>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+                                Academic Details
+                            </h3>
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5 p-6 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">University</label>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" type="text" value="Hamdard University"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Student ID</label>
+<input class="w-full bg-slate-100 dark:bg-white/5 border border-transparent rounded-lg px-4 py-2.5 text-slate-500 cursor-not-allowed select-none" disabled="" type="text" value="1923-2022"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Major</label>
+<div class="relative">
+<select class="w-full appearance-none bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all">
+<option>Software Engineering</option>
+<option>Engineering</option>
+<option>Psychology</option>
+<option>Business</option>
+</select>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Graduation Year</label>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" type="number" value="2026"/>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Stats & Preferences -->
+<div class="flex flex-col gap-8">
+<!-- GPA Widget -->
+<div class="rounded-2xl bg-gradient-to-br from-surface-dark to-background-dark dark:from-surface-dark dark:to-black border border-gray-200 dark:border-white/5 p-6 shadow-lg relative overflow-hidden group">
+<!-- Decorative background glow -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-all"></div>
+<div class="relative z-10 flex flex-col items-center justify-center text-center gap-2">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Cumulative GPA</h3>
+<div class="relative size-32 flex items-center justify-center my-2">
+<svg class="size-full -rotate-90 transform" viewbox="0 0 100 100">
+<circle class="text-white/10" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="30" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-4xl font-black text-slate-900 dark:text-white">3.8</span>
+<span class="text-xs text-primary font-bold">+0.2</span>
+</div>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 max-w-[200px]">Great job! You are in the top 10% of your class.</p>
+</div>
+</div>
+<!-- Preferences & Settings -->
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5 overflow-hidden shadow-sm">
+<div class="p-4 border-b border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/5">
+<h3 class="font-bold text-slate-900 dark:text-white">App Preferences</h3>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<label class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer transition-colors group">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Daily Mood Reminder</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Get prompted at 8:00 PM</span>
+</div>
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+<span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-black transition-transform group-hover:scale-110"></span>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer transition-colors group">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Deadline Alerts</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Notify 24h before due date</span>
+</div>
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+<span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-black transition-transform group-hover:scale-110"></span>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer transition-colors group">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Public Profile</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Allow others to find you</span>
+</div>
+<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-300 dark:bg-white/10 transition-colors focus:outline-none">
+<span class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span>
+</div>
+</label>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
+<h3 class="text-red-500 font-bold mb-2">Danger Zone</h3>
+<p class="text-xs text-red-400 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+<button class="w-full py-2 px-4 rounded-lg border border-red-500/30 text-red-500 text-sm font-bold hover:bg-red-500 hover:text-white transition-all">Delete Account</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<script type="module">
+  import { app } from "./firebase-config.js";
+  import { watchAuth, auth } from "./auth.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+  const db = getDatabase(app);
+  let currentUser = null;
+
+  // Check auth
+  watchAuth((user) => {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+    currentUser = user;
+    loadUserProfile(user);
+  });
+
+  function loadUserProfile(user) {
+    // Update user info
+    const name = user.displayName || user.email?.split("@")[0] || "User";
+    const email = user.email || "";
+    
+    document.querySelectorAll("h1, h2").forEach(h => {
+      if (h.textContent.includes("Hassan Rehan")) {
+        h.textContent = name;
+      }
+    });
+
+    document.querySelectorAll("input[type='email']").forEach(input => {
+      if (input.value.includes("@")) {
+        input.value = email;
+      }
+    });
+
+    // Load GPA
+    onValue(ref(db, "gpas"), (snap) => {
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      snap.forEach(child => {
+        const gpa = child.val();
+        if (gpa.userId !== user.uid) return;
+        const credits = parseFloat(gpa.credits || 0);
+        const points = parseFloat(gpa.gpa || 0);
+        totalPoints += points * credits;
+        totalCredits += credits;
+      });
+
+      const avgGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(1) : "0.00";
+      document.querySelectorAll(".text-4xl, .text-3xl").forEach(el => {
+        if (el.textContent.includes("3.8")) {
+          el.textContent = avgGPA;
+        }
+      });
+    });
+
+    // Save profile button
+    document.querySelector("button:contains('Save Changes')")?.addEventListener("click", async () => {
+      const firstName = document.querySelector("input[placeholder*='First']")?.value || "";
+      const lastName = document.querySelector("input[placeholder*='Last']")?.value || "";
+      const fullName = `${firstName} ${lastName}`.trim();
+
+      if (fullName) {
+        try {
+          await updateProfile(auth.currentUser, { displayName: fullName });
+          alert("Profile updated!");
+        } catch (error) {
+          alert("Error updating profile: " + error.message);
+        }
+      }
+    });
+
+    // Logout button
+    document.querySelector("button:contains('Log Out')")?.addEventListener("click", () => {
+      import("./auth.js").then(({ auth }) => {
+        import("https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js").then(({ signOut }) => {
+          signOut(auth).then(() => {
+            window.location.href = "login.html";
+          });
+        });
+      });
+    });
+  }
+
+</script>
+
+</body></html>

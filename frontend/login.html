@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mind Mate - Login</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Noto+Sans:wght@300..800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+            extend: {
+                colors: {
+                "primary": "#13ec80",
+                "background-light": "#f6f8f7",
+                "background-dark": "#102219",
+                },
+                fontFamily: {
+                "display": ["Lexend", "Noto Sans", "sans-serif"],
+                "body": ["Noto Sans", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            },
+            },
+        }
+    </script>
+<!-- External Stylesheet -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen font-display text-[#111814] dark:text-white overflow-x-hidden selection:bg-primary selection:text-black">
+<div class="relative flex min-h-screen w-full flex-row">
+<!-- Left Side: Login Form -->
+<div class="flex flex-1 flex-col justify-center px-6 py-12 lg:px-20 xl:px-32 relative z-10">
+<!-- Logo Header -->
+<div class="absolute top-8 left-6 lg:left-20 xl:left-32 flex items-center gap-4 text-[#111814] dark:text-white">
+<div class="size-10 flex items-center justify-center rounded-xl bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-3xl">spa</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">Mind Mate</h2>
+</div>
+<!-- Content Container -->
+<div class="flex flex-col w-full max-w-[480px] mx-auto lg:mx-0 mt-10">
+<!-- Page Heading -->
+<div class="flex flex-col gap-3 mb-8">
+<h1 class="text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] text-[#111814] dark:text-white">
+                        Welcome Back
+                    </h1>
+<p class="text-[#637587] dark:text-[#9db9ab] text-lg font-normal leading-normal">
+                        Balance your grades, balance your mind.
+                    </p>
+</div>
+<!-- Form -->
+<form class="flex flex-col gap-5" onsubmit="handleLogin(event)">
+<!-- Email Field -->
+<label class="flex flex-col gap-2">
+<span class="text-[#111814] dark:text-white text-base font-medium leading-normal">University Email / Username</span>
+<div class="relative">
+<input id="email" class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-xl text-[#111814] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#e5e7eb] dark:border-[#3b5447] bg-white dark:bg-[#1c2721] focus:border-primary h-14 placeholder:text-[#9ca3af] dark:placeholder:text-[#9db9ab] px-[15px] text-base font-normal leading-normal transition-all" placeholder="student@university.edu" type="email" required/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9db9ab]">
+<span class="material-symbols-outlined">mail</span>
+</div>
+</div>
+</label>
+<!-- Password Field -->
+<label class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-[#111814] dark:text-white text-base font-medium leading-normal">Password</span>
+<a class="text-sm font-bold text-primary hover:text-primary/80 transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<input id="password" class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-xl text-[#111814] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#e5e7eb] dark:border-[#3b5447] bg-white dark:bg-[#1c2721] focus:border-primary h-14 placeholder:text-[#9ca3af] dark:placeholder:text-[#9db9ab] px-[15px] text-base font-normal leading-normal transition-all" placeholder="••••••••" type="password" required/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9db9ab] cursor-pointer hover:text-white transition-colors" onclick="togglePassword()">
+<span class="material-symbols-outlined" id="password-toggle">visibility_off</span>
+</div>
+</div>
+</label>
+<!-- Log In Button -->
+<button type="submit" class="mt-4 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 bg-primary hover:bg-[#0fd673] text-[#111814] text-base font-bold leading-normal tracking-[0.015em] transition-colors shadow-[0_0_20px_rgba(19,236,128,0.15)] hover:shadow-[0_0_25px_rgba(19,236,128,0.3)]">
+<span class="truncate">Log In</span>
+<span class="material-symbols-outlined ml-2 text-xl">login</span>
+</button>
+<!-- Divider -->
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-[#e5e7eb] dark:border-[#283930]"></div>
+<span class="flex-shrink mx-4 text-[#637587] dark:text-[#9db9ab] text-sm">Or continue with</span>
+<div class="flex-grow border-t border-[#e5e7eb] dark:border-[#283930]"></div>
+</div>
+<!-- Social Login -->
+<div class="grid grid-cols-2 gap-4">
+<button type="button" class="flex items-center justify-center gap-2 h-12 rounded-xl border border-[#e5e7eb] dark:border-[#3b5447] bg-white dark:bg-[#1c2721] hover:bg-gray-50 dark:hover:bg-[#25332c] text-[#111814] dark:text-white text-sm font-bold transition-colors" onclick="handleSignup()">
+<span class="material-symbols-outlined text-xl">school</span>
+<span>Sign Up</span>
+</button>
+<button type="button" class="flex items-center justify-center gap-2 h-12 rounded-xl border border-[#e5e7eb] dark:border-[#3b5447] bg-white dark:bg-[#1c2721] hover:bg-gray-50 dark:hover:bg-[#25332c] text-[#111814] dark:text-white text-sm font-bold transition-colors" onclick="handleGoogleLogin()">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span>Google</span>
+</button>
+</div>
+</form>
+<!-- Footer CTA -->
+<div class="mt-8 text-center">
+<p class="text-[#637587] dark:text-[#9db9ab] text-base">
+                        New here? 
+                        <a class="text-primary font-bold hover:underline ml-1" href="javascript:void(0)" onclick="handleSignup()">Create an account</a>
+</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Visual -->
+<div class="hidden lg:flex w-1/2 h-screen sticky top-0 p-4">
+<div class="w-full h-full rounded-3xl bg-cover bg-center relative overflow-hidden flex flex-col justify-end p-10 group" data-alt="Peaceful modern workspace with minimal desk setup and plants" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqDFoBU5ADUxfm468gCXaVQHFr3ePu70E0a8ceNXTEfpZHVn2c4ZHlk1AITxkJhirgylj8AVaBhwuleric6uzowv9rZdUKrXwsgAmlyTtDsvI4GGJRJsiNx2UjekgoCzm932AQ15jgpowDn27JKLvk6cWiMpUwOYH7A41_DHXlZBeTpLsjAW_TfvvkSXjz1xERp60_BLnHoADXrhIZTVbMzSQwdDbmarKd7KmUEUQtQ0KNaPE81vdu9TsXr1qR0yxv-TdWk9lP0SY1");'>
+<!-- Overlay gradient -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#102219] via-[#102219]/40 to-transparent opacity-90"></div>
+<!-- Text Overlay -->
+<div class="relative z-10 max-w-md transform transition-transform duration-500 group-hover:-translate-y-2">
+<div class="size-14 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[#102219] text-3xl">insights</span>
+</div>
+<h3 class="text-white text-3xl font-bold leading-tight mb-3">Your personal academic and wellness companion.</h3>
+<p class="text-white/80 text-lg">Track your tasks, monitor your GPA, and maintain your mental well-being all in one place.</p>
+<div class="flex gap-2 mt-8">
+<div class="w-12 h-1 bg-primary rounded-full"></div>
+<div class="w-2 h-1 bg-white/30 rounded-full"></div>
+<div class="w-2 h-1 bg-white/30 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="module">
+  import { app } from "./firebase-config.js";
+  import { auth, watchAuth } from "./auth.js";
+  import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+  const provider = new GoogleAuthProvider();
+
+  // Redirect if already logged in
+  watchAuth((user) => {
+    if (user) {
+      window.location.href = "dashboard.html";
+    }
+  });
+
+  // Login handler
+  window.handleLogin = async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "dashboard.html";
+    } catch (error) {
+      alert("Login error: " + error.message);
+    }
+  };
+
+  // Google login
+  window.handleGoogleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = "dashboard.html";
+    } catch (error) {
+      alert("Google login error: " + error.message);
+    }
+  };
+
+  // Signup handler
+  window.handleSignup = async () => {
+    const email = prompt("Enter your email:");
+    if (!email) return;
+    const password = prompt("Enter a password (min 6 characters):");
+    if (!password || password.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    }
+    
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Account created! Please log in.");
+      document.getElementById("email").value = email;
+    } catch (error) {
+      alert("Signup error: " + error.message);
+    }
+  };
+
+  // Toggle password visibility
+  window.togglePassword = () => {
+    const passwordInput = document.getElementById("password");
+    const toggleIcon = document.getElementById("password-toggle");
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      toggleIcon.textContent = "visibility";
+    } else {
+      passwordInput.type = "password";
+      toggleIcon.textContent = "visibility_off";
+    }
+  };
+</script>
+
+</body></html>
+

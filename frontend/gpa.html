@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GPA Tracker - Mind Mate</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec80",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102219",
+                        "card-dark": "#1c2a23", // Custom card color for depth
+                        "input-dark": "#16201b", // Darker input background
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<!-- External Stylesheet -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111814] dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-[#283930] bg-background-dark/95 backdrop-blur-sm">
+<div class="flex h-16 items-center justify-between px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-2xl">school</span>
+</div>
+<h2 class="text-white text-lg font-bold tracking-tight">Mind Mate</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-primary text-sm font-medium transition-colors flex items-center gap-2" href="gpa.html">
+                    GPA Tracker
+                    <span class="block h-1 w-1 rounded-full bg-primary"></span>
+</a>
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="journal.html">Mood Journal</a>
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="insights.html">Insights</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-9 rounded-full bg-center bg-cover border border-[#283930]" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrL0BvNA3GJnyxj83jNDC_e0IGBh85E8oOng4NrR5whxz1uMKcf5nFjvkO4vMfOgax2iV1_ZmXLNjGhUVuMjmAvHHXYL6sjDV74YqsT4NugvZ7ZDJMR84Ntqu9baANSWH3Spr_zz_ddUyblRfayajh1NF93YDmV4_E2kTL2wytJlfmULFgZPSvKDN22-fEJ720CtdwQ-l1TnDMrrYL05owsd3wan96ujlT1uoccvQ2eeWeWfetxuMut3e5tHAYFw3k4LKdn3eW7ch5');"></div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-10 flex flex-col gap-8">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl md:text-4xl font-black tracking-tight text-white mb-2">Academic Performance</h1>
+<p class="text-[#9db9ab] text-base font-normal max-w-xl">
+                    Keep track of your grades and hit your targets. You're 0.2 points away from your goal!
+                </p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-[#283930] hover:bg-[#344a3e] text-white rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-[#3b5447]">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export Report
+                </button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- LEFT COLUMN: Main Inputs (Span 2) -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Semester Selector -->
+<div class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar">
+<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2023</button>
+<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2024</button>
+<button class="flex-1 min-w-[100px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all">Fall 2024</button>
+<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2025</button>
+</div>
+<!-- Course Table -->
+<div class="bg-card-dark rounded-xl border border-[#283930] overflow-hidden flex flex-col">
+<div class="p-6 border-b border-[#283930] flex justify-between items-center">
+<h3 class="text-white font-bold text-lg">Fall 2024 Courses</h3>
+<span class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">IN PROGRESS</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#16201b] text-[#9db9ab] text-sm">
+<th class="px-6 py-4 font-medium w-[40%]">Course Name</th>
+<th class="px-6 py-4 font-medium w-[15%]">Credits</th>
+<th class="px-6 py-4 font-medium w-[25%]">Grade</th>
+<th class="px-6 py-4 font-medium text-right w-[20%]">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#283930]">
+<tr class="group hover:bg-[#283930]/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">psychology</span>
+</div>
+<input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" placeholder="Course Name" type="text" value="SPM"/>
+</div>
+</td>
+<td class="px-6 py-4">
+<input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="3"/>
+</td>
+<td class="px-6 py-4">
+<div class="relative">
+<select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
+<option value="4.0">A (4.0)</option>
+<option value="3.7">A- (3.7)</option>
+<option value="3.3">B+ (3.3)</option>
+<option value="3.0">B (3.0)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-[#283930]/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">functions</span>
+</div>
+<input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" placeholder="Course Name" type="text" value="OB"/>
+</div>
+</td>
+<td class="px-6 py-4">
+<input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="4"/>
+</td>
+<td class="px-6 py-4">
+<div class="relative">
+<select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
+<option value="4.0">A (4.0)</option>
+<option value="3.7">A- (3.7)</option>
+<option selected="" value="3.3">B+ (3.3)</option>
+<option value="3.0">B (3.0)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-[#283930]/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-orange-500/20 text-orange-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">palette</span>
+</div>
+<input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" placeholder="Course Name" type="text" value="MAD"/>
+</div>
+</td>
+<td class="px-6 py-4">
+<input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="3"/>
+</td>
+<td class="px-6 py-4">
+<div class="relative">
+<select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
+<option value="4.0">A (4.0)</option>
+<option selected="" value="3.7">A- (3.7)</option>
+<option value="3.3">B+ (3.3)</option>
+<option value="3.0">B (3.0)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</td>
+</tr>
+<!-- Empty Input Row -->
+<tr class="bg-[#13ec80]/5">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-[#13ec80]/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">edit</span>
+</div>
+<input id="new-course-name" class="bg-transparent border-none text-white/70 font-medium p-0 focus:ring-0 w-full placeholder-gray-500" placeholder="Add new course..." type="text"/>
+</div>
+</td>
+<td class="px-6 py-4">
+<input id="new-course-credits" class="bg-[#111814]/50 border border-[#283930] border-dashed rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" placeholder="-" type="number" min="0" step="0.5"/>
+</td>
+<td class="px-6 py-4">
+<div class="relative">
+<select id="new-course-grade" class="w-full bg-[#111814]/50 border border-[#283930] border-dashed text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
+<option value="4.0">A (4.0)</option>
+<option value="3.7">A- (3.7)</option>
+<option value="3.3">B+ (3.3)</option>
+<option value="3.0">B (3.0)</option>
+<option value="2.7">B- (2.7)</option>
+<option value="2.3">C+ (2.3)</option>
+<option value="2.0">C (2.0)</option>
+<option value="1.7">C- (1.7)</option>
+<option value="1.3">D+ (1.3)</option>
+<option value="1.0">D (1.0)</option>
+<option value="0.0" selected>F (0.0)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button id="add-course-btn" class="bg-primary hover:bg-primary/90 text-[#111814] rounded-lg p-2 transition-colors">
+<span class="material-symbols-outlined text-xl block">add</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Simulation Widget -->
+<div class="bg-gradient-to-r from-card-dark to-[#16221d] rounded-xl p-6 border border-[#283930] flex items-center justify-between gap-4">
+<div class="flex items-start gap-4">
+<div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<div>
+<h4 class="text-white font-bold mb-1">Impact Insight</h4>
+<p class="text-sm text-[#9db9ab]">If you get an <span class="font-bold text-white">A</span> in <span class="text-white underline decoration-dotted">SPM</span>, your semester GPA will rise to <span class="text-primary font-bold">3.95</span>.</p>
+</div>
+</div>
+<button class="text-sm font-medium text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg border border-white/10 transition-colors whitespace-nowrap">
+                        View Scenario
+                    </button>
+</div>
+</div>
+<!-- RIGHT COLUMN: Stats & Goals (Span 1) -->
+<div class="flex flex-col gap-6">
+<!-- Main GPA Card -->
+<div class="bg-card-dark rounded-2xl p-8 border border-[#283930] flex flex-col items-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl">school</span>
+</div>
+<h3 class="text-[#9db9ab] font-medium mb-6 uppercase tracking-wider text-sm">Cumulative GPA</h3>
+<!-- Circular Progress -->
+<div class="relative size-48 flex items-center justify-center">
+<svg class="size-full -rotate-90 transform" viewbox="0 0 100 100">
+<!-- Background circle -->
+<circle cx="50" cy="50" fill="none" r="45" stroke="#283930" stroke-width="8"></circle>
+<!-- Progress circle -->
+<circle class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="20" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-5xl font-black text-white tracking-tighter">3.8</span>
+<span class="text-sm font-medium text-primary mt-1">+0.2 this term</span>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-2 gap-4 w-full">
+<div class="bg-[#111814] rounded-lg p-3 text-center border border-[#283930]">
+<span class="block text-xs text-gray-500 uppercase font-bold mb-1">Target</span>
+<span class="text-xl font-bold text-white">4.0</span>
+</div>
+<div class="bg-[#111814] rounded-lg p-3 text-center border border-[#283930]">
+<span class="block text-xs text-gray-500 uppercase font-bold mb-1">Credits</span>
+<span class="text-xl font-bold text-white">12</span>
+</div>
+</div>
+</div>
+<!-- Goal Tracker -->
+<div class="bg-card-dark rounded-xl p-6 border border-[#283930]">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-white font-bold">Goal Progress</h3>
+<span class="text-xs font-medium text-[#9db9ab]">95% to Target</span>
+</div>
+<div class="w-full bg-[#111814] rounded-full h-3 mb-2">
+<div class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 95%"></div>
+</div>
+<div class="flex justify-between text-xs text-gray-500">
+<span>Current: 3.8</span>
+<span>Target: 4.0</span>
+</div>
+</div>
+<!-- Quick Mood Check-in (Cross-feature) -->
+<div class="bg-primary/10 rounded-xl p-6 border border-primary/20">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary">sentiment_satisfied</span>
+<h3 class="text-white font-bold">Study Mood</h3>
+</div>
+<p class="text-sm text-[#9db9ab] mb-4">You seem productive today! Keep the momentum going.</p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-[#111814] hover:bg-primary hover:text-[#111814] border border-primary/30 rounded-lg text-primary text-xs font-bold transition-all">Log Mood</button>
+<button class="flex-1 py-2 bg-transparent hover:bg-white/5 border border-white/10 rounded-lg text-white text-xs font-medium transition-colors">View Trends</button>
+</div>
+</div>
+<!-- Mini Chart Placeholder -->
+<div class="bg-card-dark rounded-xl p-6 border border-[#283930] flex flex-col gap-4">
+<h3 class="text-white font-bold text-sm">GPA Trend (Last 4 Semesters)</h3>
+<div class="h-32 flex items-end justify-between gap-2 px-2">
+<div class="w-full bg-[#283930] rounded-t-sm h-[60%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.2</div>
+</div>
+<div class="w-full bg-[#283930] rounded-t-sm h-[75%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.5</div>
+</div>
+<div class="w-full bg-[#283930] rounded-t-sm h-[70%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.4</div>
+</div>
+<div class="w-full bg-primary rounded-t-sm h-[90%] relative shadow-[0_0_15px_rgba(19,236,128,0.3)] group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-primary font-bold text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.8</div>
+</div>
+</div>
+<div class="flex justify-between text-xs text-gray-500 font-mono">
+<span>Fa22</span>
+<span>Sp23</span>
+<span>Fa23</span>
+<span>Sp24</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<script type="module">
+  import { app } from "./firebase-config.js";
+  import { watchAuth } from "./auth.js";
+  import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const db = getDatabase(app);
+  const gpasRef = ref(db, "gpas");
+  let currentUserId = null;
+
+  // Check auth
+  watchAuth((user) => {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+    currentUserId = user.uid;
+    loadGPAs();
+  });
+
+  // Load GPAs
+  function loadGPAs() {
+    onValue(gpasRef, (snapshot) => {
+      const tbody = document.querySelector("tbody");
+      if (!tbody) return;
+
+      // Clear existing rows except the add row
+      const existingRows = tbody.querySelectorAll("tr:not(.bg-\\[\\#13ec80\\]\\/5)");
+      existingRows.forEach(el => el.remove());
+
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      snapshot.forEach(child => {
+        const gpa = child.val();
+        if (gpa.userId !== currentUserId) return;
+
+        const credits = parseFloat(gpa.credits || 0);
+        const gradePoints = parseFloat(gpa.gpa || 0);
+        totalPoints += gradePoints * credits;
+        totalCredits += credits;
+
+        const row = createGPARow(child.key, gpa);
+        tbody.insertBefore(row, tbody.lastElementChild);
+      });
+
+      // Calculate and update cumulative GPA
+      const cumulativeGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
+      updateGPADisplay(cumulativeGPA);
+    });
+  }
+
+  function createGPARow(gpaId, gpa) {
+    const row = document.createElement("tr");
+    row.className = "group hover:bg-[#283930]/30 transition-colors";
+    
+    const courseColors = ["blue", "purple", "orange", "green", "red", "yellow"];
+    const colorIndex = Math.floor(Math.random() * courseColors.length);
+    const color = courseColors[colorIndex];
+
+    row.innerHTML = `
+      <td class="px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div class="size-8 rounded bg-${color}-500/20 text-${color}-400 flex items-center justify-center">
+            <span class="material-symbols-outlined text-sm">psychology</span>
+          </div>
+          <input class="course-name bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" 
+                 type="text" value="${gpa.courseName || ''}" 
+                 onchange="updateGPA('${gpaId}', 'courseName', this.value)" />
+        </div>
+      </td>
+      <td class="px-6 py-4">
+        <input class="credits bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" 
+               type="number" value="${gpa.credits || 0}" 
+               onchange="updateGPA('${gpaId}', 'credits', parseFloat(this.value))" />
+      </td>
+      <td class="px-6 py-4">
+        <div class="relative">
+          <select class="grade-select w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer"
+                  onchange="updateGPA('${gpaId}', 'gpa', parseFloat(this.value))">
+            <option value="4.0" ${gpa.gpa == 4.0 ? 'selected' : ''}>A (4.0)</option>
+            <option value="3.7" ${gpa.gpa == 3.7 ? 'selected' : ''}>A- (3.7)</option>
+            <option value="3.3" ${gpa.gpa == 3.3 ? 'selected' : ''}>B+ (3.3)</option>
+            <option value="3.0" ${gpa.gpa == 3.0 ? 'selected' : ''}>B (3.0)</option>
+            <option value="2.7" ${gpa.gpa == 2.7 ? 'selected' : ''}>B- (2.7)</option>
+            <option value="2.3" ${gpa.gpa == 2.3 ? 'selected' : ''}>C+ (2.3)</option>
+            <option value="2.0" ${gpa.gpa == 2.0 ? 'selected' : ''}>C (2.0)</option>
+            <option value="1.7" ${gpa.gpa == 1.7 ? 'selected' : ''}>C- (1.7)</option>
+            <option value="1.3" ${gpa.gpa == 1.3 ? 'selected' : ''}>D+ (1.3)</option>
+            <option value="1.0" ${gpa.gpa == 1.0 ? 'selected' : ''}>D (1.0)</option>
+            <option value="0.0" ${gpa.gpa == 0.0 ? 'selected' : ''}>F (0.0)</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+            <span class="material-symbols-outlined text-sm">expand_more</span>
+          </div>
+        </div>
+      </td>
+      <td class="px-6 py-4 text-right">
+        <button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10" onclick="deleteGPA('${gpaId}')">
+          <span class="material-symbols-outlined text-xl">delete</span>
+        </button>
+      </td>
+    `;
+    return row;
+  }
+
+  function updateGPADisplay(gpa) {
+    // Update main GPA display
+    const gpaDisplays = document.querySelectorAll(".text-5xl, .text-4xl");
+    gpaDisplays.forEach(el => {
+      const text = el.textContent.trim();
+      if (text === "3.8" || /^\d+\.\d+$/.test(text)) {
+        el.textContent = gpa;
+      }
+    });
+    
+    // Update circular progress
+    const progressCircle = document.querySelector("circle[stroke='#13ec80']");
+    if (progressCircle) {
+      const circumference = 2 * Math.PI * 45; // radius is 45
+      const targetGPA = 4.0;
+      const progress = (parseFloat(gpa) / targetGPA) * 100;
+      const offset = circumference - (progress / 100) * circumference;
+      progressCircle.setAttribute("stroke-dashoffset", offset);
+    }
+    
+    // Update goal progress bar
+    const goalBar = document.querySelector(".bg-primary.h-3");
+    if (goalBar) {
+      const targetGPA = 4.0;
+      const progress = (parseFloat(gpa) / targetGPA) * 100;
+      goalBar.style.width = Math.min(progress, 100) + "%";
+    }
+  }
+
+  // Add new course
+  document.getElementById("add-course-btn").addEventListener("click", () => {
+    const courseName = document.getElementById("new-course-name").value.trim();
+    const credits = parseFloat(document.getElementById("new-course-credits").value) || 0;
+    const gradeValue = parseFloat(document.getElementById("new-course-grade").value) || 0;
+
+    if (!courseName) {
+      alert("Please enter a course name");
+      return;
+    }
+
+    if (credits <= 0) {
+      alert("Please enter valid credits (greater than 0)");
+      return;
+    }
+
+    push(gpasRef, {
+      courseName,
+      credits,
+      gpa: gradeValue,
+      userId: currentUserId,
+      semester: "Fall 2024",
+      createdAt: new Date().toISOString()
+    });
+
+    // Clear inputs
+    document.getElementById("new-course-name").value = "";
+    document.getElementById("new-course-credits").value = "";
+    document.getElementById("new-course-grade").value = "0.0";
+  });
+
+  // Update GPA
+  window.updateGPA = (gpaId, field, value) => {
+    update(ref(db, `gpas/${gpaId}`), { [field]: value });
+  };
+
+  // Delete GPA
+  window.deleteGPA = (gpaId) => {
+    if (confirm("Delete this course?")) {
+      remove(ref(db, `gpas/${gpaId}`));
+    }
+  };
+
+</script>
+
+</body></html>

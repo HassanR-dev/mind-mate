@@ -1,0 +1,174 @@
+/* ============================================
+   Mind Mate - Main Stylesheet
+   ============================================ */
+
+/* Material Icons Configuration */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.fill {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.fill-1 {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #102219;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #283930;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3b5447;
+}
+
+/* Scrollbar for journal page (darker) */
+body.dark-scrollbar ::-webkit-scrollbar-track,
+.bg-\[#111814\] ::-webkit-scrollbar-track {
+    background: #111814;
+}
+
+/* Journal page specific scrollbar */
+body.bg-\[#111814\] ::-webkit-scrollbar-track {
+    background: #111814;
+}
+
+/* Hide Scrollbar Utility */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Body Font Family */
+body.font-display {
+    font-family: 'Lexend', sans-serif;
+}
+
+/* Selection Styles */
+::selection {
+    background-color: #13ec80;
+    color: #000;
+}
+
+.selection\:bg-primary::selection {
+    background-color: #13ec80;
+}
+
+.selection\:text-black::selection {
+    color: #000;
+}
+
+/* Utility Classes */
+.escape-html {
+    /* Helper for escaped content */
+}
+
+/* Background Image Helpers */
+.bg-cover-center {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Progress Bar Animations */
+.progress-bar {
+    transition: width 0.5s ease-out;
+}
+
+/* Icon Size Utilities */
+.icon-sm {
+    font-size: 14px;
+}
+
+.icon-md {
+    font-size: 18px;
+}
+
+.icon-lg {
+    font-size: 20px;
+}
+
+.icon-xl {
+    font-size: 24px;
+}
+
+.icon-2xl {
+    font-size: 32px;
+}
+
+.icon-3xl {
+    font-size: 48px;
+}
+
+.icon-4xl {
+    font-size: 64px;
+}
+
+.icon-5xl {
+    font-size: 80px;
+}
+
+/* Material Icon Specific Sizes */
+.material-icon-sm {
+    font-size: 14px !important;
+}
+
+.material-icon-md {
+    font-size: 18px !important;
+}
+
+.material-icon-lg {
+    font-size: 20px !important;
+}
+
+.material-icon-xl {
+    font-size: 24px !important;
+}
+
+/* Conic Gradient for Charts */
+.conic-chart {
+    background: conic-gradient(
+        #13ec80 0% 45%,
+        #a78bfa 45% 70%,
+        #f472b6 70% 85%,
+        #3b5447 85% 100%
+    );
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .mobile-hide {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .desktop-hide {
+        display: none;
+    }
+}
