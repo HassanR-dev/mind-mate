@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "source": "functions"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
   "hosting": {
     "public": "frontend",
     "ignore": [
@@ -14,6 +20,10 @@
       "**/state diagram mindmate.png"
     ],
     "rewrites": [
+      {
+        "source": "/api/**",
+        "function": "api"
+      },
       {
         "source": "/",
         "destination": "/login.html"

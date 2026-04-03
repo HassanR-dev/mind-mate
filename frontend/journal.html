@@ -173,48 +173,8 @@
 </div>
 </div>
 <!-- Timeline Feed -->
-<div class="flex flex-col gap-4">
-<!-- Entry 1 -->
-<div class="group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all">
-<div class="flex justify-between items-start">
-<div class="flex items-center gap-3">
-<div class="bg-[#283930] p-2 rounded-lg text-primary">
-<span class="material-symbols-outlined fill">sentiment_satisfied</span>
-</div>
-<div>
-<p class="text-white font-medium">Feeling Good</p>
-<p class="text-text-secondary text-xs">Today, 10:30 AM</p>
-</div>
-</div>
-<div class="flex gap-2">
-<span class="px-2 py-1 rounded bg-[#283930] text-text-secondary text-[10px] uppercase font-bold tracking-wider">#Sleep</span>
-</div>
-</div>
-<p class="text-slate-300 text-sm leading-relaxed">
-                                Had a really good sleep last night which definitely helped. Feeling ready to tackle the assignment due next week.
-                            </p>
-</div>
-<!-- Entry 2 -->
-<div class="group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all">
-<div class="flex justify-between items-start">
-<div class="flex items-center gap-3">
-<div class="bg-[#283930] p-2 rounded-lg text-yellow-500">
-<span class="material-symbols-outlined fill">sentiment_neutral</span>
-</div>
-<div>
-<p class="text-white font-medium">A bit overwhelmed</p>
-<p class="text-text-secondary text-xs">Yesterday, 8:15 PM</p>
-</div>
-</div>
-<div class="flex gap-2">
-<span class="px-2 py-1 rounded bg-[#283930] text-text-secondary text-[10px] uppercase font-bold tracking-wider">#Exams</span>
-<span class="px-2 py-1 rounded bg-[#283930] text-text-secondary text-[10px] uppercase font-bold tracking-wider">#Stress</span>
-</div>
-</div>
-<p class="text-slate-300 text-sm leading-relaxed">
-                                Struggled to focus in the library today. The noise was distracting. Need to find a quieter spot tomorrow.
-                            </p>
-</div>
+<div id="journal-feed" class="flex flex-col gap-4">
+<!-- Entries populated by JS -->
 </div>
 </div>
 <!-- Right Column: Reflection Zone -->
@@ -321,169 +281,108 @@
 </div>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth } from "./auth.js";
-  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData, pushUserData } from "./js/services/db.service.js";
+  import { analyzeMood } from "./js/services/ai.service.js";
+  import { showToast } from "./js/services/toast.js";
+  import { validateJournalText, sanitizeHtml, formatDateTime } from "./js/services/validators.js";
 
-  const db = getDatabase(app);
-  const journalRef = ref(db, "journals");
-  let currentUserId = null;
+  await authGuard();
 
-  const crisisKeywords = [
-    "i want to die", "can't go on", "hopeless", "hurt myself",
-    "done with everything", "ending it", "feel like giving up"
-  ];
+  const feedEl = document.getElementById("journal-feed");
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUserId = user.uid;
-    loadJournalEntries();
+  // Mood button selection
+  const moodButtons = document.querySelectorAll("button.flex-1.aspect-square.rounded-2xl");
+  moodButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      moodButtons.forEach(b => {
+        b.classList.remove("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
+        b.classList.add("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
+        b.querySelector("span.material-symbols-outlined")?.classList.remove("fill");
+      });
+      btn.classList.remove("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
+      btn.classList.add("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
+      btn.querySelector("span.material-symbols-outlined")?.classList.add("fill");
+    });
   });
 
+  function getSelectedMood() {
+    for (const btn of moodButtons) {
+      if (!btn.classList.contains("bg-primary")) continue;
+      const icon = btn.querySelector("span.material-symbols-outlined")?.textContent || "";
+      if (icon.includes("very_dissatisfied") || icon.includes("dissatisfied")) return "negative";
+      if (icon.includes("very_satisfied") || (icon.includes("satisfied") && !icon.includes("dis"))) return "positive";
+      return "neutral";
+    }
+    return "neutral";
+  }
+
   // Submit journal entry
-  document.getElementById("submit-journal").onclick = async () => {
-    const text = document.getElementById("journal-text").value.trim();
-    if (!text) {
-      alert("Please write something.");
+  document.getElementById("submit-journal")?.addEventListener("click", async () => {
+    const textEl = document.getElementById("journal-text");
+    const text = textEl?.value.trim() || "";
+    const v = validateJournalText(text);
+    if (!v.valid) { showToast(v.error, "warning"); return; }
+
+    const btn = document.getElementById("submit-journal");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    const selectedMood = getSelectedMood();
+
+    // AI mood analysis via Cloud Function (no client-side HF key)
+    let mood = selectedMood;
+    try {
+      const result = await analyzeMood(text);
+      if (result?.moodLabel) mood = result.moodLabel;
+    } catch {
+      // Fall back to button selection on error
+    }
+
+    await pushUserData("journals", { text, mood, timestamp: new Date().toISOString() });
+
+    textEl.value = "";
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-lg">save</span> Log Entry';
+    showToast("Entry saved!", "success");
+  });
+
+  // Load and render journal entries
+  listenToUserData("journals", snap => {
+    if (!feedEl) return;
+    feedEl.innerHTML = "";
+    const entries = Object.values(snap || {})
+      .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+
+    if (entries.length === 0) {
+      feedEl.innerHTML = `<p class="text-text-secondary text-sm text-center py-8">No entries yet. Write your first one above!</p>`;
       return;
     }
 
-    const lower = text.toLowerCase();
-    if (crisisKeywords.some(k => lower.includes(k))) {
-      alert("💛 You deserve support. If you're feeling overwhelmed, please reach out to someone you trust or a local helpline.");
-    }
+    const MOOD_ICON = { positive: "sentiment_satisfied", neutral: "sentiment_neutral", negative: "sentiment_dissatisfied" };
+    const MOOD_LABEL = { positive: "Feeling Good 😊", neutral: "Feeling Okay 😐", negative: "Feeling Low 😟" };
 
-    // Get selected mood (from mood buttons)
-    let selectedMood = "neutral";
-    const moodButtons = document.querySelectorAll("button.flex-1.aspect-square");
-    moodButtons.forEach(btn => {
-      if (btn.classList.contains("bg-primary")) {
-        const icon = btn.querySelector("span.material-symbols-outlined");
-        if (icon) {
-          const iconText = icon.textContent;
-          if (iconText.includes("very_dissatisfied")) selectedMood = "negative";
-          else if (iconText.includes("dissatisfied")) selectedMood = "negative";
-          else if (iconText.includes("neutral")) selectedMood = "neutral";
-          else if (iconText.includes("satisfied") && !iconText.includes("very")) selectedMood = "positive";
-          else if (iconText.includes("very_satisfied")) selectedMood = "positive";
-        }
-      }
-    });
-
-    // Call HuggingFace API for sentiment analysis
-    let mood = selectedMood;
-    try {
-      // TODO: Replace with your Hugging Face API key
-      // Get your free API key from: https://huggingface.co/settings/tokens
-      const HF_API_KEY = "YOUR_HUGGINGFACE_API_KEY_HERE";
-      
-      if (HF_API_KEY === "YOUR_HUGGINGFACE_API_KEY_HERE") {
-        console.warn("Hugging Face API key not configured. Using selected mood only.");
-        // Use the selected mood if API key is not configured
-      } else {
-        const response = await fetch(
-        "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment",
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${HF_API_KEY}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ inputs: text })
-        }
-      );
-
-        const data = await response.json();
-        const label = data?.[0]?.[0]?.label;
-        
-        if (label === "LABEL_2") mood = "positive";
-        else if (label === "LABEL_1") mood = "neutral";
-        else if (label === "LABEL_0") mood = "negative";
-      }
-      } catch (err) {
-        console.error("Sentiment analysis error:", err);
-        // Fall back to selected mood on error
-      }
-
-    // Save to Firebase
-    push(journalRef, {
-      text,
-      mood,
-      timestamp: new Date().toISOString(),
-      userId: currentUserId
-    });
-
-    document.getElementById("journal-text").value = "";
-    alert("Journal entry saved!");
-    loadJournalEntries();
-  };
-
-  // Load journal entries
-  function loadJournalEntries() {
-    onValue(journalRef, (snapshot) => {
-      const entriesContainer = document.querySelector(".flex.flex-col.gap-4");
-      if (!entriesContainer) return;
-
-      // Clear existing entries (keep the structure)
-      const existingEntries = entriesContainer.querySelectorAll(".group.flex.flex-col");
-      existingEntries.forEach(el => el.remove());
-
-      snapshot.forEach(child => {
-        const entry = child.val();
-        if (entry.userId !== currentUserId) return;
-
-        const moodEmoji = {
-          positive: "😊",
-          neutral: "😐",
-          negative: "😟"
-        };
-
-        const entryDiv = document.createElement("div");
-        entryDiv.className = "group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all";
-        entryDiv.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-3">
-              <div class="bg-[#283930] p-2 rounded-lg text-primary">
-                <span class="material-symbols-outlined fill">sentiment_satisfied</span>
-              </div>
-              <div>
-                <p class="text-white font-medium">Feeling ${entry.mood || "neutral"}</p>
-                <p class="text-text-secondary text-xs">${new Date(entry.timestamp).toLocaleString()}</p>
-              </div>
+    entries.forEach(entry => {
+      const div = document.createElement("div");
+      div.className = "group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all";
+      const icon  = MOOD_ICON[entry.mood] || "sentiment_neutral";
+      const label = MOOD_LABEL[entry.mood] || "Feeling Okay";
+      div.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-3">
+            <div class="bg-[#283930] p-2 rounded-lg text-primary">
+              <span class="material-symbols-outlined fill">${icon}</span>
+            </div>
+            <div>
+              <p class="text-white font-medium">${label}</p>
+              <p class="text-text-secondary text-xs">${formatDateTime(entry.timestamp)}</p>
             </div>
           </div>
-          <p class="text-slate-300 text-sm leading-relaxed">${entry.text}</p>
-        `;
-        entriesContainer.appendChild(entryDiv);
-      });
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed">${sanitizeHtml(entry.text)}</p>`;
+      feedEl.appendChild(div);
     });
-  }
-
-  // Mood button selection - wait for DOM to be ready
-  setTimeout(() => {
-    const moodButtons = document.querySelectorAll("button.flex-1.aspect-square.rounded-2xl");
-    moodButtons.forEach(btn => {
-      btn.onclick = () => {
-        // Reset all buttons
-        moodButtons.forEach(b => {
-          b.classList.remove("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105", "fill");
-          b.classList.add("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
-          const icon = b.querySelector("span.material-symbols-outlined");
-          if (icon) icon.classList.remove("fill");
-        });
-        
-        // Set selected button
-        btn.classList.remove("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
-        btn.classList.add("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
-        const icon = btn.querySelector("span.material-symbols-outlined");
-        if (icon) icon.classList.add("fill");
-      };
-    });
-  }, 100);
+  });
 </script>
 
 </body></html>

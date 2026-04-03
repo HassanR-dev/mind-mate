@@ -71,7 +71,7 @@
 <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Sidebar user avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBV-N0dih5eDVQ__FiHraPjhNIiDqwVUgH8QPnaN0ZmmsMtB-ZM2DZFcHNfQr5EMIA1Z6f73tKssNPuVrKe-SC5_N5x6bfA11HnzAxXuTNyQ8XVocl5OMpjCAMKBbn7y9n5kr4HAu-_xhwzz0L5S-aX0XuTP7VVquHaef70k3u_9YNwVoMnDJvUOyPnLrOBX6c_dsCOdbNSuZFBZIKxty2NrxfiEWNSAW6rut7hHlMSi3FAGnlIN5RJXKedIkcFhTXBZiuONQypSTVj");'>
 </div>
 <div class="flex flex-col">
-<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal">Hassan Rehan</h1>
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal"><span data-user-name>Hassan Rehan</span></h1>
 <p class="text-slate-500 dark:text-[#9db9ab] text-xs font-normal leading-normal">Software Engineering</p>
 </div>
 </div>
@@ -99,7 +99,7 @@
 </a>
 </div>
 <div class="mt-auto pt-6">
-<button class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
+<button data-action="logout" class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
 <span class="material-symbols-outlined">logout</span>
 <span class="text-sm font-medium">Log Out</span>
 </button>
@@ -116,7 +116,7 @@
 </div>
 <div class="flex gap-3">
 <button class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-white/10 text-slate-700 dark:text-white font-medium text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Cancel</button>
-<button class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
+<button id="save-profile-btn" class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
 </div>
 </div>
 <!-- Profile Header Card -->
@@ -130,7 +130,7 @@
 </div>
 <div class="flex flex-col flex-1 items-center md:items-start text-center md:text-left gap-2">
 <div>
-<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Hassan Rehan</h2>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white"><span data-user-name>Hassan Rehan</span></h2>
 <p class="text-slate-500 dark:text-[#9db9ab] font-medium">Software Engineering</p>
 </div>
 <div class="flex gap-2 mt-2">
@@ -313,7 +313,7 @@
     const email = user.email || "";
     
     document.querySelectorAll("h1, h2").forEach(h => {
-      if (h.textContent.includes("Hassan Rehan")) {
+      if (h.textContent.includes("<span data-user-name>Hassan Rehan</span>")) {
         h.textContent = name;
       }
     });

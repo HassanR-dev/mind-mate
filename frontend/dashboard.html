@@ -80,8 +80,8 @@
 <div class="flex items-center gap-3">
 <div class="size-10 rounded-full bg-cover bg-center" data-alt="User profile picture showing a smiling student" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdWVr0iZ7s7uRvbhdI3W4Y8zO39ee1y0Y4tjsaCCuzezaW-vVXVLn12vXZPlqWRwcG-7El7yLZlFiVDljMLYJgMAl-PmokUNNVaFgqAKgpTFrxZ9B-Bt30ecnN99itd03BLVz8wZAewoJ5mj4B9xKl8dH-WfSNdtxK6l4CJ4t_VI26DZKkirhknCGztSj6HLECWxbrd7ku-eISJH4-3iiFDSzSOo_Gmp2h7BX-ry0VZdf-ERvU22mrD-T4YkjVCH13IXTDFHIbR0NI')"></div>
 <div class="flex-1 min-w-0">
-<p class="font-medium truncate">Hassan Rehan</p>
-<p class="text-xs text-gray-500 dark:text-gray-400 truncate">Software Engineering</p>
+<p class="font-medium truncate" data-user-name>Hassan Rehan</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 truncate" data-user-email></p>
 </div>
 <a href="user-profile.html" class="text-gray-400 hover:text-white">
 <span class="material-symbols-outlined">settings</span>
@@ -92,7 +92,7 @@
 <main class="flex-1 flex flex-col h-full relative overflow-hidden">
 <header class="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 bg-background-light dark:bg-background-dark z-10 shrink-0">
 <div>
-<h2 class="font-bold text-xl">Good Morning, Hassan ☀️</h2>
+<h2 class="font-bold text-xl">Good Morning, <span data-user-name>there</span> ☀️</h2>
 <p class="text-xs text-gray-500">Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-4">
@@ -117,7 +117,7 @@
 <span class="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">+0.2</span>
 </div>
 <p class="text-sm text-gray-500">Current GPA</p>
-<p class="text-2xl font-bold font-display">3.8</p>
+<p class="text-2xl font-bold font-display" data-stat-gpa>—</p>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
@@ -127,7 +127,7 @@
 <span class="text-xs text-gray-500">Today</span>
 </div>
 <p class="text-sm text-gray-500">Mood</p>
-<p class="text-lg font-bold font-display">Stressed 😟</p>
+<p class="text-lg font-bold font-display" data-stat-mood>—</p>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
@@ -137,7 +137,7 @@
 <span class="text-xs text-gray-500">Today</span>
 </div>
 <p class="text-sm text-gray-500">Tasks Left</p>
-<p class="text-2xl font-bold font-display">4</p>
+<p class="text-2xl font-bold font-display" data-stat-tasks>—</p>
 </div>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
@@ -192,72 +192,30 @@
 </div>
 </div>
 </div>
-<button class="text-gray-400 hover:text-primary transition-colors">
+<button class="text-gray-400 hover:text-primary transition-colors" aria-label="Expand chat">
 <span class="material-symbols-outlined text-xl">open_in_full</span>
 </button>
 </div>
-<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-light/50 dark:bg-background-dark/50 scrollbar-hide">
-<div class="text-center">
-<span class="text-[10px] text-gray-400 bg-gray-100 dark:bg-background-dark px-2 py-0.5 rounded-full">Today</span>
-</div>
-<div class="flex gap-3">
-<div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
-<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
-</div>
-<div class="flex flex-col gap-1 max-w-[85%]">
-<div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-200 dark:border-gray-700 text-sm">
-<p class="leading-relaxed">Hi Hassan! I see your <span class="font-bold text-primary">OB assignment deadline</span> is coming up. Want to create a study plan?</p>
-</div>
-</div>
-</div>
-<div class="flex gap-3 flex-row-reverse">
-<div class="flex flex-col gap-1 items-end max-w-[85%]">
-<div class="bg-primary p-3 rounded-2xl rounded-tr-none shadow-sm text-background-dark font-medium text-sm">
-<p class="leading-relaxed">Yes please! I'm feeling overwhelmed.</p>
-</div>
-</div>
-</div>
-<div class="flex gap-3">
-<div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
-<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
-</div>
-<div class="flex flex-col gap-1 max-w-[90%]">
-<div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-200 dark:border-gray-700 text-sm">
-<p class="mb-2">No worries. Let's break it down:</p>
-<div class="space-y-2">
-<button class="w-full flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-background-dark border border-gray-200 dark:border-gray-600 hover:border-primary transition-colors text-left group">
-<span class="material-symbols-outlined text-gray-400 group-hover:text-primary text-sm">timer</span>
-<span class="text-xs font-medium">Start 25m Pomodoro</span>
-</button>
-<button class="w-full flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-background-dark border border-gray-200 dark:border-gray-600 hover:border-primary transition-colors text-left group">
-<span class="material-symbols-outlined text-gray-400 group-hover:text-primary text-sm">list</span>
-<span class="text-xs font-medium">Review Topic List</span>
-</button>
-</div>
-</div>
-</div>
-</div>
+<div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-light/50 dark:bg-background-dark/50 scrollbar-hide">
 </div>
 <div class="p-3 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700 shrink-0">
 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-1">
-<button class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                                    Explain Patents
+<button data-chat-suggestion="Help me make a study plan" class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    Make a study plan
                                 </button>
-<button class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<button data-chat-suggestion="I need a break, what should I do?" class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                                     I need a break
                                 </button>
 </div>
 <div class="relative flex items-center gap-2">
 <div class="flex-1 relative">
-<input class="w-full bg-gray-50 dark:bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-10 text-sm focus:ring-1 focus:ring-primary placeholder-gray-400 dark:placeholder-gray-500" placeholder="Ask Mind Mate..." type="text"/>
-<button class="absolute right-1.5 top-1.5 p-1 text-gray-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-lg">mic</span>
-</button>
+<input id="chat-input" class="w-full bg-gray-50 dark:bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-3 text-sm focus:ring-1 focus:ring-primary placeholder-gray-400 dark:placeholder-gray-500" placeholder="Ask Mind Mate..." type="text" aria-label="Chat message"/>
 </div>
-<button class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors shadow-sm">
+<button id="chat-send" class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors shadow-sm" aria-label="Send message">
 <span class="material-symbols-outlined text-lg fill-1">send</span>
 </button>
 </div>
+<p class="text-[10px] text-gray-400 text-center mt-1 px-2">Mind Mate is an academic companion, not a therapist. For urgent support, contact a professional.</p>
 </div>
 </div>
 </div>
@@ -266,96 +224,48 @@
 </main>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth, auth } from "./auth.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData } from "./js/services/db.service.js";
+  import { initNav } from "./js/services/nav.js";
+  import { initChat } from "./js/chat.js";
 
-  const db = getDatabase(app);
-  let currentUser = null;
+  await authGuard();
+  initNav("dashboard");
+  initChat();
 
-  // Check auth and redirect if not logged in
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUser = user;
-    updateUserInfo(user);
-    loadDashboardData(user.uid);
+  // Stat elements
+  const gpaEl      = document.querySelector("[data-stat-gpa]");
+  const moodEl     = document.querySelector("[data-stat-mood]");
+  const tasksLeftEl = document.querySelector("[data-stat-tasks]");
+
+  // GPA: weighted average across all entries
+  listenToUserData("gpas", snap => {
+    let totalPoints = 0, totalCredits = 0;
+    Object.values(snap || {}).forEach(g => {
+      const credits = parseFloat(g.credits || 0);
+      totalPoints += parseFloat(g.gpa || 0) * credits;
+      totalCredits += credits;
+    });
+    const avg = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(1) : "—";
+    if (gpaEl) gpaEl.textContent = avg;
   });
 
-  // Update user info in sidebar
-  function updateUserInfo(user) {
-    const userEmail = user.email || "User";
-    const userName = user.displayName || userEmail.split("@")[0];
-    document.querySelectorAll("p").forEach(p => {
-      if (p.textContent.includes("Hassan Rehan")) {
-        p.textContent = userName;
-      }
-    });
-  }
+  // Mood: most recent journal entry
+  listenToUserData("journals", snap => {
+    const entries = Object.values(snap || {});
+    entries.sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+    const latest = entries[0];
+    const mood = latest?.mood || "—";
+    const label = mood === "positive" ? "Good 😊" : mood === "negative" ? "Stressed 😟" : mood === "neutral" ? "Okay 😐" : "—";
+    if (moodEl) moodEl.textContent = label;
+  });
 
-  // Load dashboard data
-  function loadDashboardData(uid) {
-    // Load tasks count
-    onValue(ref(db, "tasks"), (snap) => {
-      let count = 0;
-      let todayCount = 0;
-      const today = new Date().toDateString();
-      
-      snap.forEach(child => {
-        const task = child.val();
-        if (task.userId === uid) {
-          count++;
-          if (task.dueDate && new Date(task.dueDate).toDateString() === today) {
-            todayCount++;
-          }
-        }
-      });
-      
-      const taskCountEl = document.querySelector("p:contains('Tasks Left')")?.parentElement?.querySelector(".text-2xl");
-      if (taskCountEl) taskCountEl.textContent = count;
-    });
-
-    // Load GPA
-    onValue(ref(db, "gpas"), (snap) => {
-      let total = 0, count = 0;
-      snap.forEach(child => {
-        const g = child.val();
-        if (g.userId === uid) {
-          total += parseFloat(g.gpa || 0);
-          count++;
-        }
-      });
-      const avgGpa = count ? (total / count).toFixed(1) : "0.0";
-      document.querySelectorAll(".text-2xl").forEach(el => {
-        if (el.textContent.includes("3.8")) {
-          el.textContent = avgGpa;
-        }
-      });
-    });
-
-    // Load recent mood
-    onValue(ref(db, "journals"), (snap) => {
-      let lastMood = "Neutral";
-      let lastEntry = null;
-      
-      snap.forEach(child => {
-        const j = child.val();
-        if (j.userId === uid && (!lastEntry || j.timestamp > lastEntry.timestamp)) {
-          lastEntry = j;
-          lastMood = j.mood || "Neutral";
-        }
-      });
-      
-      document.querySelectorAll("p").forEach(p => {
-        if (p.textContent.includes("Stressed")) {
-          p.textContent = lastMood;
-        }
-      });
-    });
-  }
-
+  // Tasks: count of incomplete tasks
+  listenToUserData("tasks", snap => {
+    const tasks = Object.values(snap || {});
+    const pending = tasks.filter(t => !t.completed).length;
+    if (tasksLeftEl) tasksLeftEl.textContent = pending;
+  });
 </script>
 
 </body>

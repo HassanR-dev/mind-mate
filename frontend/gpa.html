@@ -270,11 +270,11 @@
 <!-- Background circle -->
 <circle cx="50" cy="50" fill="none" r="45" stroke="#283930" stroke-width="8"></circle>
 <!-- Progress circle -->
-<circle class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="20" stroke-linecap="round" stroke-width="8"></circle>
+<circle id="gpa-progress-circle" class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" stroke-width="8"></circle>
 </svg>
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-5xl font-black text-white tracking-tighter">3.8</span>
-<span class="text-sm font-medium text-primary mt-1">+0.2 this term</span>
+<span id="gpa-display" class="text-5xl font-black text-white tracking-tighter">—</span>
+<span class="text-sm font-medium text-primary mt-1">Cumulative</span>
 </div>
 </div>
 <div class="mt-8 grid grid-cols-2 gap-4 w-full">
@@ -292,10 +292,10 @@
 <div class="bg-card-dark rounded-xl p-6 border border-[#283930]">
 <div class="flex justify-between items-center mb-4">
 <h3 class="text-white font-bold">Goal Progress</h3>
-<span class="text-xs font-medium text-[#9db9ab]">95% to Target</span>
+<span id="gpa-goal-pct" class="text-xs font-medium text-[#9db9ab]">0% to Target</span>
 </div>
 <div class="w-full bg-[#111814] rounded-full h-3 mb-2">
-<div class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 95%"></div>
+<div id="gpa-goal-bar" class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 0%"></div>
 </div>
 <div class="flex justify-between text-xs text-gray-500">
 <span>Current: 3.8</span>
@@ -343,95 +343,57 @@
 </main>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth } from "./auth.js";
-  import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData, pushUserData, updateUserData, removeUserData } from "./js/services/db.service.js";
+  import { showToast, showConfirm } from "./js/services/toast.js";
 
-  const db = getDatabase(app);
-  const gpasRef = ref(db, "gpas");
-  let currentUserId = null;
+  await authGuard();
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUserId = user.uid;
-    loadGPAs();
-  });
+  const tbody         = document.querySelector("tbody");
+  const gpaDisplay    = document.getElementById("gpa-display");
+  const progressCircle = document.getElementById("gpa-progress-circle");
+  const goalBar       = document.getElementById("gpa-goal-bar");
+  const goalPct       = document.getElementById("gpa-goal-pct");
 
-  // Load GPAs
-  function loadGPAs() {
-    onValue(gpasRef, (snapshot) => {
-      const tbody = document.querySelector("tbody");
-      if (!tbody) return;
+  const GRADES = [
+    ["4.0","A (4.0)"],["3.7","A- (3.7)"],["3.3","B+ (3.3)"],["3.0","B (3.0)"],
+    ["2.7","B- (2.7)"],["2.3","C+ (2.3)"],["2.0","C (2.0)"],["1.7","C- (1.7)"],
+    ["1.3","D+ (1.3)"],["1.0","D (1.0)"],["0.0","F (0.0)"]
+  ];
+  const COLORS = ["blue","purple","orange","green","red","yellow"];
 
-      // Clear existing rows except the add row
-      const existingRows = tbody.querySelectorAll("tr:not(.bg-\\[\\#13ec80\\]\\/5)");
-      existingRows.forEach(el => el.remove());
-
-      let totalPoints = 0;
-      let totalCredits = 0;
-
-      snapshot.forEach(child => {
-        const gpa = child.val();
-        if (gpa.userId !== currentUserId) return;
-
-        const credits = parseFloat(gpa.credits || 0);
-        const gradePoints = parseFloat(gpa.gpa || 0);
-        totalPoints += gradePoints * credits;
-        totalCredits += credits;
-
-        const row = createGPARow(child.key, gpa);
-        tbody.insertBefore(row, tbody.lastElementChild);
-      });
-
-      // Calculate and update cumulative GPA
-      const cumulativeGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
-      updateGPADisplay(cumulativeGPA);
-    });
+  function gradeOptions(selected) {
+    return GRADES.map(([v, l]) =>
+      `<option value="${v}" ${parseFloat(selected) === parseFloat(v) ? "selected" : ""}>${l}</option>`
+    ).join("");
   }
 
-  function createGPARow(gpaId, gpa) {
+  function createRow(id, gpa) {
+    const color = COLORS[Math.abs(id.charCodeAt(0)) % COLORS.length];
     const row = document.createElement("tr");
     row.className = "group hover:bg-[#283930]/30 transition-colors";
-    
-    const courseColors = ["blue", "purple", "orange", "green", "red", "yellow"];
-    const colorIndex = Math.floor(Math.random() * courseColors.length);
-    const color = courseColors[colorIndex];
-
+    row.dataset.gpaId = id;
     row.innerHTML = `
       <td class="px-6 py-4">
         <div class="flex items-center gap-3">
           <div class="size-8 rounded bg-${color}-500/20 text-${color}-400 flex items-center justify-center">
             <span class="material-symbols-outlined text-sm">psychology</span>
           </div>
-          <input class="course-name bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" 
-                 type="text" value="${gpa.courseName || ''}" 
-                 onchange="updateGPA('${gpaId}', 'courseName', this.value)" />
+          <input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600"
+                 type="text" value="${gpa.courseName || ""}" placeholder="Course Name"
+                 data-field="courseName" data-id="${id}" />
         </div>
       </td>
       <td class="px-6 py-4">
-        <input class="credits bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" 
-               type="number" value="${gpa.credits || 0}" 
-               onchange="updateGPA('${gpaId}', 'credits', parseFloat(this.value))" />
+        <input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm"
+               type="number" value="${gpa.credits || 0}" min="0" step="0.5"
+               data-field="credits" data-id="${id}" />
       </td>
       <td class="px-6 py-4">
         <div class="relative">
-          <select class="grade-select w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer"
-                  onchange="updateGPA('${gpaId}', 'gpa', parseFloat(this.value))">
-            <option value="4.0" ${gpa.gpa == 4.0 ? 'selected' : ''}>A (4.0)</option>
-            <option value="3.7" ${gpa.gpa == 3.7 ? 'selected' : ''}>A- (3.7)</option>
-            <option value="3.3" ${gpa.gpa == 3.3 ? 'selected' : ''}>B+ (3.3)</option>
-            <option value="3.0" ${gpa.gpa == 3.0 ? 'selected' : ''}>B (3.0)</option>
-            <option value="2.7" ${gpa.gpa == 2.7 ? 'selected' : ''}>B- (2.7)</option>
-            <option value="2.3" ${gpa.gpa == 2.3 ? 'selected' : ''}>C+ (2.3)</option>
-            <option value="2.0" ${gpa.gpa == 2.0 ? 'selected' : ''}>C (2.0)</option>
-            <option value="1.7" ${gpa.gpa == 1.7 ? 'selected' : ''}>C- (1.7)</option>
-            <option value="1.3" ${gpa.gpa == 1.3 ? 'selected' : ''}>D+ (1.3)</option>
-            <option value="1.0" ${gpa.gpa == 1.0 ? 'selected' : ''}>D (1.0)</option>
-            <option value="0.0" ${gpa.gpa == 0.0 ? 'selected' : ''}>F (0.0)</option>
+          <select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer"
+                  data-field="gpa" data-id="${id}">
+            ${gradeOptions(gpa.gpa)}
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
             <span class="material-symbols-outlined text-sm">expand_more</span>
@@ -439,86 +401,73 @@
         </div>
       </td>
       <td class="px-6 py-4 text-right">
-        <button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10" onclick="deleteGPA('${gpaId}')">
+        <button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10" data-delete="${id}" aria-label="Delete course">
           <span class="material-symbols-outlined text-xl">delete</span>
         </button>
-      </td>
-    `;
+      </td>`;
     return row;
   }
 
-  function updateGPADisplay(gpa) {
-    // Update main GPA display
-    const gpaDisplays = document.querySelectorAll(".text-5xl, .text-4xl");
-    gpaDisplays.forEach(el => {
-      const text = el.textContent.trim();
-      if (text === "3.8" || /^\d+\.\d+$/.test(text)) {
-        el.textContent = gpa;
-      }
-    });
-    
-    // Update circular progress
-    const progressCircle = document.querySelector("circle[stroke='#13ec80']");
+  function updateDisplay(gpa) {
+    const val = parseFloat(gpa);
+    if (gpaDisplay) gpaDisplay.textContent = isNaN(val) ? "—" : val.toFixed(2);
+    const pct = Math.min((val / 4.0) * 100, 100);
     if (progressCircle) {
-      const circumference = 2 * Math.PI * 45; // radius is 45
-      const targetGPA = 4.0;
-      const progress = (parseFloat(gpa) / targetGPA) * 100;
-      const offset = circumference - (progress / 100) * circumference;
-      progressCircle.setAttribute("stroke-dashoffset", offset);
+      const circ = 2 * Math.PI * 45;
+      progressCircle.setAttribute("stroke-dashoffset", circ - (pct / 100) * circ);
     }
-    
-    // Update goal progress bar
-    const goalBar = document.querySelector(".bg-primary.h-3");
-    if (goalBar) {
-      const targetGPA = 4.0;
-      const progress = (parseFloat(gpa) / targetGPA) * 100;
-      goalBar.style.width = Math.min(progress, 100) + "%";
-    }
+    if (goalBar) goalBar.style.width = pct + "%";
+    if (goalPct) goalPct.textContent = Math.round(pct) + "% to Target";
   }
 
-  // Add new course
-  document.getElementById("add-course-btn").addEventListener("click", () => {
-    const courseName = document.getElementById("new-course-name").value.trim();
-    const credits = parseFloat(document.getElementById("new-course-credits").value) || 0;
-    const gradeValue = parseFloat(document.getElementById("new-course-grade").value) || 0;
+  const addRow = tbody?.querySelector("tr.bg-\\[\\#13ec80\\]\\/5");
 
-    if (!courseName) {
-      alert("Please enter a course name");
-      return;
-    }
-
-    if (credits <= 0) {
-      alert("Please enter valid credits (greater than 0)");
-      return;
-    }
-
-    push(gpasRef, {
-      courseName,
-      credits,
-      gpa: gradeValue,
-      userId: currentUserId,
-      semester: "Fall 2024",
-      createdAt: new Date().toISOString()
+  listenToUserData("gpas", snap => {
+    if (!tbody) return;
+    tbody.querySelectorAll("tr[data-gpa-id]").forEach(r => r.remove());
+    let totalPoints = 0, totalCredits = 0;
+    Object.entries(snap || {}).forEach(([id, gpa]) => {
+      const credits = parseFloat(gpa.credits || 0);
+      totalPoints += parseFloat(gpa.gpa || 0) * credits;
+      totalCredits += credits;
+      const row = createRow(id, gpa);
+      tbody.insertBefore(row, addRow || null);
     });
-
-    // Clear inputs
-    document.getElementById("new-course-name").value = "";
-    document.getElementById("new-course-credits").value = "";
-    document.getElementById("new-course-grade").value = "0.0";
+    updateDisplay(totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00");
   });
 
-  // Update GPA
-  window.updateGPA = (gpaId, field, value) => {
-    update(ref(db, `gpas/${gpaId}`), { [field]: value });
-  };
+  // Delegated change for inline edits
+  tbody?.addEventListener("change", async e => {
+    const { field, id } = e.target.dataset;
+    if (!field || !id) return;
+    const value = field === "credits" || field === "gpa" ? parseFloat(e.target.value) : e.target.value;
+    await updateUserData(`gpas/${id}`, { [field]: value });
+  });
 
-  // Delete GPA
-  window.deleteGPA = (gpaId) => {
-    if (confirm("Delete this course?")) {
-      remove(ref(db, `gpas/${gpaId}`));
-    }
-  };
+  // Delete
+  tbody?.addEventListener("click", async e => {
+    const deleteId = e.target.closest("[data-delete]")?.dataset.delete;
+    if (!deleteId) return;
+    const ok = await showConfirm("Delete this course?");
+    if (ok) { await removeUserData(`gpas/${deleteId}`); showToast("Course removed", "info"); }
+  });
 
+  // Add new course
+  document.getElementById("add-course-btn")?.addEventListener("click", async () => {
+    const courseName = document.getElementById("new-course-name").value.trim();
+    const credits    = parseFloat(document.getElementById("new-course-credits").value) || 0;
+    const gradeValue = parseFloat(document.getElementById("new-course-grade").value) || 0;
+
+    if (!courseName) { showToast("Please enter a course name", "warning"); return; }
+    if (credits <= 0) { showToast("Please enter valid credits (greater than 0)", "warning"); return; }
+
+    await pushUserData("gpas", { courseName, credits, gpa: gradeValue, semester: "Fall 2024", createdAt: new Date().toISOString() });
+    showToast("Course added!", "success");
+
+    document.getElementById("new-course-name").value  = "";
+    document.getElementById("new-course-credits").value = "";
+    document.getElementById("new-course-grade").value  = "0.0";
+  });
 </script>
 
 </body></html>
