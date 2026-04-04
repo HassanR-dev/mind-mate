@@ -114,7 +114,7 @@
 <p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Current Streak</p>
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary fill">local_fire_department</span>
-<p class="text-white text-2xl font-bold leading-none">12 Days</p>
+<p id="streak-count" class="text-white text-2xl font-bold leading-none">— Days</p>
 </div>
 </div>
 </div>
@@ -278,11 +278,11 @@
 <h3 class="text-white text-base font-bold mb-4 relative z-10">Weekly Vibe</h3>
 <div class="flex items-center gap-4 relative z-10">
 <div class="w-16 h-16 rounded-full border-4 border-[#283930] border-t-primary border-r-primary flex items-center justify-center bg-[#111814]">
-<span class="text-white font-bold text-lg">78%</span>
+<span id="vibe-pct" class="text-white font-bold text-lg">—</span>
 </div>
 <div class="flex flex-col">
-<p class="text-white font-medium">Mostly Positive</p>
-<p class="text-text-secondary text-xs">You're doing better than last week!</p>
+<p id="vibe-label" class="text-white font-medium">Loading...</p>
+<p id="vibe-sub" class="text-text-secondary text-xs"></p>
 </div>
 </div>
 </div>
@@ -364,13 +364,50 @@
     showToast("Entry saved!", "success");
   });
 
-  // Load and render journal entries
+  // Load and render journal entries + compute streak + weekly vibe
+  const streakEl = document.getElementById("streak-count");
+  const vibePct  = document.getElementById("vibe-pct");
+  const vibeLbl  = document.getElementById("vibe-label");
+  const vibeSub  = document.getElementById("vibe-sub");
+
   listenToUserData("journals", snap => {
     if (!feedEl) return;
     feedEl.innerHTML = "";
     const entries = Object.values(snap || {})
       .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
 
+    // ── Streak calculation ──
+    if (streakEl) {
+      let streak = 0;
+      const daySet = new Set(entries.map(e => new Date(e.timestamp).toDateString()));
+      const d = new Date();
+      // If no entry today, start checking from yesterday
+      if (!daySet.has(d.toDateString())) d.setDate(d.getDate() - 1);
+      while (daySet.has(d.toDateString())) {
+        streak++;
+        d.setDate(d.getDate() - 1);
+      }
+      streakEl.textContent = `${streak} Day${streak !== 1 ? "s" : ""}`;
+    }
+
+    // ── Weekly vibe: % positive in last 7 days ──
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    const weekEntries = entries.filter(e => new Date(e.timestamp) >= weekAgo);
+    if (vibePct && vibeLbl) {
+      if (weekEntries.length === 0) {
+        vibePct.textContent = "—";
+        vibeLbl.textContent = "No data yet";
+        if (vibeSub) vibeSub.textContent = "Log moods this week to see your vibe";
+      } else {
+        const posCount = weekEntries.filter(e => e.mood === "positive").length;
+        const pct = Math.round((posCount / weekEntries.length) * 100);
+        vibePct.textContent = pct + "%";
+        vibeLbl.textContent = pct >= 70 ? "Mostly Positive" : pct >= 40 ? "Mixed Feelings" : "Rough Week";
+        if (vibeSub) vibeSub.textContent = `Based on ${weekEntries.length} entr${weekEntries.length === 1 ? "y" : "ies"} this week`;
+      }
+    }
+
+    // ── Render feed ──
     if (entries.length === 0) {
       feedEl.innerHTML = `<p class="text-text-secondary text-sm text-center py-8">No entries yet. Write your first one above!</p>`;
       return;

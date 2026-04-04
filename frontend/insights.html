@@ -307,35 +307,8 @@
                                 Privacy Mode
                             </button>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
-<div class="flex justify-between items-start mb-2">
-<div class="flex items-center gap-2">
-<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Yesterday</span>
-<span class="text-xs text-[#9db9ab]">3:42 PM</span>
-</div>
-<span class="material-symbols-outlined text-[#9db9ab] group-hover:text-primary" style="font-size: 18px;">arrow_forward</span>
-</div>
-<p class="text-white font-medium mb-1">"Finally finished the history paper..."</p>
-<div class="flex gap-2 mt-2">
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#relieved</span>
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#productive</span>
-</div>
-</div>
-<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
-<div class="flex justify-between items-start mb-2">
-<div class="flex items-center gap-2">
-<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Oct 24</span>
-<span class="text-xs text-[#9db9ab]">10:15 AM</span>
-</div>
-<span class="material-symbols-outlined text-[#9db9ab] group-hover:text-primary" style="font-size: 18px;">arrow_forward</span>
-</div>
-<p class="text-white font-medium mb-1">"Coffee with Sarah at the union."</p>
-<div class="flex gap-2 mt-2">
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#social</span>
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#happy</span>
-</div>
-</div>
+<div id="journal-highlights" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<p class="text-[#9db9ab] text-sm text-center py-4 md:col-span-2">Loading journal entries...</p>
 </div>
 </div>
 </div>
@@ -459,6 +432,46 @@
     const data   = labels.map(d => buckets[d].count > 0 ? +(buckets[d].sum / buckets[d].count).toFixed(1) : null);
     initMoodChart(labels, data);
     initEmotionChart(dist.positive, dist.neutral, dist.negative);
+
+    // ── Journal highlights (latest 2 entries) ──
+    const highlightsEl = document.getElementById("journal-highlights");
+    if (highlightsEl) {
+      if (entries.length === 0) {
+        highlightsEl.innerHTML = `<p class="text-[#9db9ab] text-sm text-center py-4 md:col-span-2">No journal entries yet. <a href="journal.html" class="text-primary hover:underline">Write your first one</a>.</p>`;
+      } else {
+        const MOOD_TAG = { positive: "#happy", neutral: "#reflective", negative: "#struggling" };
+        function _esc(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+        function _relDate(ts) {
+          const d = new Date(ts);
+          const now = new Date();
+          const diff = Math.floor((now - d) / 86400000);
+          if (diff === 0) return "Today";
+          if (diff === 1) return "Yesterday";
+          return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        }
+        function _time(ts) {
+          return new Date(ts).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+        }
+
+        highlightsEl.innerHTML = entries.slice(0, 2).map(e => {
+          const preview = (e.text || "").length > 60 ? e.text.slice(0, 60) + "..." : (e.text || "No text");
+          const tag = MOOD_TAG[e.mood] || "#journal";
+          return `<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">${_relDate(e.timestamp)}</span>
+                <span class="text-xs text-[#9db9ab]">${_time(e.timestamp)}</span>
+              </div>
+              <a href="journal.html" class="material-symbols-outlined text-[#9db9ab] group-hover:text-primary" style="font-size: 18px;">arrow_forward</a>
+            </div>
+            <p class="text-white font-medium mb-1">"${_esc(preview)}"</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">${tag}</span>
+            </div>
+          </div>`;
+        }).join("");
+      }
+    }
   });
 
   // ── Load tasks ─────────────────────────────────────────────────────────────

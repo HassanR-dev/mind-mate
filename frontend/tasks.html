@@ -106,7 +106,7 @@
 <!-- Top Bar / Header -->
 <header class="pt-8 px-8 pb-4 shrink-0 flex justify-between items-end">
 <div class="flex flex-col gap-1">
-<p class="text-[#9db9ab] text-sm font-medium tracking-wide uppercase">Tuesday, October 24th</p>
+<p id="current-date" class="text-[#9db9ab] text-sm font-medium tracking-wide uppercase"></p>
 <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">My Tasks</h1>
 </div>
 <div class="flex gap-4">
@@ -226,6 +226,13 @@
 
   await authGuard();
   initNav("tasks");
+
+  // Dynamic date display
+  const dateEl = document.getElementById("current-date");
+  if (dateEl) {
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+  }
 
   const taskList = document.getElementById("task-list");
   const dueTodayEl  = document.getElementById("stat-due-today");
