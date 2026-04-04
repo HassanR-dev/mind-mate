@@ -85,17 +85,18 @@
 <!-- LEFT COLUMN: Main Inputs (Span 2) -->
 <div class="lg:col-span-2 flex flex-col gap-6">
 <!-- Semester Selector -->
-<div class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar">
-<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2023</button>
-<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2024</button>
-<button class="flex-1 min-w-[100px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all">Fall 2024</button>
-<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2025</button>
+<div id="semester-bar" class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar">
+<button data-semester="all" class="sem-btn flex-1 min-w-[100px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all">All</button>
+<button data-semester="Fall 2023" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2023</button>
+<button data-semester="Spring 2024" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2024</button>
+<button data-semester="Fall 2024" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2024</button>
+<button data-semester="Spring 2025" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2025</button>
 </div>
 <!-- Course Table -->
 <div class="bg-card-dark rounded-xl border border-[#283930] overflow-hidden flex flex-col">
 <div class="p-6 border-b border-[#283930] flex justify-between items-center">
-<h3 class="text-white font-bold text-lg">Fall 2024 Courses</h3>
-<span class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">IN PROGRESS</span>
+<h3 id="semester-title" class="text-white font-bold text-lg">All Courses</h3>
+<span id="semester-badge" class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded"></span>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left border-collapse">
@@ -268,6 +269,43 @@
   const progressCircle = document.getElementById("gpa-progress-circle");
   const goalBar       = document.getElementById("gpa-goal-bar");
   const goalPct       = document.getElementById("gpa-goal-pct");
+  const semTitle      = document.getElementById("semester-title");
+  const semBadge      = document.getElementById("semester-badge");
+
+  // ── Semester filter state ──
+  let allGpas = {};
+  let activeSemester = "all";
+
+  document.querySelectorAll(".sem-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeSemester = btn.dataset.semester;
+      document.querySelectorAll(".sem-btn").forEach(b => {
+        b.classList.remove("bg-primary", "text-background-dark", "shadow-md", "font-bold");
+        b.classList.add("text-[#9db9ab]", "hover:text-white", "font-medium");
+      });
+      btn.classList.remove("text-[#9db9ab]", "hover:text-white", "font-medium");
+      btn.classList.add("bg-primary", "text-background-dark", "shadow-md", "font-bold");
+      if (semTitle) semTitle.textContent = activeSemester === "all" ? "All Courses" : `${activeSemester} Courses`;
+      if (semBadge) semBadge.textContent = activeSemester === "all" ? "" : "FILTERED";
+      renderGpas();
+    });
+  });
+
+  function renderGpas() {
+    if (!tbody) return;
+    tbody.querySelectorAll("tr[data-gpa-id]").forEach(r => r.remove());
+    const addRow = tbody.querySelector("tr.bg-\\[\\#13ec80\\]\\/5");
+    let totalPoints = 0, totalCredits = 0;
+    Object.entries(allGpas).forEach(([id, gpa]) => {
+      if (activeSemester !== "all" && gpa.semester !== activeSemester) return;
+      const credits = parseFloat(gpa.credits || 0);
+      totalPoints += parseFloat(gpa.gpa || 0) * credits;
+      totalCredits += credits;
+      const row = createRow(id, gpa);
+      tbody.insertBefore(row, addRow || null);
+    });
+    updateDisplay(totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00");
+  }
 
   const GRADES = [
     ["4.0","A (4.0)"],["3.7","A- (3.7)"],["3.3","B+ (3.3)"],["3.0","B (3.0)"],
@@ -334,20 +372,9 @@
     if (goalPct) goalPct.textContent = Math.round(pct) + "% to Target";
   }
 
-  const addRow = tbody?.querySelector("tr.bg-\\[\\#13ec80\\]\\/5");
-
   listenToUserData("gpas", snap => {
-    if (!tbody) return;
-    tbody.querySelectorAll("tr[data-gpa-id]").forEach(r => r.remove());
-    let totalPoints = 0, totalCredits = 0;
-    Object.entries(snap || {}).forEach(([id, gpa]) => {
-      const credits = parseFloat(gpa.credits || 0);
-      totalPoints += parseFloat(gpa.gpa || 0) * credits;
-      totalCredits += credits;
-      const row = createRow(id, gpa);
-      tbody.insertBefore(row, addRow || null);
-    });
-    updateDisplay(totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00");
+    allGpas = snap || {};
+    renderGpas();
   });
 
   // Delegated change for inline edits
@@ -375,7 +402,8 @@
     if (!courseName) { showToast("Please enter a course name", "warning"); return; }
     if (credits <= 0) { showToast("Please enter valid credits (greater than 0)", "warning"); return; }
 
-    await pushUserData("gpas", { courseName, credits, gpa: gradeValue, semester: "Fall 2024", createdAt: new Date().toISOString() });
+    const semester = activeSemester === "all" ? "Fall 2024" : activeSemester;
+    await pushUserData("gpas", { courseName, credits, gpa: gradeValue, semester, createdAt: new Date().toISOString() });
     showToast("Course added!", "success");
 
     document.getElementById("new-course-name").value  = "";

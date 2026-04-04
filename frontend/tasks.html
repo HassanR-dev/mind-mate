@@ -196,20 +196,20 @@
 </div>
 </div>
 <!-- Filter Chips -->
-<div class="flex flex-wrap gap-3 mb-6">
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-5 transition-transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(19,236,128,0.3)]">
+<div id="filter-bar" class="flex flex-wrap gap-3 mb-6">
+<button data-filter="all" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-5 transition-transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(19,236,128,0.3)]">
 <p class="text-sm font-bold leading-normal">All Tasks</p>
 </button>
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
+<button data-filter="today" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
 <p class="text-white text-sm font-medium leading-normal">Today</p>
-<span class="bg-white/10 text-white text-[10px] px-1.5 py-0.5 rounded-full">4</span>
+<span class="filter-badge bg-white/10 text-white text-[10px] px-1.5 py-0.5 rounded-full hidden"></span>
 </button>
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
+<button data-filter="upcoming" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
 <p class="text-white text-sm font-medium leading-normal">Upcoming</p>
 </button>
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
+<button data-filter="overdue" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
 <p class="text-white text-sm font-medium leading-normal">Overdue</p>
-<span class="bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.5 rounded-full">1</span>
+<span class="filter-badge bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.5 rounded-full hidden"></span>
 </button>
 </div>
 <!-- Task List (populated dynamically) -->
@@ -288,25 +288,80 @@
     return div;
   }
 
-  listenToUserData("tasks", snap => {
-    if (!taskList) return;
-    taskList.innerHTML = "";
-    const tasks = Object.entries(snap || {});
+  // ── Filter & search state ──
+  let allTasks = [];
+  let activeFilter = "all";
+  const searchInput = document.querySelector("input[aria-label='Search tasks']");
+  const filterChips = document.querySelectorAll(".filter-chip");
+  const ACTIVE_CLS = ["bg-primary", "text-black", "shadow-[0_0_15px_rgba(19,236,128,0.3)]"];
+  const INACTIVE_CLS = ["bg-surface-dark", "border", "border-white/5", "hover:border-primary/30", "hover:bg-surface-dark-hover"];
 
-    if (tasks.length === 0) {
-      taskList.innerHTML = `<div class="flex flex-col items-center justify-center py-16 text-center opacity-50">
-        <span class="material-symbols-outlined text-5xl text-primary mb-3">spa</span>
-        <p class="text-white text-lg font-medium">All caught up!</p>
-        <p class="text-[#9db9ab] text-sm mt-1">Add a task to get started.</p>
-      </div>`;
-    } else {
-      tasks.forEach(([id, task]) => taskList.appendChild(renderTask(id, task)));
+  function applyFilter() {
+    if (!taskList) return;
+    const query = (searchInput?.value || "").toLowerCase().trim();
+    const today = new Date().toDateString();
+    const now = new Date();
+
+    let filtered = allTasks;
+
+    // Apply filter
+    if (activeFilter === "today") {
+      filtered = filtered.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate).toDateString() === today);
+    } else if (activeFilter === "upcoming") {
+      filtered = filtered.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate) > now);
+    } else if (activeFilter === "overdue") {
+      filtered = filtered.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate) < now && new Date(t.dueDate).toDateString() !== today);
     }
 
+    // Apply search
+    if (query) {
+      filtered = filtered.filter(([, t]) => (t.title || "").toLowerCase().includes(query));
+    }
+
+    taskList.innerHTML = "";
+    if (filtered.length === 0) {
+      taskList.innerHTML = `<div class="flex flex-col items-center justify-center py-16 text-center opacity-50">
+        <span class="material-symbols-outlined text-5xl text-primary mb-3">${allTasks.length === 0 ? "spa" : "search_off"}</span>
+        <p class="text-white text-lg font-medium">${allTasks.length === 0 ? "All caught up!" : "No matching tasks"}</p>
+        <p class="text-[#9db9ab] text-sm mt-1">${allTasks.length === 0 ? "Add a task to get started." : "Try a different filter or search term."}</p>
+      </div>`;
+    } else {
+      filtered.forEach(([id, task]) => taskList.appendChild(renderTask(id, task)));
+    }
+  }
+
+  // Filter chip click handlers
+  filterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      activeFilter = chip.dataset.filter;
+      filterChips.forEach(c => {
+        c.classList.remove(...ACTIVE_CLS);
+        c.classList.add(...INACTIVE_CLS);
+        c.querySelector("p").classList.remove("text-black", "font-bold");
+        c.querySelector("p").classList.add("text-white", "font-medium");
+      });
+      chip.classList.remove(...INACTIVE_CLS);
+      chip.classList.add(...ACTIVE_CLS);
+      chip.querySelector("p").classList.remove("text-white", "font-medium");
+      chip.querySelector("p").classList.add("text-black", "font-bold");
+      applyFilter();
+    });
+  });
+
+  // Search input handler
+  searchInput?.addEventListener("input", () => applyFilter());
+
+  listenToUserData("tasks", snap => {
+    if (!taskList) return;
+    allTasks = Object.entries(snap || {});
+
+    // Update stats
     const today = new Date().toDateString();
-    const total     = tasks.length;
-    const completed = tasks.filter(([, t]) => t.completed).length;
-    const dueToday  = tasks.filter(([, t]) => t.dueDate && new Date(t.dueDate).toDateString() === today).length;
+    const now = new Date();
+    const total     = allTasks.length;
+    const completed = allTasks.filter(([, t]) => t.completed).length;
+    const dueToday  = allTasks.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate).toDateString() === today).length;
+    const overdue   = allTasks.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate) < now && new Date(t.dueDate).toDateString() !== today).length;
     const progress  = total > 0 ? Math.round((completed / total) * 100) : 0;
 
     if (dueTodayEl)  dueTodayEl.textContent  = dueToday;
@@ -315,6 +370,20 @@
     if (progressBar) progressBar.style.width = progress + "%";
     if (progressPct) progressPct.textContent = progress + "%";
     if (progressTxt) progressTxt.textContent = `${completed}/${total} tasks completed`;
+
+    // Update filter badge counts
+    const todayBadge = document.querySelector("[data-filter='today'] .filter-badge");
+    const overdueBadge = document.querySelector("[data-filter='overdue'] .filter-badge");
+    if (todayBadge) {
+      todayBadge.textContent = dueToday;
+      todayBadge.classList.toggle("hidden", dueToday === 0);
+    }
+    if (overdueBadge) {
+      overdueBadge.textContent = overdue;
+      overdueBadge.classList.toggle("hidden", overdue === 0);
+    }
+
+    applyFilter();
   });
 
   // Delegated click handlers

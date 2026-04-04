@@ -132,15 +132,15 @@
 <div class="flex justify-between gap-2 sm:gap-4">
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_very_dissatisfied</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Awful</span>
+<span class="text-[10px] font-medium">Awful</span>
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_dissatisfied</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Bad</span>
+<span class="text-[10px] font-medium">Bad</span>
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_neutral</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Okay</span>
+<span class="text-[10px] font-medium">Okay</span>
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-primary text-[#102219] shadow-[0_0_15px_rgba(19,236,128,0.4)] transition-all flex flex-col items-center justify-center gap-2 transform scale-105">
 <span class="material-symbols-outlined text-3xl fill">sentiment_satisfied</span>
@@ -148,20 +148,20 @@
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_very_satisfied</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Great</span>
+<span class="text-[10px] font-medium">Great</span>
 </button>
 </div>
 </div>
 <!-- Tags -->
 <div class="flex flex-col gap-3">
 <label class="text-text-secondary text-sm font-medium">What's impacting you?</label>
-<div class="flex flex-wrap gap-2">
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Exams</button>
-<button class="px-3 py-1.5 rounded-full border border-primary bg-primary/10 text-primary text-sm font-medium">#Sleep</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Social</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Health</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Family</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">+ Add</button>
+<div id="impact-tags" class="flex flex-wrap gap-2">
+<button data-tag="Exams" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Exams</button>
+<button data-tag="Sleep" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Sleep</button>
+<button data-tag="Social" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Social</button>
+<button data-tag="Health" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Health</button>
+<button data-tag="Family" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Family</button>
+<button id="add-tag-btn" class="px-3 py-1.5 rounded-full border border-dashed border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">+ Add</button>
 </div>
 </div>
 <!-- Text Input -->
@@ -294,9 +294,9 @@
 
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
-  import { listenToUserData, pushUserData } from "./js/services/db.service.js";
+  import { listenToUserData, pushUserData, removeUserData } from "./js/services/db.service.js";
   import { analyzeMood, triggerAnalytics } from "./js/services/ai.service.js";
-  import { showToast } from "./js/services/toast.js";
+  import { showToast, showPrompt, showConfirm } from "./js/services/toast.js";
   import { validateJournalText, sanitizeHtml, formatDateTime } from "./js/services/validators.js";
   import { initNav } from "./js/services/nav.js";
 
@@ -304,6 +304,41 @@
   initNav("journal");
 
   const feedEl = document.getElementById("journal-feed");
+
+  // ── Impact tag toggling ──
+  const selectedTags = new Set();
+  const TAG_ACTIVE = ["border-primary", "bg-primary/10", "text-primary", "font-medium"];
+  const TAG_INACTIVE = ["border-[#3b5447]", "text-text-secondary"];
+
+  document.getElementById("impact-tags")?.addEventListener("click", e => {
+    const tagBtn = e.target.closest(".impact-tag");
+    if (!tagBtn) return;
+    const tag = tagBtn.dataset.tag;
+    if (selectedTags.has(tag)) {
+      selectedTags.delete(tag);
+      tagBtn.classList.remove(...TAG_ACTIVE);
+      tagBtn.classList.add(...TAG_INACTIVE);
+    } else {
+      selectedTags.add(tag);
+      tagBtn.classList.remove(...TAG_INACTIVE);
+      tagBtn.classList.add(...TAG_ACTIVE);
+    }
+  });
+
+  // Custom tag
+  document.getElementById("add-tag-btn")?.addEventListener("click", async () => {
+    const name = await showPrompt("Enter a custom tag:");
+    if (!name || !name.trim()) return;
+    const tag = name.trim();
+    const container = document.getElementById("impact-tags");
+    const addBtn = document.getElementById("add-tag-btn");
+    const btn = document.createElement("button");
+    btn.dataset.tag = tag;
+    btn.className = "impact-tag px-3 py-1.5 rounded-full border border-primary bg-primary/10 text-primary text-sm font-medium transition-colors";
+    btn.textContent = `#${tag}`;
+    container.insertBefore(btn, addBtn);
+    selectedTags.add(tag);
+  });
 
   // Mood button selection
   const moodButtons = document.querySelectorAll("button.flex-1.aspect-square.rounded-2xl");
@@ -353,7 +388,8 @@
       // Fall back to button selection on error
     }
 
-    await pushUserData("journals", { text, mood, timestamp: new Date().toISOString() });
+    const tags = [...selectedTags];
+    await pushUserData("journals", { text, mood, tags, timestamp: new Date().toISOString() });
 
     // Recompute weekly analytics in the background
     triggerAnalytics().catch(() => {});
@@ -361,6 +397,12 @@
     textEl.value = "";
     btn.disabled = false;
     btn.innerHTML = '<span class="material-symbols-outlined text-lg">save</span> Log Entry';
+    // Reset tags
+    selectedTags.clear();
+    document.querySelectorAll(".impact-tag").forEach(t => {
+      t.classList.remove(...TAG_ACTIVE);
+      t.classList.add(...TAG_INACTIVE);
+    });
     showToast("Entry saved!", "success");
   });
 
@@ -373,7 +415,8 @@
   listenToUserData("journals", snap => {
     if (!feedEl) return;
     feedEl.innerHTML = "";
-    const entries = Object.values(snap || {})
+    const entries = Object.entries(snap || {})
+      .map(([id, e]) => ({ ...e, _id: id }))
       .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
 
     // ── Streak calculation ──
@@ -432,10 +475,26 @@
               <p class="text-text-secondary text-xs">${formatDateTime(entry.timestamp)}</p>
             </div>
           </div>
+          <button data-delete-journal="${entry._id}" aria-label="Delete entry" class="text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
         </div>
-        <p class="text-slate-300 text-sm leading-relaxed">${sanitizeHtml(entry.text)}</p>`;
+        <p class="text-slate-300 text-sm leading-relaxed">${sanitizeHtml(entry.text)}</p>
+        ${(entry.tags && entry.tags.length) ? `<div class="flex flex-wrap gap-1.5 mt-1">${entry.tags.map(t => `<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-full">#${sanitizeHtml(t)}</span>`).join("")}</div>` : ""}`;
       feedEl.appendChild(div);
     });
+  });
+
+  // Delegated delete handler for journal entries
+  feedEl?.addEventListener("click", async e => {
+    const deleteBtn = e.target.closest("[data-delete-journal]");
+    if (!deleteBtn) return;
+    const id = deleteBtn.dataset.deleteJournal;
+    const ok = await showConfirm("Delete this journal entry?");
+    if (ok) {
+      await removeUserData(`journals/${id}`);
+      showToast("Entry deleted", "info");
+    }
   });
 </script>
 

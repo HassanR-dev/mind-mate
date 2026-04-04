@@ -110,10 +110,10 @@
 </div>
 <div class="flex flex-wrap items-center gap-4">
 <!-- Date Chips -->
-<div class="flex bg-card-dark rounded-xl p-1 border border-card-border">
-<button class="px-4 py-1.5 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-sm">7 Days</button>
-<button class="px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">30 Days</button>
-<button class="px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">Semester</button>
+<div id="period-bar" class="flex bg-card-dark rounded-xl p-1 border border-card-border">
+<button data-period="7" class="period-btn px-4 py-1.5 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-sm">7 Days</button>
+<button data-period="30" class="period-btn px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">30 Days</button>
+<button data-period="120" class="period-btn px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">Semester</button>
 </div>
 <!-- CTA Button -->
 <button class="flex items-center justify-center gap-2 h-10 px-5 bg-white hover:bg-gray-100 text-background-dark rounded-xl text-sm font-bold transition-colors">
@@ -403,40 +403,80 @@
     }
   }
 
-  // ── Load journals ──────────────────────────────────────────────────────────
-  listenToUserData("journals", snap => {
-    const entries = Object.values(snap || {});
+  // ── Period filter state ──
+  let allJournalEntries = [];
+  let activePeriod = 7;
+
+  function renderJournalCharts() {
     const moodScore = { positive: 8, neutral: 5, negative: 2 };
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - activePeriod);
+    const filtered = allJournalEntries.filter(e => new Date(e.timestamp) >= cutoff);
+
     const dist = { positive: 0, neutral: 0, negative: 0 };
     let moodSum = 0;
 
-    // Last 7 days buckets
+    // Build day buckets for the selected period
     const buckets = {};
-    for (let i = 6; i >= 0; i--) {
+    const numDays = Math.min(activePeriod, 30); // max 30 labels on chart
+    const labelFmt = activePeriod <= 7 ? { weekday: "short" } : { month: "short", day: "numeric" };
+    for (let i = numDays - 1; i >= 0; i--) {
       const d = new Date(); d.setDate(d.getDate() - i);
-      buckets[d.toLocaleDateString("en-US", { weekday: "short" })] = { sum: 0, count: 0 };
+      buckets[d.toLocaleDateString("en-US", labelFmt)] = { sum: 0, count: 0, dateStr: d.toDateString() };
     }
 
-    entries.forEach(e => {
+    filtered.forEach(e => {
       const mood = e.mood || "neutral";
       dist[mood] = (dist[mood] || 0) + 1;
       moodSum += moodScore[mood] || 5;
-      const day = new Date(e.timestamp).toLocaleDateString("en-US", { weekday: "short" });
-      if (buckets[day]) { buckets[day].sum += moodScore[mood] || 5; buckets[day].count++; }
+      const entryDate = new Date(e.timestamp);
+      // Match to closest bucket by date string
+      for (const [label, bucket] of Object.entries(buckets)) {
+        if (entryDate.toDateString() === bucket.dateStr) {
+          bucket.sum += moodScore[mood] || 5;
+          bucket.count++;
+          break;
+        }
+      }
     });
 
-    const avgMood = entries.length > 0 ? (moodSum / entries.length).toFixed(1) : "—";
+    // Use all entries for avg mood (not just filtered)
+    const avgMood = allJournalEntries.length > 0
+      ? (allJournalEntries.reduce((s, e) => s + (moodScore[e.mood] || 5), 0) / allJournalEntries.length).toFixed(1)
+      : "—";
     if (avgMoodEl) avgMoodEl.textContent = avgMood;
 
     const labels = Object.keys(buckets);
     const data   = labels.map(d => buckets[d].count > 0 ? +(buckets[d].sum / buckets[d].count).toFixed(1) : null);
     initMoodChart(labels, data);
     initEmotionChart(dist.positive, dist.neutral, dist.negative);
+  }
+
+  // Period button click handlers
+  document.querySelectorAll(".period-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activePeriod = parseInt(btn.dataset.period);
+      document.querySelectorAll(".period-btn").forEach(b => {
+        b.classList.remove("bg-primary", "text-background-dark", "font-bold", "shadow-sm");
+        b.classList.add("text-[#9db9ab]", "hover:text-white", "font-medium");
+      });
+      btn.classList.remove("text-[#9db9ab]", "hover:text-white", "font-medium");
+      btn.classList.add("bg-primary", "text-background-dark", "font-bold", "shadow-sm");
+      renderJournalCharts();
+    });
+  });
+
+  // ── Load journals ──────────────────────────────────────────────────────────
+  listenToUserData("journals", snap => {
+    allJournalEntries = Object.values(snap || {})
+      .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+
+    renderJournalCharts();
 
     // ── Journal highlights (latest 2 entries) ──
     const highlightsEl = document.getElementById("journal-highlights");
     if (highlightsEl) {
-      if (entries.length === 0) {
+      if (allJournalEntries.length === 0) {
         highlightsEl.innerHTML = `<p class="text-[#9db9ab] text-sm text-center py-4 md:col-span-2">No journal entries yet. <a href="journal.html" class="text-primary hover:underline">Write your first one</a>.</p>`;
       } else {
         const MOOD_TAG = { positive: "#happy", neutral: "#reflective", negative: "#struggling" };
@@ -453,7 +493,7 @@
           return new Date(ts).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
         }
 
-        highlightsEl.innerHTML = entries.slice(0, 2).map(e => {
+        highlightsEl.innerHTML = allJournalEntries.slice(0, 2).map(e => {
           const preview = (e.text || "").length > 60 ? e.text.slice(0, 60) + "..." : (e.text || "No text");
           const tag = MOOD_TAG[e.mood] || "#journal";
           return `<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
