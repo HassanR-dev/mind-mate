@@ -251,7 +251,7 @@
 <span class="text-xs text-slate-500 dark:text-slate-400">Get prompted at 8:00 PM</span>
 </div>
 <label class="relative inline-flex h-6 w-11 cursor-pointer items-center">
-<input type="checkbox" class="sr-only peer" checked />
+<input type="checkbox" class="sr-only peer" data-pref="moodReminder" checked />
 <div class="w-full h-full rounded-full bg-[#283930] peer-checked:bg-primary transition-colors"></div>
 <div class="absolute left-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
 </label>
@@ -262,7 +262,7 @@
 <span class="text-xs text-slate-500 dark:text-slate-400">Notify 24h before due date</span>
 </div>
 <label class="relative inline-flex h-6 w-11 cursor-pointer items-center">
-<input type="checkbox" class="sr-only peer" checked />
+<input type="checkbox" class="sr-only peer" data-pref="deadlineAlerts" checked />
 <div class="w-full h-full rounded-full bg-[#283930] peer-checked:bg-primary transition-colors"></div>
 <div class="absolute left-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
 </label>
@@ -273,7 +273,7 @@
 <span class="text-xs text-slate-500 dark:text-slate-400">Allow others to find you</span>
 </div>
 <label class="relative inline-flex h-6 w-11 cursor-pointer items-center">
-<input type="checkbox" class="sr-only peer" />
+<input type="checkbox" class="sr-only peer" data-pref="publicProfile" />
 <div class="w-full h-full rounded-full bg-[#283930] peer-checked:bg-primary transition-colors"></div>
 <div class="absolute left-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
 </label>
@@ -294,7 +294,7 @@
 
 <script type="module">
   import { authGuard, auth, getCurrentUser, logout } from "./js/services/auth.service.js";
-  import { listenToUserData, setUserData } from "./js/services/db.service.js";
+  import { listenToUserData, setUserData, updateUserData } from "./js/services/db.service.js";
   import { initNav } from "./js/services/nav.js";
   import { showToast, showConfirm } from "./js/services/toast.js";
   import { updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -380,6 +380,24 @@
     const ok = await showConfirm("Are you sure you want to delete your account? This cannot be undone.");
     if (!ok) return;
     showToast("Account deletion is not yet implemented.", "info");
+  });
+
+  // ── App Preferences save/load ──
+  const prefInputs = document.querySelectorAll("[data-pref]");
+  listenToUserData("preferences", snap => {
+    const prefs = snap.val ? snap.val() : snap;
+    if (!prefs) return;
+    prefInputs.forEach(input => {
+      const key = input.dataset.pref;
+      if (key in prefs) input.checked = !!prefs[key];
+    });
+  });
+  prefInputs.forEach(input => {
+    input.addEventListener("change", async () => {
+      const key = input.dataset.pref;
+      await updateUserData("preferences", { [key]: input.checked });
+      showToast(`${input.checked ? "Enabled" : "Disabled"} ${key.replace(/([A-Z])/g, " $1").toLowerCase().trim()}`, "info");
+    });
   });
 
   // ── Profile Photo Upload ──

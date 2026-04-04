@@ -116,10 +116,10 @@
 <button data-period="120" class="period-btn px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">Semester</button>
 </div>
 <!-- CTA Button -->
-<button class="flex items-center justify-center gap-2 h-10 px-5 bg-white hover:bg-gray-100 text-background-dark rounded-xl text-sm font-bold transition-colors">
+<a href="journal.html" class="flex items-center justify-center gap-2 h-10 px-5 bg-white hover:bg-gray-100 text-background-dark rounded-xl text-sm font-bold transition-colors">
 <span class="material-symbols-outlined" style="font-size: 20px;">add</span>
                         Log Mood
-                    </button>
+                    </a>
 </div>
 </header>
 <!-- Dashboard Content -->
@@ -302,7 +302,7 @@
 <div class="lg:col-span-2 rounded-xl bg-card-dark border border-card-border p-6 flex flex-col justify-between">
 <div class="flex items-center justify-between mb-4">
 <h3 class="text-white text-lg font-bold">Journal Highlights</h3>
-<button class="flex items-center gap-1 text-[#9db9ab] hover:text-white text-xs transition-colors">
+<button id="insights-privacy" class="flex items-center gap-1 text-[#9db9ab] hover:text-white text-xs transition-colors">
 <span class="material-symbols-outlined" style="font-size: 14px;">visibility_off</span>
                                 Privacy Mode
                             </button>
@@ -530,6 +530,18 @@
       pts += parseFloat(g.gpa || 0) * c; creds += c;
     });
     if (gpaEl) gpaEl.textContent = creds > 0 ? (pts / creds).toFixed(1) : "—";
+  });
+
+  // ── Privacy Mode toggle on journal highlights ──
+  let privacyOn = false;
+  const highlightsEl = document.getElementById("journal-highlights");
+  document.getElementById("insights-privacy")?.addEventListener("click", () => {
+    privacyOn = !privacyOn;
+    if (highlightsEl) {
+      highlightsEl.classList.toggle("blur-sm", privacyOn);
+      highlightsEl.classList.toggle("select-none", privacyOn);
+      highlightsEl.classList.toggle("pointer-events-none", privacyOn);
+    }
   });
 </script>
 

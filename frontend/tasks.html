@@ -367,9 +367,17 @@
     if (dueTodayEl)  dueTodayEl.textContent  = dueToday;
     if (completedEl) completedEl.textContent = completed;
     if (pendingEl)   pendingEl.textContent   = total - completed;
-    if (progressBar) progressBar.style.width = progress + "%";
-    if (progressPct) progressPct.textContent = progress + "%";
-    if (progressTxt) progressTxt.textContent = `${completed}/${total} tasks completed`;
+
+    // Daily goal: based on today's tasks (due today + completed today)
+    const todayTasks = allTasks.filter(([, t]) => t.dueDate && new Date(t.dueDate).toDateString() === today);
+    const todayCompleted = todayTasks.filter(([, t]) => t.completed).length;
+    const todayTotal = todayTasks.length;
+    const dailyProgress = todayTotal > 0 ? Math.round((todayCompleted / todayTotal) * 100) : (completed > 0 ? 100 : 0);
+    if (progressBar) progressBar.style.width = dailyProgress + "%";
+    if (progressPct) progressPct.textContent = dailyProgress + "%";
+    if (progressTxt) progressTxt.textContent = todayTotal > 0
+      ? `${todayCompleted}/${todayTotal} today's tasks done`
+      : `${completed}/${total} tasks completed`;
 
     // Update filter badge counts
     const todayBadge = document.querySelector("[data-filter='today'] .filter-badge");

@@ -202,16 +202,14 @@
 </div>
 <label class="relative flex h-[28px] w-[48px] cursor-pointer items-center rounded-full border-none bg-[#283930] p-1 has-[:checked]:justify-end has-[:checked]:bg-primary transition-colors">
 <div class="h-5 w-5 rounded-full bg-white shadow-sm"></div>
-<input class="invisible absolute" type="checkbox"/>
+<input id="privacy-toggle" class="invisible absolute" type="checkbox"/>
 </label>
 </div>
 <!-- Mood Trends / Calendar -->
 <section class="flex flex-col gap-4 bg-[#18221c] p-6 rounded-2xl border border-[#283930]">
 <div class="flex items-center justify-between">
 <h2 class="text-white text-lg font-bold">Mood Trends</h2>
-<select class="bg-[#283930] text-white text-xs px-3 py-1.5 rounded-lg border-none outline-none cursor-pointer">
-<option>October 2023</option>
-<option>September 2023</option>
+<select id="mood-month-select" class="bg-[#283930] text-white text-xs px-3 py-1.5 rounded-lg border-none outline-none cursor-pointer">
 </select>
 </div>
 <!-- Calendar Grid -->
@@ -225,39 +223,7 @@
 <span class="text-center text-xs text-text-secondary">F</span>
 <span class="text-center text-xs text-text-secondary">S</span>
 </div>
-<div class="grid grid-cols-7 gap-2">
-<!-- Example Calendar Data -->
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer" title="Neutral"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer" title="Great"></div>
-<div class="aspect-square rounded-md bg-primary/60 hover:bg-primary/70 transition-colors cursor-pointer" title="Good"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer" title="Neutral"></div>
-<div class="aspect-square rounded-md bg-[#283930]/50 border border-[#3b5447] hover:border-primary transition-colors cursor-pointer" title="Bad"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary/60 hover:bg-primary/70 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-[#283930]/50 border border-[#3b5447]"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary/60 hover:bg-primary/70 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-[#283930]/50 border border-[#3b5447]"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer relative group">
-<!-- Today Indicator -->
-<div class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></div>
-</div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
+<div id="mood-calendar" class="grid grid-cols-7 gap-2">
 </div>
 </div>
 <div class="flex items-center justify-between mt-2 pt-4 border-t border-[#283930]">
@@ -415,9 +381,14 @@
   listenToUserData("journals", snap => {
     if (!feedEl) return;
     feedEl.innerHTML = "";
-    const entries = Object.entries(snap || {})
+    const rawEntries = Object.entries(snap || {});
+    const entries = rawEntries
       .map(([id, e]) => ({ ...e, _id: id }))
       .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+
+    // Update mood calendar
+    allEntries = rawEntries;
+    renderMoodCalendar(allEntries);
 
     // ── Streak calculation ──
     if (streakEl) {
@@ -494,6 +465,73 @@
     if (ok) {
       await removeUserData(`journals/${id}`);
       showToast("Entry deleted", "info");
+    }
+  });
+
+  // ── Dynamic Mood Calendar ──
+  const moodMonthSelect = document.getElementById("mood-month-select");
+  const moodCalendar    = document.getElementById("mood-calendar");
+
+  // Build last 6 months as options
+  (function buildMonthOptions() {
+    if (!moodMonthSelect) return;
+    const now = new Date();
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+      const opt = document.createElement("option");
+      opt.value = `${d.getFullYear()}-${d.getMonth()}`;
+      opt.textContent = label;
+      moodMonthSelect.appendChild(opt);
+    }
+  })();
+
+  function renderMoodCalendar(entries) {
+    if (!moodCalendar || !moodMonthSelect) return;
+    const [year, month] = moodMonthSelect.value.split("-").map(Number);
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const todayStr = new Date().toDateString();
+
+    // Map entries by date string
+    const moodByDate = {};
+    entries.forEach(([, e]) => {
+      if (!e.timestamp) return;
+      const ds = new Date(e.timestamp).toDateString();
+      moodByDate[ds] = e.mood || "neutral";
+    });
+
+    const MOOD_BG = { positive: "bg-primary", neutral: "bg-primary/30", negative: "bg-red-400/50" };
+    let html = "";
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) html += `<div class="aspect-square rounded-md bg-[#283930]"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const ds = date.toDateString();
+      const mood = moodByDate[ds];
+      const isToday = ds === todayStr;
+      const bg = mood ? MOOD_BG[mood] || "bg-primary/30" : "bg-[#283930]";
+      const title = mood ? mood.charAt(0).toUpperCase() + mood.slice(1) : "";
+      html += `<div class="aspect-square rounded-md ${bg} transition-colors relative${title ? ' cursor-pointer' : ''}" ${title ? `title="${title}"` : ''}>
+        ${isToday ? '<div class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></div>' : ''}
+      </div>`;
+    }
+    moodCalendar.innerHTML = html;
+  }
+
+  moodMonthSelect?.addEventListener("change", () => renderMoodCalendar(allEntries));
+
+  // Store entries reference for calendar
+  let allEntries = [];
+
+  // ── Privacy Mode toggle ──
+  const privacyToggle = document.getElementById("privacy-toggle");
+  const journalFeed   = document.getElementById("journal-feed");
+  privacyToggle?.addEventListener("change", () => {
+    if (privacyToggle.checked) {
+      journalFeed?.classList.add("blur-sm", "select-none", "pointer-events-none");
+    } else {
+      journalFeed?.classList.remove("blur-sm", "select-none", "pointer-events-none");
     }
   });
 </script>
