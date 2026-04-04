@@ -1,5 +1,6 @@
 import { logout, getCurrentUser } from "./auth.service.js";
 import { showToast } from "./toast.js";
+import { listenToUserData } from "./db.service.js";
 
 const NAV_ITEMS = [
   { href: "dashboard.html",    icon: "dashboard",   label: "Dashboard",    page: "dashboard" },
@@ -87,5 +88,16 @@ export async function initNav(activePage) {
     const name = user.displayName || user.email?.split("@")[0] || "Student";
     document.querySelectorAll("[data-user-name]").forEach(el => { el.textContent = name; });
     document.querySelectorAll("[data-user-email]").forEach(el => { el.textContent = user.email || ""; });
+
+    // Load and apply profile photo to all avatar elements
+    listenToUserData("profile/photoURL", snap => {
+      const url = (snap && typeof snap === "object" && snap.val) ? snap.val() : snap;
+      const photoUrl = (url && typeof url === "string" && url.startsWith("data:")) ? url : user.photoURL;
+      if (photoUrl) {
+        document.querySelectorAll("[role='img'][aria-label*='avatar']").forEach(el => {
+          el.style.backgroundImage = `url("${photoUrl}")`;
+        });
+      }
+    });
   }
 }
