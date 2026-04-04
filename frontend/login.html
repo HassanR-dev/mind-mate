@@ -70,13 +70,13 @@
 <label class="flex flex-col gap-2">
 <div class="flex justify-between items-center">
 <span class="text-[#111814] dark:text-white text-base font-medium leading-normal">Password</span>
-<a class="text-sm font-bold text-primary hover:text-primary/80 transition-colors" href="#">Forgot Password?</a>
+<span class="text-sm font-bold text-primary/50 cursor-not-allowed" title="Coming soon">Forgot Password?</span>
 </div>
 <div class="relative">
 <input id="password" class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-xl text-[#111814] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#e5e7eb] dark:border-[#3b5447] bg-white dark:bg-[#1c2721] focus:border-primary h-14 placeholder:text-[#9ca3af] dark:placeholder:text-[#9db9ab] px-[15px] text-base font-normal leading-normal transition-all" placeholder="••••••••" type="password" required/>
-<div class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9db9ab] cursor-pointer hover:text-white transition-colors" onclick="togglePassword()">
+<button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9db9ab] cursor-pointer hover:text-white transition-colors" onclick="togglePassword()" aria-label="Toggle password visibility">
 <span class="material-symbols-outlined" id="password-toggle">visibility_off</span>
-</div>
+</button>
 </div>
 </label>
 <!-- Log In Button -->
@@ -118,7 +118,7 @@
 </div>
 <!-- Right Side: Visual -->
 <div class="hidden lg:flex w-1/2 h-screen sticky top-0 p-4">
-<div class="w-full h-full rounded-3xl bg-cover bg-center relative overflow-hidden flex flex-col justify-end p-10 group" data-alt="Peaceful modern workspace with minimal desk setup and plants" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqDFoBU5ADUxfm468gCXaVQHFr3ePu70E0a8ceNXTEfpZHVn2c4ZHlk1AITxkJhirgylj8AVaBhwuleric6uzowv9rZdUKrXwsgAmlyTtDsvI4GGJRJsiNx2UjekgoCzm932AQ15jgpowDn27JKLvk6cWiMpUwOYH7A41_DHXlZBeTpLsjAW_TfvvkSXjz1xERp60_BLnHoADXrhIZTVbMzSQwdDbmarKd7KmUEUQtQ0KNaPE81vdu9TsXr1qR0yxv-TdWk9lP0SY1");'>
+<div class="w-full h-full rounded-3xl bg-cover bg-center relative overflow-hidden flex flex-col justify-end p-10 group" style="background: linear-gradient(135deg, #102219 0%, #1a3d2a 50%, #13ec80 100%);"
 <!-- Overlay gradient -->
 <div class="absolute inset-0 bg-gradient-to-t from-[#102219] via-[#102219]/40 to-transparent opacity-90"></div>
 <!-- Text Overlay -->
@@ -139,17 +139,15 @@
 </div>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { auth, watchAuth } from "./auth.js";
+  import { auth, onUserReady } from "./js/services/auth.service.js";
+  import { showToast, showPrompt } from "./js/services/toast.js";
   import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
   const provider = new GoogleAuthProvider();
 
   // Redirect if already logged in
-  watchAuth((user) => {
-    if (user) {
-      window.location.href = "dashboard.html";
-    }
+  onUserReady((user) => {
+    if (user) window.location.href = "dashboard.html";
   });
 
   // Login handler
@@ -157,12 +155,12 @@
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       window.location.href = "dashboard.html";
     } catch (error) {
-      alert("Login error: " + error.message);
+      showToast("Login error: " + error.message, "error");
     }
   };
 
@@ -172,26 +170,26 @@
       await signInWithPopup(auth, provider);
       window.location.href = "dashboard.html";
     } catch (error) {
-      alert("Google login error: " + error.message);
+      showToast("Google login error: " + error.message, "error");
     }
   };
 
   // Signup handler
   window.handleSignup = async () => {
-    const email = prompt("Enter your email:");
+    const email = await showPrompt("Enter your email:");
     if (!email) return;
-    const password = prompt("Enter a password (min 6 characters):");
+    const password = await showPrompt("Enter a password (min 6 characters):");
     if (!password || password.length < 6) {
-      alert("Password must be at least 6 characters");
+      showToast("Password must be at least 6 characters", "warning");
       return;
     }
-    
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert("Account created! Please log in.");
+      showToast("Account created! Please log in.", "success");
       document.getElementById("email").value = email;
     } catch (error) {
-      alert("Signup error: " + error.message);
+      showToast("Signup error: " + error.message, "error");
     }
   };
 

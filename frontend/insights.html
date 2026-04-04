@@ -6,7 +6,6 @@
 <title>Mind Mate - Well-Being Insights</title>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -40,6 +39,15 @@
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
 <div class="flex h-screen w-full">
+<div class="lg:hidden flex items-center justify-between p-4 bg-[#111814] border-b border-card-border w-full absolute top-0 z-30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">insights</span>
+<span class="font-bold text-lg">Mind Mate</span>
+</div>
+<button aria-label="Open menu" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- SideNavBar -->
 <aside class="hidden lg:flex flex-col w-72 h-full border-r border-card-border bg-[#111814] p-4 justify-between shrink-0">
 <div class="flex flex-col gap-8">
@@ -78,10 +86,14 @@
 <span class="material-symbols-outlined">settings</span>
 <p class="text-sm font-medium">Settings</p>
 </a>
+<button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Log Out</p>
+</button>
 <div class="flex items-center gap-3 mt-4 pt-4 border-t border-card-border px-2">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 border-2 border-primary/50" data-alt="User profile picture of a student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7cNprxBqBBhYoxIRDkFghVg_48S48rCRghJtxVNdOOMfGYgyqy0nkUcUr9G6ppFfTeNbbyO9POdtbNLU8YeCzK-W7fRccdH0ow2e68aslpQJApvfmfhFE9GosLZBeRc3l3IqvhWwzsG_BqY6hx2ciXWaVY_kdFmDFN7U22TiQLc9po9EATSAkTL0jmFUfaraJWHSh_vDQFW0kswCe7-P9OtI8NtXyi0kk-Fw7qCU8U665qJcvzcttwRGjTBZuZbiBsJa2gNYhm0rj");'></div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 border-2 border-primary/50" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
 <div class="flex flex-col overflow-hidden">
-<p class="text-white text-sm font-medium truncate">Hassan Rehan</p>
+<p class="text-white text-sm font-medium truncate" data-user-name>Student</p>
 <p class="text-[#9db9ab] text-xs truncate">Software Engineering</p>
 </div>
 </div>
@@ -230,7 +242,7 @@
 <div class="lg:col-span-1 rounded-xl bg-card-dark border border-card-border p-6">
 <div class="flex items-center justify-between mb-4">
 <h3 class="text-white text-lg font-bold">October Heatmap</h3>
-<button class="text-primary text-sm font-medium hover:underline">View All</button>
+<a href="journal.html" class="text-primary text-sm font-medium hover:underline">View All</a>
 </div>
 <div class="grid grid-cols-7 gap-2">
 <!-- Day Labels -->
@@ -334,8 +346,10 @@
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData } from "./js/services/db.service.js";
+  import { initNav } from "./js/services/nav.js";
 
   await authGuard();
+  initNav("insights");
 
   const avgMoodEl  = document.getElementById("stat-avg-mood");
   const taskPctEl  = document.getElementById("stat-task-pct");

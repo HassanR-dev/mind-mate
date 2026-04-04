@@ -78,7 +78,7 @@
 </div>
 <div class="mt-auto p-6 border-t border-gray-200 dark:border-gray-800">
 <div class="flex items-center gap-3">
-<div class="size-10 rounded-full bg-cover bg-center" data-alt="User profile picture showing a smiling student" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdWVr0iZ7s7uRvbhdI3W4Y8zO39ee1y0Y4tjsaCCuzezaW-vVXVLn12vXZPlqWRwcG-7El7yLZlFiVDljMLYJgMAl-PmokUNNVaFgqAKgpTFrxZ9B-Bt30ecnN99itd03BLVz8wZAewoJ5mj4B9xKl8dH-WfSNdtxK6l4CJ4t_VI26DZKkirhknCGztSj6HLECWxbrd7ku-eISJH4-3iiFDSzSOo_Gmp2h7BX-ry0VZdf-ERvU22mrD-T4YkjVCH13IXTDFHIbR0NI')"></div>
+<div class="size-10 rounded-full bg-cover bg-center" role="img" aria-label="User avatar" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>')"></div>
 <div class="flex-1 min-w-0">
 <p class="font-medium truncate" data-user-name>Hassan Rehan</p>
 <p class="text-xs text-gray-500 dark:text-gray-400 truncate" data-user-email></p>
@@ -87,20 +87,24 @@
 <span class="material-symbols-outlined">settings</span>
 </a>
 </div>
+<button data-action="logout" class="mt-2 flex items-center gap-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-2 rounded-lg transition-colors w-full">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
 </div>
 </aside>
 <main class="flex-1 flex flex-col h-full relative overflow-hidden">
 <header class="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 bg-background-light dark:bg-background-dark z-10 shrink-0">
 <div>
 <h2 class="font-bold text-xl">Good Morning, <span data-user-name>there</span> ☀️</h2>
-<p class="text-xs text-gray-500">Here's what's happening today.</p>
+<p class="text-sm text-gray-400 dark:text-gray-300">Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-4">
 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700">
 <span class="material-symbols-outlined text-yellow-500 text-sm">bolt</span>
 <span class="text-xs font-medium">Focus Mode: Off</span>
 </div>
-<button class="text-gray-400 hover:text-white">
+<button class="text-gray-400 hover:text-white" aria-label="Notifications">
 <span class="material-symbols-outlined">notifications</span>
 </button>
 </div>
@@ -143,7 +147,7 @@
 <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
 <div class="flex justify-between items-center mb-4">
 <h3 class="font-bold text-lg">Upcoming Deadlines</h3>
-<button class="text-sm text-primary hover:underline">View Calendar</button>
+<a href="tasks.html" class="text-sm text-primary hover:underline">View Tasks</a>
 </div>
 <div class="space-y-4">
 <div class="flex gap-4 items-center p-3 hover:bg-gray-50 dark:hover:bg-background-dark/50 rounded-lg transition-colors group">

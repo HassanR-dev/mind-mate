@@ -1,6 +1,7 @@
 import { auth } from "./auth.service.js";
 
-const API_BASE = "/api";
+// Set to your Vercel deployment URL after deploying
+const API_BASE = "https://magical-wu-rho.vercel.app/api";
 
 async function getToken() {
   const user = auth.currentUser;
@@ -31,6 +32,19 @@ export async function predictStress() {
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error || "Failed to predict stress");
+  }
+  return res.json();
+}
+
+export async function triggerAnalytics() {
+  const token = await getToken();
+  const res = await fetch(`${API_BASE}/analytics`, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" }
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Failed to compute analytics");
   }
   return res.json();
 }

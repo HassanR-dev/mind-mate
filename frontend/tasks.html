@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Tailwind Configuration -->
@@ -45,12 +44,22 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display h-screen overflow-hidden flex selection:bg-primary selection:text-black">
+<!-- Mobile Header -->
+<div class="md:hidden flex items-center justify-between p-4 bg-[#0d1b14] border-b border-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">check_box</span>
+<span class="font-bold text-lg">Mind Mate</span>
+</div>
+<button aria-label="Open menu" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- Sidebar -->
 <aside class="w-64 flex flex-col justify-between border-r border-white/5 bg-[#0d1b14] p-4 shrink-0 hidden md:flex">
 <div class="flex flex-col gap-8">
 <!-- User Profile -->
 <div class="flex gap-3 items-center px-2 mt-2">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Avatar of the student user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARvItd5CmCdgRASAmyNJ9vpbEQV87P698DmkNGj9PYAPGn9z_eZZIARzBM2VgDc3r_SdWetWE_5vRypX5tLUx4FHEF8rQdRNqb6bo19SnLA_jW8eOQQg6AfOS2c-kKU90Lx5D-i-dbHODS8gKSUG1tbh2LxrxMxwHrM7b4fURGBGfxHf82onQpgVd5OkDlf3uSRSvFmpcVoETIrXZJitRDD3eNvv0ZjROItbw_gruFehevlCFhduoIixR8UMLvkTuEPdBg5l5mqIdN");'>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'>
 </div>
 <div class="flex flex-col">
 <h1 class="text-white text-base font-bold leading-normal">Mind Mate</h1>
@@ -86,6 +95,10 @@
 <span class="material-symbols-outlined text-[24px]">settings</span>
 <p class="text-sm font-medium leading-normal">Settings</p>
 </a>
+<button data-action="logout" class="flex items-center gap-3 px-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors">
+<span class="material-symbols-outlined text-[24px]">logout</span>
+<p class="text-sm font-medium leading-normal">Log Out</p>
+</button>
 </div>
 </aside>
 <!-- Main Content -->
@@ -100,7 +113,7 @@
 <!-- Search -->
 <div class="relative hidden lg:block">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9db9ab]">search</span>
-<input class="bg-surface-dark border-none rounded-lg text-white pl-10 pr-4 py-2.5 w-64 focus:ring-2 focus:ring-primary focus:outline-none placeholder-[#5a7065] text-sm" placeholder="Search tasks..." type="text"/>
+<input aria-label="Search tasks" class="bg-surface-dark border-none rounded-lg text-white pl-10 pr-4 py-2.5 w-64 focus:ring-2 focus:ring-primary focus:outline-none placeholder-[#5a7065] text-sm" placeholder="Search tasks..." type="text"/>
 </div>
 <!-- Add Button (Mobile/Tablet visible, Desktop secondary) -->
 <button id="new-task-btn" class="bg-primary hover:bg-[#0fd671] text-black font-bold py-2.5 px-6 rounded-lg flex items-center gap-2 transition-colors">
@@ -160,20 +173,20 @@
 </div>
 <!-- Quick Add Bar -->
 <div class="bg-surface-dark rounded-2xl p-2 mb-8 flex items-center shadow-lg border border-white/5 focus-within:border-primary/50 transition-colors group">
-<button class="p-3 text-primary hover:bg-primary/10 rounded-xl transition-colors">
+<button aria-label="Add task" class="p-3 text-primary hover:bg-primary/10 rounded-xl transition-colors">
 <span class="material-symbols-outlined">add_circle</span>
 </button>
 <input id="quick-task-input" class="bg-transparent border-none text-white w-full focus:ring-0 placeholder-[#5a7065] text-lg font-medium px-2" placeholder="I need to..." type="text"/>
 <div class="hidden md:flex items-center gap-2 pr-2">
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button aria-label="Set due date" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">calendar_month</span>
 <span>Today</span>
 </button>
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button aria-label="Add tag" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">sell</span>
 <span>Tag</span>
 </button>
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button aria-label="Set priority" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">flag</span>
 <span>Priority</span>
 </button>
@@ -209,8 +222,10 @@
   import { listenToUserData, pushUserData, updateUserData, removeUserData, getUserData } from "./js/services/db.service.js";
   import { showToast, showConfirm, showPrompt } from "./js/services/toast.js";
   import { validateTaskTitle } from "./js/services/validators.js";
+  import { initNav } from "./js/services/nav.js";
 
   await authGuard();
+  initNav("tasks");
 
   const taskList = document.getElementById("task-list");
   const dueTodayEl  = document.getElementById("stat-due-today");

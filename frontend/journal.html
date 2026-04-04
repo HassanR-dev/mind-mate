@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script>
       tailwind.config = {
         darkMode: "class",
@@ -40,11 +39,20 @@
 </head>
 <body class="bg-background-light dark:bg-[#111814] text-slate-900 dark:text-white font-display overflow-x-hidden">
 <div class="flex h-screen w-full overflow-hidden">
+<div class="lg:hidden flex items-center justify-between p-4 bg-[#111814] border-b border-[#3b5447]/30 w-full absolute top-0 z-30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">mood</span>
+<span class="font-bold text-lg">Mind Mate</span>
+</div>
+<button aria-label="Open menu" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- Side Navigation -->
 <div class="hidden lg:flex w-72 flex-col justify-between border-r border-[#3b5447]/30 bg-[#111814] p-5">
 <div class="flex flex-col gap-8">
 <div class="flex gap-3 items-center">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-[#283930]" data-alt="Mind Mate Logo, abstract green gradient circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAK3Nhs3wvu0Tm_9PbIIArYt7_o9o3KcOZ0B7DCXCm0hr6Oqllqh-pMAqo3NzNi41vZctWa30w4kjFOjPQvKV6_sLNSPCf0HmFMF7Qy0KTIT-gJ9437qFuywcUOnI238c-djDzJqXVHVEk_PN8v-wGmy9zZia5TVBqQAwNHGg4O_z6TbmnlJBDFPdTutMqDmDBhnbqfPEYcqYDJei5NXTb7VbOF7Nnve-pHXW4ArArlo7gVcsTkGj0E9au1QDKJoKsKTyhP0Jyp6bsM");'></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-[#283930]" role="img" aria-label="Mind Mate logo" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
 <div class="flex flex-col">
 <h1 class="text-white text-lg font-bold leading-tight tracking-tight">Mind Mate</h1>
 <p class="text-text-secondary text-xs font-normal">Student Wellness</p>
@@ -79,10 +87,14 @@
 <p class="text-white text-sm font-bold mb-1">Daily Quote</p>
 <p class="text-text-secondary text-xs italic">"Believe you can and you're halfway there."</p>
 </div>
-<div class="flex items-center gap-3 px-2">
-<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPdcKhJJE_0L9mqVXJs4xhPZ3MFJ_0qn8c95kjQvgkjX00AdxYrAJLcbQMG6lXrxtqUYJ6Ioq0s7pxxd7mByBc8bcXRiCZXZUS7pujWsyaH2EFDe60XQoOxZDscSs3glrHC7Hpq_JtjZkemi32wk2s_ET588PA-OB8sujEID7XdcMohCC9_ZGjwmtW6Sxmb6NQFKOfRgiMF8vGP33kW6qR5bZdBUE8v4jWbhC769joL_A1WkPw5grChC-CaOPb56eNEcxi_DSclf5R");'></div>
+<button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Log Out</p>
+</button>
+<div class="flex items-center gap-3 px-2 pt-4 border-t border-[#283930]">
+<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
 <div class="flex flex-col">
-<p class="text-white text-sm font-medium">Hassan Rehan</p>
+<p class="text-white text-sm font-medium" data-user-name>Student</p>
 <p class="text-text-secondary text-xs">Software Engineering</p>
 </div>
 </div>
@@ -94,7 +106,7 @@
 <header class="w-full px-6 py-8 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div class="flex flex-col gap-2">
 <h1 class="text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">Mood Journal</h1>
-<p class="text-text-secondary text-base">How are you feeling today, Alex?</p>
+<p class="text-text-secondary text-base">How are you feeling today, <span data-user-name>Student</span>?</p>
 </div>
 <!-- Streak Counter -->
 <div class="flex items-center gap-4 bg-[#283930] px-5 py-3 rounded-xl border border-[#3b5447]">
@@ -169,7 +181,7 @@
 <div class="flex items-center justify-between pt-4">
 <h2 class="text-white text-xl font-bold">Recent Logs</h2>
 <div class="flex items-center gap-2">
-<button class="text-text-secondary hover:text-white text-sm">View All</button>
+<a href="#journal-feed" class="text-text-secondary hover:text-white text-sm">View All</a>
 </div>
 </div>
 <!-- Timeline Feed -->
@@ -283,11 +295,13 @@
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData, pushUserData } from "./js/services/db.service.js";
-  import { analyzeMood } from "./js/services/ai.service.js";
+  import { analyzeMood, triggerAnalytics } from "./js/services/ai.service.js";
   import { showToast } from "./js/services/toast.js";
   import { validateJournalText, sanitizeHtml, formatDateTime } from "./js/services/validators.js";
+  import { initNav } from "./js/services/nav.js";
 
   await authGuard();
+  initNav("journal");
 
   const feedEl = document.getElementById("journal-feed");
 
@@ -340,6 +354,9 @@
     }
 
     await pushUserData("journals", { text, mood, timestamp: new Date().toISOString() });
+
+    // Recompute weekly analytics in the background
+    triggerAnalytics().catch(() => {});
 
     textEl.value = "";
     btn.disabled = false;

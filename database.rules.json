@@ -6,8 +6,9 @@
         ".write": "auth != null && auth.uid == $uid"
       }
     },
-    "tasks":    { ".read": false, ".write": false },
-    "gpas":     { ".read": false, ".write": false },
-    "journals": { ".read": false, ".write": false }
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
   }
 }

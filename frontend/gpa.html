@@ -6,7 +6,6 @@
 <title>GPA Tracker - Mind Mate</title>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -36,6 +35,9 @@
 <!-- Top Navigation -->
 <header class="sticky top-0 z-50 w-full border-b border-[#283930] bg-background-dark/95 backdrop-blur-sm">
 <div class="flex h-16 items-center justify-between px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
+<button aria-label="Open menu" class="md:hidden text-gray-400 hover:text-white mr-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <div class="flex items-center gap-4">
 <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
 <span class="material-symbols-outlined text-2xl">school</span>
@@ -50,12 +52,14 @@
 </a>
 <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="journal.html">Mood Journal</a>
 <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="insights.html">Insights</a>
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="tasks.html">Tasks</a>
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="user-profile.html">Profile</a>
 </nav>
 <div class="flex items-center gap-4">
-<button class="text-gray-400 hover:text-white transition-colors">
+<button class="text-gray-400 hover:text-white transition-colors" aria-label="Notifications">
 <span class="material-symbols-outlined">notifications</span>
 </button>
-<div class="size-9 rounded-full bg-center bg-cover border border-[#283930]" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrL0BvNA3GJnyxj83jNDC_e0IGBh85E8oOng4NrR5whxz1uMKcf5nFjvkO4vMfOgax2iV1_ZmXLNjGhUVuMjmAvHHXYL6sjDV74YqsT4NugvZ7ZDJMR84Ntqu9baANSWH3Spr_zz_ddUyblRfayajh1NF93YDmV4_E2kTL2wytJlfmULFgZPSvKDN22-fEJ720CtdwQ-l1TnDMrrYL05owsd3wan96ujlT1uoccvQ2eeWeWfetxuMut3e5tHAYFw3k4LKdn3eW7ch5');"></div>
+<div class="size-9 rounded-full bg-center bg-cover border border-[#283930]" role="img" aria-label="User avatar" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>');"></div>
 </div>
 </div>
 </header>
@@ -130,7 +134,7 @@
 </div>
 </td>
 <td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
+<button aria-label="Delete course" class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
 <span class="material-symbols-outlined text-xl">delete</span>
 </button>
 </td>
@@ -161,7 +165,7 @@
 </div>
 </td>
 <td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
+<button aria-label="Delete course" class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
 <span class="material-symbols-outlined text-xl">delete</span>
 </button>
 </td>
@@ -192,7 +196,7 @@
 </div>
 </td>
 <td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
+<button aria-label="Delete course" class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
 <span class="material-symbols-outlined text-xl">delete</span>
 </button>
 </td>
@@ -231,7 +235,7 @@
 </div>
 </td>
 <td class="px-6 py-4 text-right">
-<button id="add-course-btn" class="bg-primary hover:bg-primary/90 text-[#111814] rounded-lg p-2 transition-colors">
+<button id="add-course-btn" aria-label="Add course" class="bg-primary hover:bg-primary/90 text-[#111814] rounded-lg p-2 transition-colors">
 <span class="material-symbols-outlined text-xl block">add</span>
 </button>
 </td>
@@ -346,8 +350,10 @@
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData, pushUserData, updateUserData, removeUserData } from "./js/services/db.service.js";
   import { showToast, showConfirm } from "./js/services/toast.js";
+  import { initNav } from "./js/services/nav.js";
 
   await authGuard();
+  initNav("gpa");
 
   const tbody         = document.querySelector("tbody");
   const gpaDisplay    = document.getElementById("gpa-display");
