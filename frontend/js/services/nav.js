@@ -1,4 +1,5 @@
 import { logout, getCurrentUser } from "./auth.service.js";
+import { showToast } from "./toast.js";
 
 const NAV_ITEMS = [
   { href: "dashboard.html",    icon: "dashboard",   label: "Dashboard",    page: "dashboard" },
@@ -71,6 +72,14 @@ export async function initNav(activePage) {
   document.querySelectorAll("[data-action='logout']").forEach(btn =>
     btn.addEventListener("click", () => logout())
   );
+
+  // Wire all notification buttons (any button containing notifications icon)
+  document.querySelectorAll("button").forEach(btn => {
+    const icon = btn.querySelector(".material-symbols-outlined");
+    if (icon && icon.textContent.trim() === "notifications") {
+      btn.addEventListener("click", () => showToast("Notifications coming soon!", "info"));
+    }
+  });
 
   // Update user name everywhere
   const user = await getCurrentUser();

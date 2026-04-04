@@ -35,7 +35,7 @@
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col md:flex-row">
 <div class="md:hidden flex items-center justify-between p-4 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
 <div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="material-symbols-outlined text-primary">school</span>
 <span class="font-bold text-lg">Mind Mate</span>
 </div>
 <button class="text-gray-500 dark:text-gray-400">
@@ -100,11 +100,11 @@
 <p class="text-sm text-gray-400 dark:text-gray-300">Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-4">
-<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700">
+<button id="focus-toggle" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-yellow-500 text-sm">bolt</span>
-<span class="text-xs font-medium">Focus Mode: Off</span>
-</div>
-<button class="text-gray-400 hover:text-white" aria-label="Notifications">
+<span class="text-xs font-medium" id="focus-label">Focus Mode: Off</span>
+</button>
+<button id="notif-btn" class="text-gray-400 hover:text-white" aria-label="Notifications">
 <span class="material-symbols-outlined">notifications</span>
 </button>
 </div>
@@ -169,7 +169,7 @@
 </div>
 </div>
 </div>
-<button class="text-gray-400 hover:text-primary transition-colors" aria-label="Expand chat">
+<button id="expand-chat-btn" class="text-gray-400 hover:text-primary transition-colors" aria-label="Expand chat">
 <span class="material-symbols-outlined text-xl">open_in_full</span>
 </button>
 </div>
@@ -205,6 +205,7 @@
   import { listenToUserData } from "./js/services/db.service.js";
   import { initNav } from "./js/services/nav.js";
   import { initChat } from "./js/chat.js";
+  import { showToast } from "./js/services/toast.js";
 
   await authGuard();
   initNav("dashboard");
@@ -223,6 +224,98 @@
   if (headerH2 && greetEl) {
     headerH2.childNodes[0].textContent = `${greeting}, `;
   }
+
+  // ── Notifications placeholder ──
+  document.getElementById("notif-btn")?.addEventListener("click", () => {
+    showToast("Notifications coming soon!", "info");
+  });
+
+  // ── Focus Mode toggle ──
+  const focusToggle = document.getElementById("focus-toggle");
+  const focusLabel  = document.getElementById("focus-label");
+  const statsRow    = document.querySelector(".grid.grid-cols-1.sm\\:grid-cols-3");
+  const deadlineBox = statsRow?.nextElementSibling;
+  let focusOn = false;
+
+  focusToggle?.addEventListener("click", () => {
+    focusOn = !focusOn;
+    focusLabel.textContent = focusOn ? "Focus Mode: On" : "Focus Mode: Off";
+    focusToggle.classList.toggle("border-primary", focusOn);
+    focusToggle.classList.toggle("bg-primary/10", focusOn);
+    // Hide stats & deadlines in focus mode to reduce distractions
+    if (statsRow) statsRow.style.display = focusOn ? "none" : "";
+    if (deadlineBox) deadlineBox.style.display = focusOn ? "none" : "";
+    showToast(focusOn ? "Focus mode on — distractions hidden" : "Focus mode off", "info");
+  });
+
+  // ── Expand chat fullscreen ──
+  document.getElementById("expand-chat-btn")?.addEventListener("click", () => {
+    const chatCol = document.querySelector(".xl\\:col-span-1");
+    if (!chatCol) return;
+    const overlay = document.createElement("div");
+    overlay.id = "chat-fullscreen";
+    overlay.className = "fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4";
+    overlay.innerHTML = `
+      <div class="w-full max-w-2xl h-[90vh] bg-surface-dark rounded-2xl border border-gray-700 shadow-2xl flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease]">
+        <div class="px-5 py-3 border-b border-gray-700 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary text-sm">smart_toy</span>
+            </div>
+            <h3 class="font-bold">Mind Mate AI</h3>
+          </div>
+          <button id="close-fullscreen-chat" class="text-gray-400 hover:text-white p-1">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div id="fs-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-dark/50 scrollbar-hide"></div>
+        <div class="p-3 border-t border-gray-700 shrink-0">
+          <div class="flex gap-2">
+            <input id="fs-chat-input" class="flex-1 bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-3 text-sm focus:ring-1 focus:ring-primary placeholder-gray-500" placeholder="Ask Mind Mate..." type="text"/>
+            <button id="fs-chat-send" class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors">
+              <span class="material-symbols-outlined text-lg fill-1">send</span>
+            </button>
+          </div>
+        </div>
+      </div>`;
+    if (!document.getElementById("chat-fs-style")) {
+      const s = document.createElement("style");
+      s.id = "chat-fs-style";
+      s.textContent = "@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}";
+      document.head.appendChild(s);
+    }
+    document.body.appendChild(overlay);
+
+    // Mirror existing chat messages into fullscreen
+    const src = document.getElementById("chat-messages");
+    const dest = document.getElementById("fs-chat-messages");
+    if (src && dest) dest.innerHTML = src.innerHTML;
+
+    // Wire fullscreen send to the real chat
+    const fsInput = document.getElementById("fs-chat-input");
+    const fsSend  = document.getElementById("fs-chat-send");
+    const realInput = document.getElementById("chat-input");
+    const realSend  = document.getElementById("chat-send");
+
+    function syncMessages() { if (src && dest) dest.innerHTML = src.innerHTML; dest.scrollTop = dest.scrollHeight; }
+    const observer = new MutationObserver(syncMessages);
+    if (src) observer.observe(src, { childList: true, subtree: true });
+
+    function fsSendMsg() {
+      if (!fsInput.value.trim()) return;
+      realInput.value = fsInput.value;
+      fsInput.value = "";
+      realSend.click();
+    }
+    fsSend.addEventListener("click", fsSendMsg);
+    fsInput.addEventListener("keypress", e => { if (e.key === "Enter") { e.preventDefault(); fsSendMsg(); } });
+
+    function closeFs() { observer.disconnect(); overlay.remove(); }
+    document.getElementById("close-fullscreen-chat").addEventListener("click", closeFs);
+    overlay.addEventListener("click", e => { if (e.target === overlay) closeFs(); });
+    document.addEventListener("keydown", function esc(e) { if (e.key === "Escape") { closeFs(); document.removeEventListener("keydown", esc); } });
+    fsInput.focus();
+  });
 
   // Stat elements
   const gpaEl      = document.querySelector("[data-stat-gpa]");
@@ -287,7 +380,7 @@
       const month = t._due.toLocaleDateString("en-US", { month: "short" }).toUpperCase();
       const day = t._due.getDate();
       const pLabel = (t.priority || "medium").charAt(0).toUpperCase() + (t.priority || "medium").slice(1);
-      return `<div class="flex gap-4 items-center p-3 hover:bg-gray-50 dark:hover:bg-background-dark/50 rounded-lg transition-colors">
+      return `<a href="tasks.html" class="flex gap-4 items-center p-3 hover:bg-gray-50 dark:hover:bg-background-dark/50 rounded-lg transition-colors cursor-pointer">
         <div class="flex flex-col items-center ${s.date} rounded-lg p-2 min-w-[60px]">
           <span class="text-xs font-bold ${s.month}">${month}</span>
           <span class="text-xl font-bold leading-none ${s.day}">${day}</span>
@@ -299,7 +392,7 @@
           <span class="inline-block px-2 py-1 text-xs font-medium ${s.badge} rounded-full">${pLabel}</span>
           <p class="text-xs text-gray-400 mt-1">${timeLabel}</p>
         </div>
-      </div>`;
+      </a>`;
     }).join("");
   });
 </script>
