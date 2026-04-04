@@ -70,7 +70,7 @@
 <label class="flex flex-col gap-2">
 <div class="flex justify-between items-center">
 <span class="text-[#111814] dark:text-white text-base font-medium leading-normal">Password</span>
-<span class="text-sm font-bold text-primary/50 cursor-not-allowed" title="Coming soon">Forgot Password?</span>
+<a href="javascript:void(0)" id="forgot-password" class="text-sm font-bold text-primary hover:underline">Forgot Password?</a>
 </div>
 <div class="relative">
 <input id="password" class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-xl text-[#111814] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#e5e7eb] dark:border-[#3b5447] bg-white dark:bg-[#1c2721] focus:border-primary h-14 placeholder:text-[#9ca3af] dark:placeholder:text-[#9db9ab] px-[15px] text-base font-normal leading-normal transition-all" placeholder="••••••••" type="password" required/>
@@ -141,9 +141,33 @@
 <script type="module">
   import { auth, onUserReady } from "./js/services/auth.service.js";
   import { showToast, showPrompt } from "./js/services/toast.js";
-  import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import {
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
   const provider = new GoogleAuthProvider();
+
+  // Map Firebase error codes to friendly messages
+  function _friendlyError(error) {
+    const map = {
+      "auth/invalid-email": "Please enter a valid email address.",
+      "auth/user-disabled": "This account has been disabled.",
+      "auth/user-not-found": "No account found with this email.",
+      "auth/wrong-password": "Incorrect password. Try again or reset it.",
+      "auth/invalid-credential": "Incorrect email or password.",
+      "auth/email-already-in-use": "An account with this email already exists. Try logging in.",
+      "auth/weak-password": "Password must be at least 6 characters.",
+      "auth/too-many-requests": "Too many attempts. Please wait a moment and try again.",
+      "auth/network-request-failed": "Network error. Check your connection.",
+      "auth/popup-closed-by-user": "Login popup was closed. Try again.",
+      "auth/popup-blocked": "Popup was blocked by your browser. Allow popups and try again.",
+    };
+    return map[error.code] || error.message;
+  }
 
   // Redirect if already logged in
   onUserReady((user) => {
@@ -153,14 +177,17 @@
   // Login handler
   window.handleLogin = async (e) => {
     e.preventDefault();
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
+
+    if (!email) { showToast("Please enter your email", "warning"); return; }
+    if (!password) { showToast("Please enter your password", "warning"); return; }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       window.location.href = "dashboard.html";
     } catch (error) {
-      showToast("Login error: " + error.message, "error");
+      showToast(_friendlyError(error), "error");
     }
   };
 
@@ -170,7 +197,8 @@
       await signInWithPopup(auth, provider);
       window.location.href = "dashboard.html";
     } catch (error) {
-      showToast("Google login error: " + error.message, "error");
+      if (error.code === "auth/popup-closed-by-user") return;
+      showToast(_friendlyError(error), "error");
     }
   };
 
@@ -178,20 +206,36 @@
   window.handleSignup = async () => {
     const email = await showPrompt("Enter your email:");
     if (!email) return;
-    const password = await showPrompt("Enter a password (min 6 characters):");
-    if (!password || password.length < 6) {
-      showToast("Password must be at least 6 characters", "warning");
-      return;
-    }
+    if (!email.includes("@")) { showToast("Please enter a valid email address", "warning"); return; }
+
+    const password = await showPrompt("Create a password (min 6 characters):");
+    if (!password) return;
+    if (password.length < 6) { showToast("Password must be at least 6 characters", "warning"); return; }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      showToast("Account created! Please log in.", "success");
-      document.getElementById("email").value = email;
+      showToast("Account created! Redirecting...", "success");
+      setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
     } catch (error) {
-      showToast("Signup error: " + error.message, "error");
+      showToast(_friendlyError(error), "error");
     }
   };
+
+  // Forgot password
+  document.getElementById("forgot-password")?.addEventListener("click", async () => {
+    const emailInput = document.getElementById("email");
+    let email = emailInput?.value.trim() || "";
+    if (!email) {
+      email = await showPrompt("Enter your email to receive a reset link:");
+      if (!email) return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showToast("Password reset link sent! Check your inbox.", "success");
+    } catch (error) {
+      showToast(_friendlyError(error), "error");
+    }
+  });
 
   // Toggle password visibility
   window.togglePassword = () => {
