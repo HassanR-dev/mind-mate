@@ -70,7 +70,6 @@ node_modules/
 
 # Project-specific ignores
 Datasets/
-functions/
 Mind Mate - User Flow Chart — Eraser.html
 Mind Mate - User Flow Chart — Eraser_files/
 state diagram mindmate.png
@@ -83,3 +82,4 @@ pglite-debug.log
 *.swp
 *.swo
 *~
+.vercel

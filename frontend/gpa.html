@@ -6,7 +6,6 @@
 <title>GPA Tracker - Mind Mate</title>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -36,6 +35,9 @@
 <!-- Top Navigation -->
 <header class="sticky top-0 z-50 w-full border-b border-[#283930] bg-background-dark/95 backdrop-blur-sm">
 <div class="flex h-16 items-center justify-between px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
+<button aria-label="Open menu" class="md:hidden text-gray-400 hover:text-white mr-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <div class="flex items-center gap-4">
 <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
 <span class="material-symbols-outlined text-2xl">school</span>
@@ -50,12 +52,14 @@
 </a>
 <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="journal.html">Mood Journal</a>
 <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="insights.html">Insights</a>
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="tasks.html">Tasks</a>
+<a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors" href="user-profile.html">Profile</a>
 </nav>
 <div class="flex items-center gap-4">
-<button class="text-gray-400 hover:text-white transition-colors">
+<button id="gpa-notif-btn" class="text-gray-400 hover:text-white transition-colors" aria-label="Notifications">
 <span class="material-symbols-outlined">notifications</span>
 </button>
-<div class="size-9 rounded-full bg-center bg-cover border border-[#283930]" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrL0BvNA3GJnyxj83jNDC_e0IGBh85E8oOng4NrR5whxz1uMKcf5nFjvkO4vMfOgax2iV1_ZmXLNjGhUVuMjmAvHHXYL6sjDV74YqsT4NugvZ7ZDJMR84Ntqu9baANSWH3Spr_zz_ddUyblRfayajh1NF93YDmV4_E2kTL2wytJlfmULFgZPSvKDN22-fEJ720CtdwQ-l1TnDMrrYL05owsd3wan96ujlT1uoccvQ2eeWeWfetxuMut3e5tHAYFw3k4LKdn3eW7ch5');"></div>
+<div class="size-9 rounded-full bg-center bg-cover border border-[#283930]" role="img" aria-label="User avatar" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>');"></div>
 </div>
 </div>
 </header>
@@ -65,12 +69,12 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>
 <h1 class="text-3xl md:text-4xl font-black tracking-tight text-white mb-2">Academic Performance</h1>
-<p class="text-[#9db9ab] text-base font-normal max-w-xl">
-                    Keep track of your grades and hit your targets. You're 0.2 points away from your goal!
+<p id="gpa-subtitle" class="text-[#9db9ab] text-base font-normal max-w-xl">
+                    Track your courses and grades across all semesters.
                 </p>
 </div>
 <div class="flex gap-3">
-<button class="flex items-center gap-2 px-4 py-2 bg-[#283930] hover:bg-[#344a3e] text-white rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-[#3b5447]">
+<button id="export-report-btn" class="flex items-center gap-2 px-4 py-2 bg-[#283930] hover:bg-[#344a3e] text-white rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-[#3b5447]">
 <span class="material-symbols-outlined text-[18px]">download</span>
                     Export Report
                 </button>
@@ -81,17 +85,18 @@
 <!-- LEFT COLUMN: Main Inputs (Span 2) -->
 <div class="lg:col-span-2 flex flex-col gap-6">
 <!-- Semester Selector -->
-<div class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar">
-<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2023</button>
-<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2024</button>
-<button class="flex-1 min-w-[100px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all">Fall 2024</button>
-<button class="flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2025</button>
+<div id="semester-bar" class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar items-center gap-1">
+<button data-semester="all" class="sem-btn min-w-[80px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all shrink-0">All</button>
+<!-- Dynamic semester buttons inserted by JS -->
+<button id="add-semester-btn" class="min-w-[40px] px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors shrink-0" title="Add semester">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
 </div>
 <!-- Course Table -->
 <div class="bg-card-dark rounded-xl border border-[#283930] overflow-hidden flex flex-col">
 <div class="p-6 border-b border-[#283930] flex justify-between items-center">
-<h3 class="text-white font-bold text-lg">Fall 2024 Courses</h3>
-<span class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">IN PROGRESS</span>
+<h3 id="semester-title" class="text-white font-bold text-lg">All Courses</h3>
+<span id="semester-badge" class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded"></span>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left border-collapse">
@@ -104,99 +109,7 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-[#283930]">
-<tr class="group hover:bg-[#283930]/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center">
-<span class="material-symbols-outlined text-sm">psychology</span>
-</div>
-<input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" placeholder="Course Name" type="text" value="SPM"/>
-</div>
-</td>
-<td class="px-6 py-4">
-<input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="3"/>
-</td>
-<td class="px-6 py-4">
-<div class="relative">
-<select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
-<option value="4.0">A (4.0)</option>
-<option value="3.7">A- (3.7)</option>
-<option value="3.3">B+ (3.3)</option>
-<option value="3.0">B (3.0)</option>
-</select>
-<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-<span class="material-symbols-outlined text-sm">expand_more</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
-<span class="material-symbols-outlined text-xl">delete</span>
-</button>
-</td>
-</tr>
-<tr class="group hover:bg-[#283930]/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center">
-<span class="material-symbols-outlined text-sm">functions</span>
-</div>
-<input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" placeholder="Course Name" type="text" value="OB"/>
-</div>
-</td>
-<td class="px-6 py-4">
-<input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="4"/>
-</td>
-<td class="px-6 py-4">
-<div class="relative">
-<select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
-<option value="4.0">A (4.0)</option>
-<option value="3.7">A- (3.7)</option>
-<option selected="" value="3.3">B+ (3.3)</option>
-<option value="3.0">B (3.0)</option>
-</select>
-<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-<span class="material-symbols-outlined text-sm">expand_more</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
-<span class="material-symbols-outlined text-xl">delete</span>
-</button>
-</td>
-</tr>
-<tr class="group hover:bg-[#283930]/30 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-8 rounded bg-orange-500/20 text-orange-400 flex items-center justify-center">
-<span class="material-symbols-outlined text-sm">palette</span>
-</div>
-<input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" placeholder="Course Name" type="text" value="MAD"/>
-</div>
-</td>
-<td class="px-6 py-4">
-<input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="3"/>
-</td>
-<td class="px-6 py-4">
-<div class="relative">
-<select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer">
-<option value="4.0">A (4.0)</option>
-<option selected="" value="3.7">A- (3.7)</option>
-<option value="3.3">B+ (3.3)</option>
-<option value="3.0">B (3.0)</option>
-</select>
-<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-<span class="material-symbols-outlined text-sm">expand_more</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10">
-<span class="material-symbols-outlined text-xl">delete</span>
-</button>
-</td>
-</tr>
+<!-- DB courses inserted here by JS -->
 <!-- Empty Input Row -->
 <tr class="bg-[#13ec80]/5">
 <td class="px-6 py-4">
@@ -231,7 +144,7 @@
 </div>
 </td>
 <td class="px-6 py-4 text-right">
-<button id="add-course-btn" class="bg-primary hover:bg-primary/90 text-[#111814] rounded-lg p-2 transition-colors">
+<button id="add-course-btn" aria-label="Add course" class="bg-primary hover:bg-primary/90 text-[#111814] rounded-lg p-2 transition-colors">
 <span class="material-symbols-outlined text-xl block">add</span>
 </button>
 </td>
@@ -248,10 +161,10 @@
 </div>
 <div>
 <h4 class="text-white font-bold mb-1">Impact Insight</h4>
-<p class="text-sm text-[#9db9ab]">If you get an <span class="font-bold text-white">A</span> in <span class="text-white underline decoration-dotted">SPM</span>, your semester GPA will rise to <span class="text-primary font-bold">3.95</span>.</p>
+<p id="impact-text" class="text-sm text-[#9db9ab]">Add courses to see impact insights.</p>
 </div>
 </div>
-<button class="text-sm font-medium text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg border border-white/10 transition-colors whitespace-nowrap">
+<button id="view-scenario-btn" class="text-sm font-medium text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg border border-white/10 transition-colors whitespace-nowrap">
                         View Scenario
                     </button>
 </div>
@@ -270,11 +183,11 @@
 <!-- Background circle -->
 <circle cx="50" cy="50" fill="none" r="45" stroke="#283930" stroke-width="8"></circle>
 <!-- Progress circle -->
-<circle class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="20" stroke-linecap="round" stroke-width="8"></circle>
+<circle id="gpa-progress-circle" class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" stroke-width="8"></circle>
 </svg>
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-5xl font-black text-white tracking-tighter">3.8</span>
-<span class="text-sm font-medium text-primary mt-1">+0.2 this term</span>
+<span id="gpa-display" class="text-5xl font-black text-white tracking-tighter">—</span>
+<span class="text-sm font-medium text-primary mt-1">Cumulative</span>
 </div>
 </div>
 <div class="mt-8 grid grid-cols-2 gap-4 w-full">
@@ -284,7 +197,7 @@
 </div>
 <div class="bg-[#111814] rounded-lg p-3 text-center border border-[#283930]">
 <span class="block text-xs text-gray-500 uppercase font-bold mb-1">Credits</span>
-<span class="text-xl font-bold text-white">12</span>
+<span id="total-credits" class="text-xl font-bold text-white">0</span>
 </div>
 </div>
 </div>
@@ -292,13 +205,13 @@
 <div class="bg-card-dark rounded-xl p-6 border border-[#283930]">
 <div class="flex justify-between items-center mb-4">
 <h3 class="text-white font-bold">Goal Progress</h3>
-<span class="text-xs font-medium text-[#9db9ab]">95% to Target</span>
+<span id="gpa-goal-pct" class="text-xs font-medium text-[#9db9ab]">0% to Target</span>
 </div>
 <div class="w-full bg-[#111814] rounded-full h-3 mb-2">
-<div class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 95%"></div>
+<div id="gpa-goal-bar" class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 0%"></div>
 </div>
 <div class="flex justify-between text-xs text-gray-500">
-<span>Current: 3.8</span>
+<span id="goal-current">Current: —</span>
 <span>Target: 4.0</span>
 </div>
 </div>
@@ -316,122 +229,140 @@
 </div>
 <!-- Mini Chart Placeholder -->
 <div class="bg-card-dark rounded-xl p-6 border border-[#283930] flex flex-col gap-4">
-<h3 class="text-white font-bold text-sm">GPA Trend (Last 4 Semesters)</h3>
-<div class="h-32 flex items-end justify-between gap-2 px-2">
-<div class="w-full bg-[#283930] rounded-t-sm h-[60%] relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.2</div>
+<h3 class="text-white font-bold text-sm">GPA Trend</h3>
+<div id="trend-chart" class="h-32 flex items-end justify-between gap-2 px-2">
+<div class="flex-1 flex items-center justify-center text-gray-500 text-sm">No data yet</div>
 </div>
-<div class="w-full bg-[#283930] rounded-t-sm h-[75%] relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.5</div>
-</div>
-<div class="w-full bg-[#283930] rounded-t-sm h-[70%] relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.4</div>
-</div>
-<div class="w-full bg-primary rounded-t-sm h-[90%] relative shadow-[0_0_15px_rgba(19,236,128,0.3)] group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-primary font-bold text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.8</div>
-</div>
-</div>
-<div class="flex justify-between text-xs text-gray-500 font-mono">
-<span>Fa22</span>
-<span>Sp23</span>
-<span>Fa23</span>
-<span>Sp24</span>
-</div>
+<div id="trend-labels" class="flex justify-between text-xs text-gray-500 font-mono"></div>
 </div>
 </div>
 </div>
 </main>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth } from "./auth.js";
-  import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData, pushUserData, updateUserData, removeUserData } from "./js/services/db.service.js";
+  import { showToast, showConfirm, showPrompt } from "./js/services/toast.js";
+  import { initNav } from "./js/services/nav.js";
 
-  const db = getDatabase(app);
-  const gpasRef = ref(db, "gpas");
-  let currentUserId = null;
+  await authGuard();
+  initNav("gpa");
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUserId = user.uid;
-    loadGPAs();
-  });
+  const tbody          = document.querySelector("tbody");
+  const gpaDisplay     = document.getElementById("gpa-display");
+  const progressCircle = document.getElementById("gpa-progress-circle");
+  const goalBar        = document.getElementById("gpa-goal-bar");
+  const goalPct        = document.getElementById("gpa-goal-pct");
+  const semTitle       = document.getElementById("semester-title");
+  const semBadge       = document.getElementById("semester-badge");
+  const semBar         = document.getElementById("semester-bar");
+  const addSemBtn      = document.getElementById("add-semester-btn");
+  const totalCreditsEl = document.getElementById("total-credits");
+  const goalCurrentEl  = document.getElementById("goal-current");
+  const impactTextEl   = document.getElementById("impact-text");
+  const subtitleEl     = document.getElementById("gpa-subtitle");
+  const trendChart     = document.getElementById("trend-chart");
+  const trendLabels    = document.getElementById("trend-labels");
 
-  // Load GPAs
-  function loadGPAs() {
-    onValue(gpasRef, (snapshot) => {
-      const tbody = document.querySelector("tbody");
-      if (!tbody) return;
+  let allGpas = {};
+  let activeSemester = "all";
 
-      // Clear existing rows except the add row
-      const existingRows = tbody.querySelectorAll("tr:not(.bg-\\[\\#13ec80\\]\\/5)");
-      existingRows.forEach(el => el.remove());
+  // ── Dynamic Semester Buttons ──
+  function buildSemesterButtons() {
+    semBar.querySelectorAll(".sem-btn:not([data-semester='all'])").forEach(b => b.remove());
+    const semesters = [...new Set(Object.values(allGpas).map(g => g.semester).filter(Boolean))].sort();
 
-      let totalPoints = 0;
-      let totalCredits = 0;
-
-      snapshot.forEach(child => {
-        const gpa = child.val();
-        if (gpa.userId !== currentUserId) return;
-
-        const credits = parseFloat(gpa.credits || 0);
-        const gradePoints = parseFloat(gpa.gpa || 0);
-        totalPoints += gradePoints * credits;
-        totalCredits += credits;
-
-        const row = createGPARow(child.key, gpa);
-        tbody.insertBefore(row, tbody.lastElementChild);
-      });
-
-      // Calculate and update cumulative GPA
-      const cumulativeGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
-      updateGPADisplay(cumulativeGPA);
+    semesters.forEach(sem => {
+      const btn = document.createElement("button");
+      btn.dataset.semester = sem;
+      const isActive = activeSemester === sem;
+      btn.className = `sem-btn min-w-[80px] px-4 py-2 rounded-lg text-sm transition-all shrink-0 ${
+        isActive ? "bg-primary text-background-dark shadow-md font-bold" : "text-[#9db9ab] hover:text-white font-medium"}`;
+      btn.textContent = sem;
+      btn.addEventListener("click", () => switchSemester(sem));
+      semBar.insertBefore(btn, addSemBtn);
     });
+
+    const allBtn = semBar.querySelector("[data-semester='all']");
+    if (allBtn) {
+      const isAll = activeSemester === "all";
+      allBtn.className = `sem-btn min-w-[80px] px-4 py-2 rounded-lg text-sm transition-all shrink-0 ${
+        isAll ? "bg-primary text-background-dark shadow-md font-bold" : "text-[#9db9ab] hover:text-white font-medium"}`;
+    }
   }
 
-  function createGPARow(gpaId, gpa) {
+  function switchSemester(sem) {
+    activeSemester = sem;
+    buildSemesterButtons();
+    if (semTitle) semTitle.textContent = sem === "all" ? "All Courses" : `${sem} Courses`;
+    if (semBadge) semBadge.textContent = sem === "all" ? "" : "FILTERED";
+    renderGpas();
+  }
+
+  semBar?.querySelector("[data-semester='all']")?.addEventListener("click", () => switchSemester("all"));
+
+  addSemBtn?.addEventListener("click", async () => {
+    const name = await showPrompt("Enter semester name (e.g., Fall 2024):");
+    if (!name || !name.trim()) return;
+    switchSemester(name.trim());
+    showToast(`Semester "${name.trim()}" ready — add courses to it`, "success");
+  });
+
+  // ── Grade helpers ──
+  const GRADES = [
+    ["4.0","A (4.0)"],["3.7","A- (3.7)"],["3.3","B+ (3.3)"],["3.0","B (3.0)"],
+    ["2.7","B- (2.7)"],["2.3","C+ (2.3)"],["2.0","C (2.0)"],["1.7","C- (1.7)"],
+    ["1.3","D+ (1.3)"],["1.0","D (1.0)"],["0.0","F (0.0)"]
+  ];
+  const COLORS = ["blue","purple","orange","green","red","yellow"];
+  const GRADE_MAP = { "4.0":"A","3.7":"A-","3.3":"B+","3.0":"B","2.7":"B-","2.3":"C+","2.0":"C","1.7":"C-","1.3":"D+","1.0":"D","0.0":"F" };
+
+  function gradeOptions(selected) {
+    return GRADES.map(([v, l]) =>
+      `<option value="${v}" ${parseFloat(selected) === parseFloat(v) ? "selected" : ""}>${l}</option>`
+    ).join("");
+  }
+
+  // ── Rendering ──
+  function renderGpas() {
+    if (!tbody) return;
+    tbody.querySelectorAll("tr[data-gpa-id]").forEach(r => r.remove());
+    const addRow = tbody.querySelector("tr.bg-\\[\\#13ec80\\]\\/5");
+
+    Object.entries(allGpas).forEach(([id, gpa]) => {
+      if (activeSemester !== "all" && gpa.semester !== activeSemester) return;
+      const row = createRow(id, gpa);
+      tbody.insertBefore(row, addRow || null);
+    });
+    updateStats();
+  }
+
+  function createRow(id, gpa) {
+    const color = COLORS[Math.abs(id.charCodeAt(0)) % COLORS.length];
     const row = document.createElement("tr");
     row.className = "group hover:bg-[#283930]/30 transition-colors";
-    
-    const courseColors = ["blue", "purple", "orange", "green", "red", "yellow"];
-    const colorIndex = Math.floor(Math.random() * courseColors.length);
-    const color = courseColors[colorIndex];
-
+    row.dataset.gpaId = id;
     row.innerHTML = `
       <td class="px-6 py-4">
         <div class="flex items-center gap-3">
           <div class="size-8 rounded bg-${color}-500/20 text-${color}-400 flex items-center justify-center">
             <span class="material-symbols-outlined text-sm">psychology</span>
           </div>
-          <input class="course-name bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600" 
-                 type="text" value="${gpa.courseName || ''}" 
-                 onchange="updateGPA('${gpaId}', 'courseName', this.value)" />
+          <input class="bg-transparent border-none text-white font-medium p-0 focus:ring-0 w-full placeholder-gray-600"
+                 type="text" value="${gpa.courseName || ""}" placeholder="Course Name"
+                 data-field="courseName" data-id="${id}" />
         </div>
       </td>
       <td class="px-6 py-4">
-        <input class="credits bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm" 
-               type="number" value="${gpa.credits || 0}" 
-               onchange="updateGPA('${gpaId}', 'credits', parseFloat(this.value))" />
+        <input class="bg-[#111814] border border-[#283930] rounded-lg text-white text-center w-16 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary text-sm"
+               type="number" value="${gpa.credits || 0}" min="0" step="0.5"
+               data-field="credits" data-id="${id}" />
       </td>
       <td class="px-6 py-4">
         <div class="relative">
-          <select class="grade-select w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer"
-                  onchange="updateGPA('${gpaId}', 'gpa', parseFloat(this.value))">
-            <option value="4.0" ${gpa.gpa == 4.0 ? 'selected' : ''}>A (4.0)</option>
-            <option value="3.7" ${gpa.gpa == 3.7 ? 'selected' : ''}>A- (3.7)</option>
-            <option value="3.3" ${gpa.gpa == 3.3 ? 'selected' : ''}>B+ (3.3)</option>
-            <option value="3.0" ${gpa.gpa == 3.0 ? 'selected' : ''}>B (3.0)</option>
-            <option value="2.7" ${gpa.gpa == 2.7 ? 'selected' : ''}>B- (2.7)</option>
-            <option value="2.3" ${gpa.gpa == 2.3 ? 'selected' : ''}>C+ (2.3)</option>
-            <option value="2.0" ${gpa.gpa == 2.0 ? 'selected' : ''}>C (2.0)</option>
-            <option value="1.7" ${gpa.gpa == 1.7 ? 'selected' : ''}>C- (1.7)</option>
-            <option value="1.3" ${gpa.gpa == 1.3 ? 'selected' : ''}>D+ (1.3)</option>
-            <option value="1.0" ${gpa.gpa == 1.0 ? 'selected' : ''}>D (1.0)</option>
-            <option value="0.0" ${gpa.gpa == 0.0 ? 'selected' : ''}>F (0.0)</option>
+          <select class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg focus:ring-primary focus:border-primary block p-2.5 appearance-none cursor-pointer"
+                  data-field="gpa" data-id="${id}">
+            ${gradeOptions(gpa.gpa)}
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
             <span class="material-symbols-outlined text-sm">expand_more</span>
@@ -439,86 +370,247 @@
         </div>
       </td>
       <td class="px-6 py-4 text-right">
-        <button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10" onclick="deleteGPA('${gpaId}')">
+        <button class="text-gray-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-400/10" data-delete="${id}" aria-label="Delete course">
           <span class="material-symbols-outlined text-xl">delete</span>
         </button>
-      </td>
-    `;
+      </td>`;
     return row;
   }
 
-  function updateGPADisplay(gpa) {
-    // Update main GPA display
-    const gpaDisplays = document.querySelectorAll(".text-5xl, .text-4xl");
-    gpaDisplays.forEach(el => {
-      const text = el.textContent.trim();
-      if (text === "3.8" || /^\d+\.\d+$/.test(text)) {
-        el.textContent = gpa;
-      }
+  // ── Stats & display ──
+  function updateStats() {
+    let totalPoints = 0, totalCredits = 0;
+    Object.values(allGpas).forEach(g => {
+      const cr = parseFloat(g.credits || 0);
+      totalPoints += parseFloat(g.gpa || 0) * cr;
+      totalCredits += cr;
     });
-    
-    // Update circular progress
-    const progressCircle = document.querySelector("circle[stroke='#13ec80']");
-    if (progressCircle) {
-      const circumference = 2 * Math.PI * 45; // radius is 45
-      const targetGPA = 4.0;
-      const progress = (parseFloat(gpa) / targetGPA) * 100;
-      const offset = circumference - (progress / 100) * circumference;
-      progressCircle.setAttribute("stroke-dashoffset", offset);
+    const cgpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
+
+    updateCircle(cgpa);
+    if (totalCreditsEl) totalCreditsEl.textContent = totalCredits;
+    if (goalCurrentEl) goalCurrentEl.textContent = `Current: ${cgpa > 0 ? cgpa.toFixed(2) : "—"}`;
+
+    // Subtitle
+    if (subtitleEl) {
+      if (totalCredits === 0) subtitleEl.textContent = "Track your courses and grades across all semesters.";
+      else {
+        const gap = (4.0 - cgpa).toFixed(2);
+        subtitleEl.textContent = cgpa >= 4.0
+          ? "Perfect GPA! Keep up the excellent work."
+          : `You're ${gap} points away from a 4.0 — keep pushing!`;
+      }
     }
-    
-    // Update goal progress bar
-    const goalBar = document.querySelector(".bg-primary.h-3");
-    if (goalBar) {
-      const targetGPA = 4.0;
-      const progress = (parseFloat(gpa) / targetGPA) * 100;
-      goalBar.style.width = Math.min(progress, 100) + "%";
+
+    updateImpactInsight(cgpa, totalPoints, totalCredits);
+    updateTrendChart();
+  }
+
+  function updateCircle(gpaVal) {
+    const val = parseFloat(gpaVal) || 0;
+    if (gpaDisplay) gpaDisplay.textContent = val > 0 ? val.toFixed(2) : "—";
+    const pct = Math.min((val / 4.0) * 100, 100);
+    if (progressCircle) {
+      const circ = 2 * Math.PI * 45;
+      progressCircle.setAttribute("stroke-dashoffset", circ - (pct / 100) * circ);
+    }
+    if (goalBar) goalBar.style.width = pct + "%";
+    if (goalPct) goalPct.textContent = Math.round(pct) + "% to Target";
+  }
+
+  function updateImpactInsight(cgpa, totalPoints, totalCredits) {
+    if (!impactTextEl) return;
+    const entries = Object.entries(allGpas);
+    if (entries.length === 0) { impactTextEl.textContent = "Add courses to see impact insights."; return; }
+
+    let lowest = null;
+    entries.forEach(([id, g]) => {
+      const grade = parseFloat(g.gpa || 0);
+      if (!lowest || grade < parseFloat(lowest[1].gpa || 0)) lowest = [id, g];
+    });
+
+    if (lowest && parseFloat(lowest[1].gpa || 0) < 4.0) {
+      const cr = parseFloat(lowest[1].credits || 0);
+      const oldGrade = parseFloat(lowest[1].gpa || 0);
+      const newPoints = totalPoints - (oldGrade * cr) + (4.0 * cr);
+      const newCgpa = totalCredits > 0 ? (newPoints / totalCredits).toFixed(2) : "0.00";
+      const diff = (parseFloat(newCgpa) - cgpa).toFixed(2);
+      impactTextEl.textContent = `If you improve "${lowest[1].courseName}" to an A, your CGPA could rise to ${newCgpa} (+${diff}).`;
+    } else {
+      impactTextEl.textContent = "Outstanding! All your courses are at the highest grade.";
     }
   }
 
-  // Add new course
-  document.getElementById("add-course-btn").addEventListener("click", () => {
+  function updateTrendChart() {
+    if (!trendChart || !trendLabels) return;
+    const semGpas = {};
+    Object.values(allGpas).forEach(g => {
+      if (!g.semester) return;
+      if (!semGpas[g.semester]) semGpas[g.semester] = { points: 0, credits: 0 };
+      const cr = parseFloat(g.credits || 0);
+      semGpas[g.semester].points += parseFloat(g.gpa || 0) * cr;
+      semGpas[g.semester].credits += cr;
+    });
+    const semesters = Object.keys(semGpas).sort();
+    if (semesters.length === 0) {
+      trendChart.innerHTML = '<div class="flex-1 flex items-center justify-center text-gray-500 text-sm">No data yet</div>';
+      trendLabels.innerHTML = "";
+      return;
+    }
+    const lastIdx = semesters.length - 1;
+    trendChart.innerHTML = semesters.map((sem, i) => {
+      const d = semGpas[sem];
+      const gpa = d.credits > 0 ? d.points / d.credits : 0;
+      const pct = Math.max((gpa / 4.0) * 100, 5);
+      const isLast = i === lastIdx;
+      const bg = isLast ? "bg-primary shadow-[0_0_15px_rgba(19,236,128,0.3)]" : "bg-[#283930]";
+      const tip = isLast ? "text-primary font-bold" : "text-white";
+      return `<div class="w-full ${bg} rounded-t-sm relative group" style="height:${pct}%">
+        <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black ${tip} text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${gpa.toFixed(2)}</div>
+      </div>`;
+    }).join("");
+    trendLabels.innerHTML = semesters.map(s => `<span>${s.length > 8 ? s.substring(0, 8) : s}</span>`).join("");
+  }
+
+  // ── DB listener ──
+  listenToUserData("gpas", snap => {
+    allGpas = snap || {};
+    buildSemesterButtons();
+    renderGpas();
+  });
+
+  // ── Inline edits ──
+  tbody?.addEventListener("change", async e => {
+    const { field, id } = e.target.dataset;
+    if (!field || !id) return;
+    const value = field === "credits" || field === "gpa" ? parseFloat(e.target.value) : e.target.value;
+    await updateUserData(`gpas/${id}`, { [field]: value });
+  });
+
+  // ── Delete ──
+  tbody?.addEventListener("click", async e => {
+    const deleteId = e.target.closest("[data-delete]")?.dataset.delete;
+    if (!deleteId) return;
+    const ok = await showConfirm("Delete this course?");
+    if (ok) { await removeUserData(`gpas/${deleteId}`); showToast("Course removed", "info"); }
+  });
+
+  // ── Add course ──
+  document.getElementById("add-course-btn")?.addEventListener("click", async () => {
     const courseName = document.getElementById("new-course-name").value.trim();
-    const credits = parseFloat(document.getElementById("new-course-credits").value) || 0;
+    const credits    = parseFloat(document.getElementById("new-course-credits").value) || 0;
     const gradeValue = parseFloat(document.getElementById("new-course-grade").value) || 0;
 
-    if (!courseName) {
-      alert("Please enter a course name");
-      return;
+    if (!courseName) { showToast("Please enter a course name", "warning"); return; }
+    if (credits <= 0) { showToast("Please enter valid credits (greater than 0)", "warning"); return; }
+
+    let semester = activeSemester;
+    if (semester === "all") {
+      semester = await showPrompt("Which semester is this course in?");
+      if (!semester || !semester.trim()) { showToast("Semester name is required", "warning"); return; }
+      semester = semester.trim();
     }
+    await pushUserData("gpas", { courseName, credits, gpa: gradeValue, semester, createdAt: new Date().toISOString() });
+    showToast("Course added!", "success");
 
-    if (credits <= 0) {
-      alert("Please enter valid credits (greater than 0)");
-      return;
-    }
-
-    push(gpasRef, {
-      courseName,
-      credits,
-      gpa: gradeValue,
-      userId: currentUserId,
-      semester: "Fall 2024",
-      createdAt: new Date().toISOString()
-    });
-
-    // Clear inputs
     document.getElementById("new-course-name").value = "";
     document.getElementById("new-course-credits").value = "";
     document.getElementById("new-course-grade").value = "0.0";
   });
 
-  // Update GPA
-  window.updateGPA = (gpaId, field, value) => {
-    update(ref(db, `gpas/${gpaId}`), { [field]: value });
-  };
+  // ── Study Mood buttons ──
+  document.querySelector(".bg-primary\\/10 .flex.gap-2")?.addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.textContent.trim() === "Log Mood") window.location.href = "journal.html";
+    else if (btn.textContent.trim() === "View Trends") window.location.href = "insights.html";
+  });
 
-  // Delete GPA
-  window.deleteGPA = (gpaId) => {
-    if (confirm("Delete this course?")) {
-      remove(ref(db, `gpas/${gpaId}`));
-    }
-  };
+  // ── Export Report ──
+  document.getElementById("export-report-btn")?.addEventListener("click", () => {
+    const entries = Object.values(allGpas);
+    if (entries.length === 0) { showToast("No courses to export", "warning"); return; }
+    const rows = [["Course", "Credits", "Grade", "Semester"]];
+    let tp = 0, tc = 0;
+    entries.forEach(g => {
+      const cr = parseFloat(g.credits || 0);
+      tp += parseFloat(g.gpa || 0) * cr; tc += cr;
+      rows.push([g.courseName || "", cr, GRADE_MAP[String(g.gpa)] || g.gpa, g.semester || ""]);
+    });
+    rows.push([]);
+    rows.push(["Cumulative GPA", tc > 0 ? (tp / tc).toFixed(2) : "N/A", "Total Credits", tc]);
+    const csv = rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = "gpa_report.csv"; a.click(); URL.revokeObjectURL(a.href);
+    showToast("Report downloaded!", "success");
+  });
 
+  // ── What-If Scenario modal ──
+  document.getElementById("view-scenario-btn")?.addEventListener("click", () => {
+    const courses = Object.entries(allGpas);
+    if (courses.length === 0) { showToast("Add courses first to simulate scenarios", "warning"); return; }
+
+    const overlay = document.createElement("div");
+    overlay.id = "scenario-modal";
+    overlay.className = "fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4";
+
+    const courseOpts = courses.map(([id, g]) =>
+      `<option value="${id}">${g.courseName || "Untitled"} (${g.semester || ""})</option>`
+    ).join("");
+    const gradeOpts = GRADES.map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
+
+    overlay.innerHTML = `
+      <div class="w-full max-w-md bg-[#1c2a23] rounded-2xl border border-[#283930] shadow-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#283930] flex items-center justify-between">
+          <h3 class="text-white font-bold text-lg">What-If Scenario</h3>
+          <button id="close-scenario" class="text-gray-400 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <label class="text-sm text-[#9db9ab] mb-1 block">Select Course</label>
+            <select id="scenario-course" class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg p-2.5 focus:ring-primary focus:border-primary">${courseOpts}</select>
+          </div>
+          <div>
+            <label class="text-sm text-[#9db9ab] mb-1 block">If you get...</label>
+            <select id="scenario-grade" class="w-full bg-[#111814] border border-[#283930] text-white text-sm rounded-lg p-2.5 focus:ring-primary focus:border-primary">${gradeOpts}</select>
+          </div>
+          <button id="calc-scenario" class="w-full py-2.5 bg-primary text-[#111814] font-bold rounded-lg hover:bg-primary/90 transition-colors">Calculate</button>
+          <div id="scenario-result" class="hidden p-4 rounded-xl bg-[#111814] border border-[#283930] text-center">
+            <p class="text-sm text-[#9db9ab] mb-1">Your projected CGPA would be</p>
+            <p id="scenario-gpa" class="text-4xl font-black text-primary"></p>
+            <p id="scenario-diff" class="text-sm mt-1"></p>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+
+    document.getElementById("close-scenario").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+
+    document.getElementById("calc-scenario").addEventListener("click", () => {
+      const cid = document.getElementById("scenario-course").value;
+      const newGrade = parseFloat(document.getElementById("scenario-grade").value);
+      let tp = 0, tc = 0;
+      Object.entries(allGpas).forEach(([id, g]) => {
+        const cr = parseFloat(g.credits || 0);
+        tp += (id === cid ? newGrade : parseFloat(g.gpa || 0)) * cr;
+        tc += cr;
+      });
+      const projected = tc > 0 ? (tp / tc).toFixed(2) : "0.00";
+      let ctp = 0, ctc = 0;
+      Object.values(allGpas).forEach(g => { const c = parseFloat(g.credits||0); ctp += parseFloat(g.gpa||0)*c; ctc += c; });
+      const current = ctc > 0 ? ctp / ctc : 0;
+      const diff = (parseFloat(projected) - current).toFixed(2);
+      const diffText = diff > 0 ? `+${diff} from current` : diff < 0 ? `${diff} from current` : "No change";
+      const diffColor = diff > 0 ? "text-green-400" : diff < 0 ? "text-red-400" : "text-gray-400";
+
+      document.getElementById("scenario-gpa").textContent = projected;
+      document.getElementById("scenario-diff").className = `text-sm mt-1 ${diffColor}`;
+      document.getElementById("scenario-diff").textContent = diffText;
+      document.getElementById("scenario-result").classList.remove("hidden");
+    });
+  });
 </script>
 
 </body></html>

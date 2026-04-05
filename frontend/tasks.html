@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Tailwind Configuration -->
@@ -45,12 +44,22 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display h-screen overflow-hidden flex selection:bg-primary selection:text-black">
+<!-- Mobile Header -->
+<div class="md:hidden flex items-center justify-between p-4 bg-[#0d1b14] border-b border-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+<span class="font-bold text-lg">Mind Mate</span>
+</div>
+<button aria-label="Open menu" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- Sidebar -->
 <aside class="w-64 flex flex-col justify-between border-r border-white/5 bg-[#0d1b14] p-4 shrink-0 hidden md:flex">
 <div class="flex flex-col gap-8">
 <!-- User Profile -->
 <div class="flex gap-3 items-center px-2 mt-2">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Avatar of the student user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARvItd5CmCdgRASAmyNJ9vpbEQV87P698DmkNGj9PYAPGn9z_eZZIARzBM2VgDc3r_SdWetWE_5vRypX5tLUx4FHEF8rQdRNqb6bo19SnLA_jW8eOQQg6AfOS2c-kKU90Lx5D-i-dbHODS8gKSUG1tbh2LxrxMxwHrM7b4fURGBGfxHf82onQpgVd5OkDlf3uSRSvFmpcVoETIrXZJitRDD3eNvv0ZjROItbw_gruFehevlCFhduoIixR8UMLvkTuEPdBg5l5mqIdN");'>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'>
 </div>
 <div class="flex flex-col">
 <h1 class="text-white text-base font-bold leading-normal">Mind Mate</h1>
@@ -86,6 +95,10 @@
 <span class="material-symbols-outlined text-[24px]">settings</span>
 <p class="text-sm font-medium leading-normal">Settings</p>
 </a>
+<button data-action="logout" class="flex items-center gap-3 px-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors">
+<span class="material-symbols-outlined text-[24px]">logout</span>
+<p class="text-sm font-medium leading-normal">Log Out</p>
+</button>
 </div>
 </aside>
 <!-- Main Content -->
@@ -93,14 +106,14 @@
 <!-- Top Bar / Header -->
 <header class="pt-8 px-8 pb-4 shrink-0 flex justify-between items-end">
 <div class="flex flex-col gap-1">
-<p class="text-[#9db9ab] text-sm font-medium tracking-wide uppercase">Tuesday, October 24th</p>
+<p id="current-date" class="text-[#9db9ab] text-sm font-medium tracking-wide uppercase"></p>
 <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">My Tasks</h1>
 </div>
 <div class="flex gap-4">
 <!-- Search -->
 <div class="relative hidden lg:block">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9db9ab]">search</span>
-<input class="bg-surface-dark border-none rounded-lg text-white pl-10 pr-4 py-2.5 w-64 focus:ring-2 focus:ring-primary focus:outline-none placeholder-[#5a7065] text-sm" placeholder="Search tasks..." type="text"/>
+<input aria-label="Search tasks" class="bg-surface-dark border-none rounded-lg text-white pl-10 pr-4 py-2.5 w-64 focus:ring-2 focus:ring-primary focus:outline-none placeholder-[#5a7065] text-sm" placeholder="Search tasks..." type="text"/>
 </div>
 <!-- Add Button (Mobile/Tablet visible, Desktop secondary) -->
 <button id="new-task-btn" class="bg-primary hover:bg-[#0fd671] text-black font-bold py-2.5 px-6 rounded-lg flex items-center gap-2 transition-colors">
@@ -121,8 +134,7 @@
 </div>
 <p class="text-[#9db9ab] text-sm font-medium leading-normal z-10">Due Today</p>
 <div class="flex items-baseline gap-2 z-10 mt-2">
-<p class="text-white text-3xl font-bold leading-tight">4</p>
-<span class="text-xs text-red-400 font-medium">1 Overdue</span>
+<p id="stat-due-today" class="text-white text-3xl font-bold leading-tight">—</p>
 </div>
 </div>
 <div class="flex flex-col justify-between rounded-2xl p-6 bg-surface-dark border border-white/5 relative overflow-hidden group hover:border-primary/30 transition-colors">
@@ -131,8 +143,7 @@
 </div>
 <p class="text-[#9db9ab] text-sm font-medium leading-normal z-10">Completed</p>
 <div class="flex items-baseline gap-2 z-10 mt-2">
-<p class="text-white text-3xl font-bold leading-tight">12</p>
-<span class="text-xs text-primary font-medium">+2 today</span>
+<p id="stat-completed" class="text-white text-3xl font-bold leading-tight">—</p>
 </div>
 </div>
 <div class="flex flex-col justify-between rounded-2xl p-6 bg-surface-dark border border-white/5 relative overflow-hidden group hover:border-primary/30 transition-colors">
@@ -141,8 +152,7 @@
 </div>
 <p class="text-[#9db9ab] text-sm font-medium leading-normal z-10">Pending</p>
 <div class="flex items-baseline gap-2 z-10 mt-2">
-<p class="text-white text-3xl font-bold leading-tight">8</p>
-<span class="text-xs text-[#9db9ab] font-medium">Next: DSA</span>
+<p id="stat-pending" class="text-white text-3xl font-bold leading-tight">—</p>
 </div>
 </div>
 </div>
@@ -153,30 +163,30 @@
 <p class="text-white text-lg font-bold">Daily Goal</p>
 <p class="text-[#9db9ab] text-xs">Stay consistent!</p>
 </div>
-<span class="text-primary text-2xl font-black">60%</span>
+<span id="progress-pct" class="text-primary text-2xl font-black">0%</span>
 </div>
 <div class="w-full bg-[#3b5447] rounded-full h-3 mb-2">
-<div class="bg-primary h-3 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(19,236,128,0.4)]" style="width: 60%"></div>
+<div id="progress-bar" class="bg-primary h-3 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(19,236,128,0.4)]" style="width: 0%"></div>
 </div>
-<p class="text-[#9db9ab] text-xs font-normal text-right">3/5 tasks completed</p>
+<p id="progress-txt" class="text-[#9db9ab] text-xs font-normal text-right">0/0 tasks completed</p>
 </div>
 </div>
 <!-- Quick Add Bar -->
 <div class="bg-surface-dark rounded-2xl p-2 mb-8 flex items-center shadow-lg border border-white/5 focus-within:border-primary/50 transition-colors group">
-<button class="p-3 text-primary hover:bg-primary/10 rounded-xl transition-colors">
+<button aria-label="Add task" class="p-3 text-primary hover:bg-primary/10 rounded-xl transition-colors">
 <span class="material-symbols-outlined">add_circle</span>
 </button>
 <input id="quick-task-input" class="bg-transparent border-none text-white w-full focus:ring-0 placeholder-[#5a7065] text-lg font-medium px-2" placeholder="I need to..." type="text"/>
 <div class="hidden md:flex items-center gap-2 pr-2">
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button aria-label="Set due date" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">calendar_month</span>
 <span>Today</span>
 </button>
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button aria-label="Add tag" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">sell</span>
 <span>Tag</span>
 </button>
-<button class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button aria-label="Set priority" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">flag</span>
 <span>Priority</span>
 </button>
@@ -186,237 +196,77 @@
 </div>
 </div>
 <!-- Filter Chips -->
-<div class="flex flex-wrap gap-3 mb-6">
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-5 transition-transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(19,236,128,0.3)]">
+<div id="filter-bar" class="flex flex-wrap gap-3 mb-6">
+<button data-filter="all" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary text-black px-5 transition-transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(19,236,128,0.3)]">
 <p class="text-sm font-bold leading-normal">All Tasks</p>
 </button>
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
+<button data-filter="today" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
 <p class="text-white text-sm font-medium leading-normal">Today</p>
-<span class="bg-white/10 text-white text-[10px] px-1.5 py-0.5 rounded-full">4</span>
+<span class="filter-badge bg-white/10 text-white text-[10px] px-1.5 py-0.5 rounded-full hidden"></span>
 </button>
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
+<button data-filter="upcoming" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
 <p class="text-white text-sm font-medium leading-normal">Upcoming</p>
 </button>
-<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
+<button data-filter="overdue" class="filter-chip flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/5 hover:border-primary/30 hover:bg-surface-dark-hover px-5 transition-colors">
 <p class="text-white text-sm font-medium leading-normal">Overdue</p>
-<span class="bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.5 rounded-full">1</span>
+<span class="filter-badge bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.5 rounded-full hidden"></span>
 </button>
 </div>
-<!-- Task List -->
-<div class="flex flex-col gap-3">
-<!-- Task Item: High Priority -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<!-- Checkbox -->
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#9db9ab] group-hover:border-primary transition-colors cursor-pointer shrink-0">
-<div class="w-full h-full rounded-full bg-primary opacity-0 group-hover:opacity-10 transition-opacity"></div>
-<span class="material-symbols-outlined text-primary text-lg opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center transition-opacity scale-75 group-hover:scale-100">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-white text-lg font-medium group-hover:text-primary transition-colors">Finish OB Assignment</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">CourseID#</span>
-<span class="text-[#9db9ab] text-xs flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">schedule</span> 11:59 PM
-                                </span>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/10">
-<div class="w-2 h-2 rounded-full bg-red-500"></div>
-<span class="text-xs text-red-400 font-medium">High Priority</span>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Task Item: Normal -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#9db9ab] group-hover:border-primary transition-colors cursor-pointer shrink-0">
-<span class="material-symbols-outlined text-primary text-lg opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center transition-opacity scale-75 group-hover:scale-100">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-white text-lg font-medium group-hover:text-primary transition-colors">MAD ass 3</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">CourseID#</span>
-<span class="text-[#9db9ab] text-xs flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">calendar_today</span> Tomorrow
-                                </span>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/10">
-<div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-<span class="text-xs text-yellow-400 font-medium">Medium</span>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Task Item: Completed -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 opacity-60 hover:opacity-100 transition-all cursor-pointer">
-<div class="flex items-center gap-4 flex-1">
-<!-- Checked State -->
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-primary bg-primary cursor-pointer shrink-0">
-<span class="material-symbols-outlined text-black text-lg font-bold">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-[#9db9ab] line-through text-lg font-medium">Submit SPM report</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">CourseID#</span>
-<span class="text-[#9db9ab] text-xs">Completed 2h ago</span>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-[#283930] px-3 py-1 rounded-full border border-white/5">
-<span class="text-xs text-[#9db9ab] font-medium">Done</span>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">undo</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Task Item: Normal -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#9db9ab] group-hover:border-primary transition-colors cursor-pointer shrink-0">
-<span class="material-symbols-outlined text-primary text-lg opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center transition-opacity scale-75 group-hover:scale-100">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-white text-lg font-medium group-hover:text-primary transition-colors">Group Meeting: Project MINDMATE</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CS 300</span>
-<span class="text-[#9db9ab] text-xs flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 26
-                                </span>
-</div>
-</div>
-    </div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-gray-500/10 px-3 py-1 rounded-full border border-gray-500/10">
-<div class="w-2 h-2 rounded-full bg-gray-400"></div>
-<span class="text-xs text-gray-400 font-medium">Low</span>
-  </div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-      </div>
-      </div>
-    </div>
-  </div>
-<!-- Empty state illustration (Hidden for now as we have tasks, but good to have in structure) -->
-<!-- 
-            <div class="flex flex-col items-center justify-center py-20 text-center opacity-50">
-                <div class="bg-surface-dark p-6 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-6xl text-primary">spa</span>
-                </div>
-                <h3 class="text-white text-xl font-medium">All caught up!</h3>
-                <p class="text-[#9db9ab] mt-2">Take a break or add a new task to get started.</p>
-            </div> 
-            -->
+<!-- Task List (populated dynamically) -->
+<div id="task-list" class="flex flex-col gap-3"></div>
 </div>
 </main>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth } from "./auth.js";
-  import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData, pushUserData, updateUserData, removeUserData, getUserData } from "./js/services/db.service.js";
+  import { showToast, showConfirm, showPrompt } from "./js/services/toast.js";
+  import { validateTaskTitle } from "./js/services/validators.js";
+  import { initNav } from "./js/services/nav.js";
 
-  const db = getDatabase(app);
-  const tasksRef = ref(db, "tasks");
-  let currentUserId = null;
+  await authGuard();
+  initNav("tasks");
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUserId = user.uid;
-    loadTasks();
-  });
-
-  // Load tasks
-  function loadTasks() {
-    onValue(tasksRef, (snapshot) => {
-      const taskList = document.querySelector(".flex.flex-col.gap-3");
-      if (!taskList) return;
-
-      // Clear existing tasks (keep structure)
-      const existingTasks = taskList.querySelectorAll(".group.flex");
-      existingTasks.forEach(el => el.remove());
-
-      let taskCount = 0;
-      let todayCount = 0;
-      let completedCount = 0;
-      const today = new Date().toDateString();
-
-      snapshot.forEach(child => {
-        const task = child.val();
-        if (task.userId !== currentUserId) return;
-
-        taskCount++;
-        if (task.completed) completedCount++;
-        if (task.dueDate && new Date(task.dueDate).toDateString() === today) todayCount++;
-
-        const taskDiv = createTaskElement(child.key, task);
-        taskList.appendChild(taskDiv);
-      });
-
-      // Update stats
-      updateStats(taskCount, todayCount, completedCount);
-    });
+  // Dynamic date display
+  const dateEl = document.getElementById("current-date");
+  if (dateEl) {
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
   }
 
-  function createTaskElement(taskId, task) {
-    const div = document.createElement("div");
-    div.className = "group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm";
-    
-    const priorityColors = {
-      high: { bg: "bg-red-500/10", border: "border-red-500/10", dot: "bg-red-500", text: "text-red-400" },
-      medium: { bg: "bg-yellow-500/10", border: "border-yellow-500/10", dot: "bg-yellow-500", text: "text-yellow-400" },
-      low: { bg: "bg-gray-500/10", border: "border-gray-500/10", dot: "bg-gray-400", text: "text-gray-400" }
-    };
-    const priority = task.priority || "medium";
-    const color = priorityColors[priority] || priorityColors.medium;
+  const taskList = document.getElementById("task-list");
+  const dueTodayEl  = document.getElementById("stat-due-today");
+  const completedEl = document.getElementById("stat-completed");
+  const pendingEl   = document.getElementById("stat-pending");
+  const progressBar = document.getElementById("progress-bar");
+  const progressPct = document.getElementById("progress-pct");
+  const progressTxt = document.getElementById("progress-txt");
 
+  const PRIORITY = {
+    high:   { bg: "bg-red-500/10",    border: "border-red-500/10",    dot: "bg-red-500",    text: "text-red-400" },
+    medium: { bg: "bg-yellow-500/10", border: "border-yellow-500/10", dot: "bg-yellow-500", text: "text-yellow-400" },
+    low:    { bg: "bg-gray-500/10",   border: "border-gray-500/10",   dot: "bg-gray-400",   text: "text-gray-400" }
+  };
+
+  function _esc(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+
+  function renderTask(taskId, task) {
+    const priority = task.priority || "medium";
+    const color = PRIORITY[priority] || PRIORITY.medium;
+    const div = document.createElement("div");
+    div.dataset.taskId = taskId;
+    div.className = "group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm";
     div.innerHTML = `
       <div class="flex items-center gap-4 flex-1">
-        <div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 ${task.completed ? 'border-primary bg-primary' : 'border-[#9db9ab]'} cursor-pointer shrink-0" onclick="toggleTask('${taskId}')">
+        <button aria-label="Toggle complete" class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 ${task.completed ? 'border-primary bg-primary' : 'border-[#9db9ab]'} cursor-pointer shrink-0" data-toggle="${taskId}">
           ${task.completed ? '<span class="material-symbols-outlined text-black text-lg font-bold">check</span>' : ''}
-        </div>
+        </button>
         <div class="flex flex-col">
-          <h3 class="${task.completed ? 'text-[#9db9ab] line-through' : 'text-white'} text-lg font-medium group-hover:text-primary transition-colors">${escapeHtml(task.title || 'Untitled Task')}</h3>
+          <h3 class="${task.completed ? 'text-[#9db9ab] line-through' : 'text-white'} text-lg font-medium group-hover:text-primary transition-colors">${_esc(task.title || "Untitled Task")}</h3>
           <div class="flex items-center gap-2 mt-1">
-            ${task.courseId ? `<span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">${escapeHtml(task.courseId)}</span>` : ''}
             <span class="text-[#9db9ab] text-xs flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">schedule</span>
-              ${task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}
+              ${task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No date"}
             </span>
           </div>
         </div>
@@ -424,141 +274,180 @@
       <div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
         <div class="flex items-center gap-2 ${color.bg} px-3 py-1 rounded-full border ${color.border}">
           <div class="w-2 h-2 rounded-full ${color.dot}"></div>
-          <span class="text-xs ${color.text} font-medium">${priority.charAt(0).toUpperCase() + priority.slice(1)} Priority</span>
+          <span class="text-xs ${color.text} font-medium">${priority.charAt(0).toUpperCase() + priority.slice(1)}</span>
         </div>
         <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-          <button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg" onclick="editTask('${taskId}')">
+          <button aria-label="Edit task" class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg" data-edit="${taskId}">
             <span class="material-symbols-outlined text-[20px]">edit</span>
           </button>
-          <button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg" onclick="deleteTask('${taskId}')">
+          <button aria-label="Delete task" class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg" data-delete="${taskId}">
             <span class="material-symbols-outlined text-[20px]">delete</span>
           </button>
         </div>
-      </div>
-    `;
+      </div>`;
     return div;
   }
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+  // ── Filter & search state ──
+  let allTasks = [];
+  let activeFilter = "all";
+  const searchInput = document.querySelector("input[aria-label='Search tasks']");
+  const filterChips = document.querySelectorAll(".filter-chip");
+  const ACTIVE_CLS = ["bg-primary", "text-black", "shadow-[0_0_15px_rgba(19,236,128,0.3)]"];
+  const INACTIVE_CLS = ["bg-surface-dark", "border", "border-white/5", "hover:border-primary/30", "hover:bg-surface-dark-hover"];
+
+  function applyFilter() {
+    if (!taskList) return;
+    const query = (searchInput?.value || "").toLowerCase().trim();
+    const today = new Date().toDateString();
+    const now = new Date();
+
+    let filtered = allTasks;
+
+    // Apply filter
+    if (activeFilter === "today") {
+      filtered = filtered.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate).toDateString() === today);
+    } else if (activeFilter === "upcoming") {
+      filtered = filtered.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate) > now);
+    } else if (activeFilter === "overdue") {
+      filtered = filtered.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate) < now && new Date(t.dueDate).toDateString() !== today);
+    }
+
+    // Apply search
+    if (query) {
+      filtered = filtered.filter(([, t]) => (t.title || "").toLowerCase().includes(query));
+    }
+
+    taskList.innerHTML = "";
+    if (filtered.length === 0) {
+      taskList.innerHTML = `<div class="flex flex-col items-center justify-center py-16 text-center opacity-50">
+        <span class="material-symbols-outlined text-5xl text-primary mb-3">${allTasks.length === 0 ? "spa" : "search_off"}</span>
+        <p class="text-white text-lg font-medium">${allTasks.length === 0 ? "All caught up!" : "No matching tasks"}</p>
+        <p class="text-[#9db9ab] text-sm mt-1">${allTasks.length === 0 ? "Add a task to get started." : "Try a different filter or search term."}</p>
+      </div>`;
+    } else {
+      filtered.forEach(([id, task]) => taskList.appendChild(renderTask(id, task)));
+    }
   }
 
-  function updateStats(total, today, completed) {
-    // Update Due Today
-    const dueTodayCard = Array.from(document.querySelectorAll("p")).find(p => p.textContent.includes("Due Today"));
-    if (dueTodayCard) {
-      const countEl = dueTodayCard.parentElement?.querySelector(".text-3xl");
-      if (countEl) countEl.textContent = today;
-    }
-    
-    // Update Completed
-    const completedCard = Array.from(document.querySelectorAll("p")).find(p => p.textContent.includes("Completed"));
-    if (completedCard) {
-      const countEl = completedCard.parentElement?.querySelector(".text-3xl");
-      if (countEl) countEl.textContent = completed;
-    }
-    
-    // Update Pending
-    const pendingCard = Array.from(document.querySelectorAll("p")).find(p => p.textContent.includes("Pending"));
-    if (pendingCard) {
-      const countEl = pendingCard.parentElement?.querySelector(".text-3xl");
-      if (countEl) countEl.textContent = total - completed;
-    }
-    
-    // Update daily goal progress
-    const goalText = document.querySelector("p:contains('tasks completed')");
-    if (goalText) {
-      const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
-      const progressBar = document.querySelector(".bg-primary.h-3");
-      if (progressBar) progressBar.style.width = progress + "%";
-      const progressText = document.querySelector(".text-primary.text-2xl");
-      if (progressText) progressText.textContent = progress + "%";
-      goalText.textContent = `${completed}/${total} tasks completed`;
-    }
-  }
-
-  // Add task with modal
-  document.getElementById("new-task-btn").onclick = () => {
-    showTaskModal();
-  };
-
-  function showTaskModal() {
-    const title = prompt("Enter task title:");
-    if (!title) return;
-    
-    const dueDateInput = prompt("Enter due date (YYYY-MM-DD) or press Enter to skip:");
-    const dueDate = dueDateInput && dueDateInput.trim() ? dueDateInput.trim() : null;
-    
-    const priorityInput = prompt("Priority: high, medium, or low (default: medium):");
-    const priority = priorityInput ? priorityInput.toLowerCase() : "medium";
-    
-    if (!["high", "medium", "low"].includes(priority)) {
-      alert("Invalid priority. Using 'medium'.");
-    }
-
-    push(tasksRef, {
-      title: title.trim(),
-      dueDate: dueDate,
-      priority: ["high", "medium", "low"].includes(priority) ? priority : "medium",
-      completed: false,
-      userId: currentUserId,
-      createdAt: new Date().toISOString()
+  // Filter chip click handlers
+  filterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      activeFilter = chip.dataset.filter;
+      filterChips.forEach(c => {
+        c.classList.remove(...ACTIVE_CLS);
+        c.classList.add(...INACTIVE_CLS);
+        c.querySelector("p").classList.remove("text-black", "font-bold");
+        c.querySelector("p").classList.add("text-white", "font-medium");
+      });
+      chip.classList.remove(...INACTIVE_CLS);
+      chip.classList.add(...ACTIVE_CLS);
+      chip.querySelector("p").classList.remove("text-white", "font-medium");
+      chip.querySelector("p").classList.add("text-black", "font-bold");
+      applyFilter();
     });
-  };
+  });
 
-  document.getElementById("quick-add-btn").onclick = () => {
+  // Search input handler
+  searchInput?.addEventListener("input", () => applyFilter());
+
+  listenToUserData("tasks", snap => {
+    if (!taskList) return;
+    allTasks = Object.entries(snap || {});
+
+    // Update stats
+    const today = new Date().toDateString();
+    const now = new Date();
+    const total     = allTasks.length;
+    const completed = allTasks.filter(([, t]) => t.completed).length;
+    const dueToday  = allTasks.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate).toDateString() === today).length;
+    const overdue   = allTasks.filter(([, t]) => !t.completed && t.dueDate && new Date(t.dueDate) < now && new Date(t.dueDate).toDateString() !== today).length;
+    const progress  = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    if (dueTodayEl)  dueTodayEl.textContent  = dueToday;
+    if (completedEl) completedEl.textContent = completed;
+    if (pendingEl)   pendingEl.textContent   = total - completed;
+
+    // Daily goal: based on today's tasks (due today + completed today)
+    const todayTasks = allTasks.filter(([, t]) => t.dueDate && new Date(t.dueDate).toDateString() === today);
+    const todayCompleted = todayTasks.filter(([, t]) => t.completed).length;
+    const todayTotal = todayTasks.length;
+    const dailyProgress = todayTotal > 0 ? Math.round((todayCompleted / todayTotal) * 100) : (completed > 0 ? 100 : 0);
+    if (progressBar) progressBar.style.width = dailyProgress + "%";
+    if (progressPct) progressPct.textContent = dailyProgress + "%";
+    if (progressTxt) progressTxt.textContent = todayTotal > 0
+      ? `${todayCompleted}/${todayTotal} today's tasks done`
+      : `${completed}/${total} tasks completed`;
+
+    // Update filter badge counts
+    const todayBadge = document.querySelector("[data-filter='today'] .filter-badge");
+    const overdueBadge = document.querySelector("[data-filter='overdue'] .filter-badge");
+    if (todayBadge) {
+      todayBadge.textContent = dueToday;
+      todayBadge.classList.toggle("hidden", dueToday === 0);
+    }
+    if (overdueBadge) {
+      overdueBadge.textContent = overdue;
+      overdueBadge.classList.toggle("hidden", overdue === 0);
+    }
+
+    applyFilter();
+  });
+
+  // Delegated click handlers
+  taskList?.addEventListener("click", async e => {
+    const toggleId = e.target.closest("[data-toggle]")?.dataset.toggle;
+    const editId   = e.target.closest("[data-edit]")?.dataset.edit;
+    const deleteId = e.target.closest("[data-delete]")?.dataset.delete;
+
+    if (toggleId) {
+      const task = await getUserData(`tasks/${toggleId}`);
+      if (task) await updateUserData(`tasks/${toggleId}`, { completed: !task.completed });
+    }
+    if (editId) {
+      const task = await getUserData(`tasks/${editId}`);
+      if (!task) return;
+      const newTitle = await showPrompt("Edit task title:", task.title || "");
+      if (newTitle === null || newTitle === task.title) return;
+      const v = validateTaskTitle(newTitle);
+      if (!v.valid) { showToast(v.error, "warning"); return; }
+      await updateUserData(`tasks/${editId}`, { title: newTitle.trim() });
+      showToast("Task updated", "success");
+    }
+    if (deleteId) {
+      const ok = await showConfirm("Delete this task?");
+      if (ok) { await removeUserData(`tasks/${deleteId}`); showToast("Task deleted", "info"); }
+    }
+  });
+
+  // New task modal
+  async function addTask(title, dueDate = null, priority = "medium") {
+    const v = validateTaskTitle(title);
+    if (!v.valid) { showToast(v.error, "warning"); return; }
+    await pushUserData("tasks", { title: title.trim(), dueDate, priority, completed: false, createdAt: new Date().toISOString() });
+    showToast("Task added!", "success");
+  }
+
+  document.getElementById("new-task-btn")?.addEventListener("click", async () => {
+    const title = await showPrompt("Task title:");
+    if (!title) return;
+    const dueDate = await showPrompt("Due date (YYYY-MM-DD) — leave blank to skip:");
+    const priorityRaw = await showPrompt("Priority: high / medium / low", "medium");
+    const priority = ["high", "medium", "low"].includes((priorityRaw || "").toLowerCase()) ? priorityRaw.toLowerCase() : "medium";
+    await addTask(title, dueDate || null, priority);
+  });
+
+  document.getElementById("quick-add-btn")?.addEventListener("click", async () => {
     const input = document.getElementById("quick-task-input");
-    const title = input.value.trim();
+    const title = input?.value.trim();
     if (!title) return;
+    await addTask(title);
+    if (input) input.value = "";
+  });
 
-    push(tasksRef, {
-      title,
-      dueDate: null,
-      priority: "medium",
-      completed: false,
-      userId: currentUserId,
-      createdAt: new Date().toISOString()
-    });
-
-    input.value = "";
-  };
-
-  document.getElementById("quick-task-input").onkeypress = (e) => {
-    if (e.key === "Enter") {
-      document.getElementById("quick-add-btn").click();
-    }
-  };
-
-  // Toggle task completion
-  window.toggleTask = (taskId) => {
-    const taskRef = ref(db, `tasks/${taskId}`);
-    onValue(taskRef, (snap) => {
-      const task = snap.val();
-      update(taskRef, { completed: !task.completed });
-    }, { onlyOnce: true });
-  };
-
-  // Delete task
-  window.deleteTask = (taskId) => {
-    if (confirm("Delete this task?")) {
-      remove(ref(db, `tasks/${taskId}`));
-    }
-  };
-
-  // Edit task
-  window.editTask = (taskId) => {
-    const taskRef = ref(db, `tasks/${taskId}`);
-    onValue(taskRef, (snap) => {
-      const task = snap.val();
-      const newTitle = prompt("Edit task title:", task.title);
-      if (newTitle && newTitle !== task.title) {
-        update(taskRef, { title: newTitle });
-      }
-    }, { onlyOnce: true });
-  };
-
+  document.getElementById("quick-task-input")?.addEventListener("keypress", e => {
+    if (e.key === "Enter") document.getElementById("quick-add-btn")?.click();
+  });
 </script>
 
 </body></html>
