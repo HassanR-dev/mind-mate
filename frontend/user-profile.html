@@ -9,7 +9,6 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@300..800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Theme Configuration -->
@@ -40,10 +39,8 @@
 <!-- Top Navigation -->
 <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-white/10 bg-background-light dark:bg-background-dark px-6 py-3 lg:px-10">
 <div class="flex items-center gap-4">
-<div class="size-8 flex items-center justify-center text-primary">
-<svg class="w-full h-full" fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
-</svg>
+<div class="size-8 flex items-center justify-center rounded-lg bg-primary/20 text-primary">
+<span class="material-symbols-outlined">school</span>
 </div>
 <h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">Mind Mate</h2>
 </div>
@@ -59,7 +56,7 @@
 <span class="material-symbols-outlined">notifications</span>
 <span class="absolute top-0 right-0 size-2 bg-primary rounded-full"></span>
 </button>
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar thumbnail" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdSUwc82qCUzdJe8GPLUBr1qnlfUU6anQ4dHac7qb1MjAS6XWG6TpRbftY4TH_g9U-6_ZF17Xfh_0GihrlPSqk_TLh9a-9YbbKrklNDK_8Oab3dTqKpImoDGkcucVlLVwjr6JRElgg0zHXqBV7wKxVd2dQtdG6Y4EDsTtun8C4qyFUJSUGulgs5SISt3McdRJe2CyDcDuGvz-xgufnqs05Rl6agfPtO9Tx9TvHl4taXWI4JbDWqUvKwTSX5QWw03AUCBicf8kiQzeb");'>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'>
 </div>
 </div>
 </div>
@@ -68,10 +65,10 @@
 <!-- Sidebar Navigation -->
 <aside class="hidden lg:flex flex-col w-72 shrink-0 border-r border-gray-200 dark:border-white/10 p-6 h-[calc(100vh-65px)] sticky top-[65px] overflow-y-auto">
 <div class="flex gap-4 items-center mb-8">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Sidebar user avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBV-N0dih5eDVQ__FiHraPjhNIiDqwVUgH8QPnaN0ZmmsMtB-ZM2DZFcHNfQr5EMIA1Z6f73tKssNPuVrKe-SC5_N5x6bfA11HnzAxXuTNyQ8XVocl5OMpjCAMKBbn7y9n5kr4HAu-_xhwzz0L5S-aX0XuTP7VVquHaef70k3u_9YNwVoMnDJvUOyPnLrOBX6c_dsCOdbNSuZFBZIKxty2NrxfiEWNSAW6rut7hHlMSi3FAGnlIN5RJXKedIkcFhTXBZiuONQypSTVj");'>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'>
 </div>
 <div class="flex flex-col">
-<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal">Hassan Rehan</h1>
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal"><span data-user-name>Hassan Rehan</span></h1>
 <p class="text-slate-500 dark:text-[#9db9ab] text-xs font-normal leading-normal">Software Engineering</p>
 </div>
 </div>
@@ -99,7 +96,7 @@
 </a>
 </div>
 <div class="mt-auto pt-6">
-<button class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
+<button data-action="logout" class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
 <span class="material-symbols-outlined">logout</span>
 <span class="text-sm font-medium">Log Out</span>
 </button>
@@ -116,21 +113,22 @@
 </div>
 <div class="flex gap-3">
 <button class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-white/10 text-slate-700 dark:text-white font-medium text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Cancel</button>
-<button class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
+<button id="save-profile-btn" class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
 </div>
 </div>
 <!-- Profile Header Card -->
 <div class="rounded-2xl bg-white dark:bg-surface-dark p-6 md:p-8 mb-8 border border-gray-200 dark:border-white/5 shadow-sm">
 <div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
 <div class="relative group">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-28 md:size-32 border-4 border-background-light dark:border-background-dark shadow-xl" data-alt="Large user profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAro_LBlAyApB7dnnuE2rZk10CNbWp5rGJWhAZJLY30zjNhgJ2SCFiY9iBz8mmsOiNE7VnBcsemdtY7T1bmHQAGsckPejS6C79eJNxCxUvMAi4YR6vllVHt5wkn_6bhwO5YUcAn4pHa7OqYKDgM68BM60B0XqmFY8IIkPxAH9Ul0XRbsA5owa42PMUMcK_lEzvL3iyvt9TVZRFnY53kba0Dg5QcDOemfTSd20SAfeXwl9nXWIZguWtMtHHOD4_bZkts3AFmZ0TbZOOL");'></div>
-<button aria-label="Edit photo" class="absolute bottom-0 right-0 p-2 bg-primary rounded-full text-black shadow-lg hover:scale-105 transition-transform">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-28 md:size-32 border-4 border-background-light dark:border-background-dark shadow-xl" role="img" aria-label="User profile picture" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
+<button id="camera-btn" aria-label="Edit photo" class="absolute bottom-0 right-0 p-2 bg-primary rounded-full text-black shadow-lg hover:scale-105 transition-transform">
 <span class="material-symbols-outlined text-[20px]">photo_camera</span>
 </button>
+<input type="file" id="photo-input" accept="image/*" class="hidden" />
 </div>
 <div class="flex flex-col flex-1 items-center md:items-start text-center md:text-left gap-2">
 <div>
-<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Hassan Rehan</h2>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white"><span data-user-name>Hassan Rehan</span></h2>
 <p class="text-slate-500 dark:text-[#9db9ab] font-medium">Software Engineering</p>
 </div>
 <div class="flex gap-2 mt-2">
@@ -144,7 +142,7 @@
 </div>
 </div>
 <div class="w-full md:w-auto mt-4 md:mt-0">
-<button class="w-full md:w-auto px-4 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2">
+<button id="upload-photo-btn" class="w-full md:w-auto px-4 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2">
 <span class="material-symbols-outlined text-[18px]">upload</span>
                                 Upload New Photo
                             </button>
@@ -214,7 +212,7 @@
 </div>
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Graduation Year</label>
-<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" type="number" value="2026"/>
+<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" type="number" min="2020" max="2035" value="2026"/>
 </div>
 </div>
 </div>
@@ -231,11 +229,11 @@
 <div class="relative size-32 flex items-center justify-center my-2">
 <svg class="size-full -rotate-90 transform" viewbox="0 0 100 100">
 <circle class="text-white/10" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
-<circle class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="30" stroke-linecap="round" stroke-width="8"></circle>
+<circle id="gpa-dash" class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" stroke-width="8"></circle>
 </svg>
 <div class="absolute flex flex-col items-center">
-<span class="text-4xl font-black text-slate-900 dark:text-white">3.8</span>
-<span class="text-xs text-primary font-bold">+0.2</span>
+<span id="gpa-display" class="text-4xl font-black text-slate-900 dark:text-white">—</span>
+<span id="gpa-change" class="text-xs text-primary font-bold"></span>
 </div>
 </div>
 <p class="text-xs text-slate-500 dark:text-slate-400 max-w-[200px]">Great job! You are in the top 10% of your class.</p>
@@ -252,27 +250,33 @@
 <span class="text-sm font-bold text-slate-900 dark:text-white">Daily Mood Reminder</span>
 <span class="text-xs text-slate-500 dark:text-slate-400">Get prompted at 8:00 PM</span>
 </div>
-<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-<span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-black transition-transform group-hover:scale-110"></span>
-</div>
+<label class="relative inline-flex h-6 w-11 cursor-pointer items-center">
+<input type="checkbox" class="sr-only peer" data-pref="moodReminder" checked />
+<div class="w-full h-full rounded-full bg-[#283930] peer-checked:bg-primary transition-colors"></div>
+<div class="absolute left-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
+</label>
 </label>
 <label class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer transition-colors group">
 <div class="flex flex-col">
 <span class="text-sm font-bold text-slate-900 dark:text-white">Deadline Alerts</span>
 <span class="text-xs text-slate-500 dark:text-slate-400">Notify 24h before due date</span>
 </div>
-<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-<span class="translate-x-6 inline-block h-4 w-4 transform rounded-full bg-black transition-transform group-hover:scale-110"></span>
-</div>
+<label class="relative inline-flex h-6 w-11 cursor-pointer items-center">
+<input type="checkbox" class="sr-only peer" data-pref="deadlineAlerts" checked />
+<div class="w-full h-full rounded-full bg-[#283930] peer-checked:bg-primary transition-colors"></div>
+<div class="absolute left-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
+</label>
 </label>
 <label class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 cursor-pointer transition-colors group">
 <div class="flex flex-col">
 <span class="text-sm font-bold text-slate-900 dark:text-white">Public Profile</span>
 <span class="text-xs text-slate-500 dark:text-slate-400">Allow others to find you</span>
 </div>
-<div class="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-300 dark:bg-white/10 transition-colors focus:outline-none">
-<span class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span>
-</div>
+<label class="relative inline-flex h-6 w-11 cursor-pointer items-center">
+<input type="checkbox" class="sr-only peer" data-pref="publicProfile" />
+<div class="w-full h-full rounded-full bg-[#283930] peer-checked:bg-primary transition-colors"></div>
+<div class="absolute left-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></div>
+</label>
 </label>
 </div>
 </div>
@@ -280,7 +284,7 @@
 <div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
 <h3 class="text-red-500 font-bold mb-2">Danger Zone</h3>
 <p class="text-xs text-red-400 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
-<button class="w-full py-2 px-4 rounded-lg border border-red-500/30 text-red-500 text-sm font-bold hover:bg-red-500 hover:text-white transition-all">Delete Account</button>
+<button id="delete-account-btn" class="w-full py-2 px-4 rounded-lg border border-red-500/30 text-red-500 text-sm font-bold hover:bg-red-500 hover:text-white transition-all">Delete Account</button>
 </div>
 </div>
 </div>
@@ -289,91 +293,176 @@
 </div>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth, auth } from "./auth.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard, auth, getCurrentUser, logout } from "./js/services/auth.service.js";
+  import { listenToUserData, setUserData, updateUserData } from "./js/services/db.service.js";
+  import { initNav } from "./js/services/nav.js";
+  import { showToast, showConfirm } from "./js/services/toast.js";
   import { updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-  const db = getDatabase(app);
-  let currentUser = null;
+  await authGuard();
+  initNav("profile");
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUser = user;
-    loadUserProfile(user);
+  const user = await getCurrentUser();
+  const email = user.email || "";
+
+  // Populate email field
+  const emailInput = document.querySelector("input[type='email']");
+  if (emailInput) emailInput.value = email;
+
+  // Populate name fields from displayName
+  const names = (user.displayName || "").split(" ");
+  const firstNameInput = document.querySelectorAll("section input[type='text']")[0];
+  const lastNameInput = document.querySelectorAll("section input[type='text']")[1];
+  if (firstNameInput) firstNameInput.value = names[0] || "";
+  if (lastNameInput) lastNameInput.value = names.slice(1).join(" ") || "";
+
+  // Load profile data from DB
+  listenToUserData("profile", snap => {
+    const data = snap;
+    if (!data) return;
+    const bio = document.querySelector("textarea");
+    const uni = document.querySelectorAll("section:nth-of-type(2) input[type='text']")[0];
+    const major = document.querySelector("select");
+    const gradYear = document.querySelector("input[type='number']");
+    if (bio && data.bio) bio.value = data.bio;
+    if (uni && data.university) uni.value = data.university;
+    if (major && data.major) major.value = data.major;
+    if (gradYear && data.graduationYear) gradYear.value = data.graduationYear;
   });
 
-  function loadUserProfile(user) {
-    // Update user info
-    const name = user.displayName || user.email?.split("@")[0] || "User";
-    const email = user.email || "";
-    
-    document.querySelectorAll("h1, h2").forEach(h => {
-      if (h.textContent.includes("Hassan Rehan")) {
-        h.textContent = name;
-      }
+  // Load GPA for widget
+  const gpaDisplay = document.getElementById("gpa-display");
+  const gpaChange = document.getElementById("gpa-change");
+  const gpaDashOffset = document.getElementById("gpa-dash");
+  listenToUserData("gpas", snap => {
+    const data = snap;
+    let totalPoints = 0, totalCredits = 0;
+    Object.values(data || {}).forEach(g => {
+      const credits = parseFloat(g.credits || 0);
+      totalPoints += parseFloat(g.gpa || 0) * credits;
+      totalCredits += credits;
     });
+    const avg = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+    if (gpaDisplay) gpaDisplay.textContent = avg > 0 ? avg.toFixed(1) : "—";
+    if (gpaDashOffset) {
+      const pct = Math.min(avg / 4.0, 1);
+      gpaDashOffset.setAttribute("stroke-dashoffset", (251.2 * (1 - pct)).toFixed(1));
+    }
+  });
 
-    document.querySelectorAll("input[type='email']").forEach(input => {
-      if (input.value.includes("@")) {
-        input.value = email;
-      }
+  // Save profile
+  document.getElementById("save-profile-btn")?.addEventListener("click", async () => {
+    const firstName = firstNameInput?.value.trim() || "";
+    const lastName = lastNameInput?.value.trim() || "";
+    const fullName = `${firstName} ${lastName}`.trim();
+    const bio = document.querySelector("textarea")?.value.trim() || "";
+    const university = document.querySelectorAll("section:nth-of-type(2) input[type='text']")[0]?.value.trim() || "";
+    const major = document.querySelector("select")?.value || "";
+    const graduationYear = document.querySelector("input[type='number']")?.value || "";
+
+    try {
+      if (fullName) await updateProfile(auth.currentUser, { displayName: fullName });
+      await setUserData("profile", { bio, university, major, graduationYear });
+      document.querySelectorAll("[data-user-name]").forEach(el => { el.textContent = fullName || "Student"; });
+      showToast("Profile saved!", "success");
+    } catch (err) {
+      showToast("Error saving profile: " + err.message, "error");
+    }
+  });
+
+  // Logout (sidebar button)
+  document.querySelectorAll("[data-action='logout']").forEach(btn =>
+    btn.addEventListener("click", () => logout())
+  );
+
+  // Delete account confirmation
+  document.getElementById("delete-account-btn")?.addEventListener("click", async () => {
+    const ok = await showConfirm("Are you sure you want to delete your account? This cannot be undone.");
+    if (!ok) return;
+    showToast("Account deletion is not yet implemented.", "info");
+  });
+
+  // ── App Preferences save/load ──
+  const prefInputs = document.querySelectorAll("[data-pref]");
+  listenToUserData("preferences", snap => {
+    const prefs = snap;
+    if (!prefs) return;
+    prefInputs.forEach(input => {
+      const key = input.dataset.pref;
+      if (key in prefs) input.checked = !!prefs[key];
     });
-
-    // Load GPA
-    onValue(ref(db, "gpas"), (snap) => {
-      let totalPoints = 0;
-      let totalCredits = 0;
-
-      snap.forEach(child => {
-        const gpa = child.val();
-        if (gpa.userId !== user.uid) return;
-        const credits = parseFloat(gpa.credits || 0);
-        const points = parseFloat(gpa.gpa || 0);
-        totalPoints += points * credits;
-        totalCredits += credits;
-      });
-
-      const avgGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(1) : "0.00";
-      document.querySelectorAll(".text-4xl, .text-3xl").forEach(el => {
-        if (el.textContent.includes("3.8")) {
-          el.textContent = avgGPA;
-        }
-      });
+  });
+  prefInputs.forEach(input => {
+    input.addEventListener("change", async () => {
+      const key = input.dataset.pref;
+      await updateUserData("preferences", { [key]: input.checked });
+      showToast(`${input.checked ? "Enabled" : "Disabled"} ${key.replace(/([A-Z])/g, " $1").toLowerCase().trim()}`, "info");
     });
+  });
 
-    // Save profile button
-    document.querySelector("button:contains('Save Changes')")?.addEventListener("click", async () => {
-      const firstName = document.querySelector("input[placeholder*='First']")?.value || "";
-      const lastName = document.querySelector("input[placeholder*='Last']")?.value || "";
-      const fullName = `${firstName} ${lastName}`.trim();
+  // ── Profile Photo Upload ──
+  const photoInput  = document.getElementById("photo-input");
+  const cameraBtn   = document.getElementById("camera-btn");
+  const uploadBtn   = document.getElementById("upload-photo-btn");
 
-      if (fullName) {
-        try {
-          await updateProfile(auth.currentUser, { displayName: fullName });
-          alert("Profile updated!");
-        } catch (error) {
-          alert("Error updating profile: " + error.message);
-        }
-      }
-    });
+  cameraBtn?.addEventListener("click", () => photoInput?.click());
+  uploadBtn?.addEventListener("click", () => photoInput?.click());
 
-    // Logout button
-    document.querySelector("button:contains('Log Out')")?.addEventListener("click", () => {
-      import("./auth.js").then(({ auth }) => {
-        import("https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js").then(({ signOut }) => {
-          signOut(auth).then(() => {
-            window.location.href = "login.html";
-          });
-        });
-      });
+  photoInput?.addEventListener("change", async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { showToast("Please select an image file", "warning"); return; }
+    if (file.size > 5 * 1024 * 1024) { showToast("Image must be under 5MB", "warning"); return; }
+
+    showToast("Uploading photo...", "info");
+
+    try {
+      const dataUrl = await _resizeImage(file, 256);
+      await setUserData("profile/photoURL", dataUrl);
+      _applyAvatar(dataUrl);
+      showToast("Profile photo updated!", "success");
+    } catch (err) {
+      showToast("Failed to upload photo: " + err.message, "error");
+    }
+    photoInput.value = "";
+  });
+
+  // Resize image to maxSize x maxSize JPEG via canvas
+  function _resizeImage(file, maxSize) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let w = img.width, h = img.height;
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else       { w = Math.round(w * maxSize / h); h = maxSize; }
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", 0.8));
+      };
+      img.onerror = () => reject(new Error("Failed to read image"));
+      img.src = URL.createObjectURL(file);
     });
   }
 
+  // Apply avatar URL to all avatar elements on the page
+  function _applyAvatar(url) {
+    document.querySelectorAll("[role='img'][aria-label*='avatar'], [role='img'][aria-label*='profile']").forEach(el => {
+      el.style.backgroundImage = `url("${url}")`;
+    });
+  }
+
+  // Load saved photo on page load
+  listenToUserData("profile/photoURL", snap => {
+    const url = snap;
+    if (url && typeof url === "string" && url.startsWith("data:")) {
+      _applyAvatar(url);
+    } else if (user.photoURL) {
+      // Fallback to Google/Auth photo
+      _applyAvatar(user.photoURL);
+    }
+  });
 </script>
 
 </body></html>
