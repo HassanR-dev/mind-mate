@@ -25,7 +25,7 @@ export async function getUserRef(path) {
 
 export async function listenToUserData(path, callback) {
   const dbRef = await _userRef(path);
-  return onValue(dbRef, callback);
+  return onValue(dbRef, (snapshot) => callback(snapshot.val()));
 }
 
 export async function pushUserData(path, data) {

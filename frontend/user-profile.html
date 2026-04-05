@@ -318,7 +318,7 @@
 
   // Load profile data from DB
   listenToUserData("profile", snap => {
-    const data = snap.val ? snap.val() : snap;
+    const data = snap;
     if (!data) return;
     const bio = document.querySelector("textarea");
     const uni = document.querySelectorAll("section:nth-of-type(2) input[type='text']")[0];
@@ -335,7 +335,7 @@
   const gpaChange = document.getElementById("gpa-change");
   const gpaDashOffset = document.getElementById("gpa-dash");
   listenToUserData("gpas", snap => {
-    const data = snap.val ? snap.val() : snap;
+    const data = snap;
     let totalPoints = 0, totalCredits = 0;
     Object.values(data || {}).forEach(g => {
       const credits = parseFloat(g.credits || 0);
@@ -385,7 +385,7 @@
   // ── App Preferences save/load ──
   const prefInputs = document.querySelectorAll("[data-pref]");
   listenToUserData("preferences", snap => {
-    const prefs = snap.val ? snap.val() : snap;
+    const prefs = snap;
     if (!prefs) return;
     prefInputs.forEach(input => {
       const key = input.dataset.pref;
@@ -455,7 +455,7 @@
 
   // Load saved photo on page load
   listenToUserData("profile/photoURL", snap => {
-    const url = snap.val ? snap.val() : snap;
+    const url = snap;
     if (url && typeof url === "string" && url.startsWith("data:")) {
       _applyAvatar(url);
     } else if (user.photoURL) {

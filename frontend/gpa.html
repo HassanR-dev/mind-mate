@@ -69,8 +69,8 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>
 <h1 class="text-3xl md:text-4xl font-black tracking-tight text-white mb-2">Academic Performance</h1>
-<p class="text-[#9db9ab] text-base font-normal max-w-xl">
-                    Keep track of your grades and hit your targets. You're 0.2 points away from your goal!
+<p id="gpa-subtitle" class="text-[#9db9ab] text-base font-normal max-w-xl">
+                    Track your courses and grades across all semesters.
                 </p>
 </div>
 <div class="flex gap-3">
@@ -85,12 +85,12 @@
 <!-- LEFT COLUMN: Main Inputs (Span 2) -->
 <div class="lg:col-span-2 flex flex-col gap-6">
 <!-- Semester Selector -->
-<div id="semester-bar" class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar">
-<button data-semester="all" class="sem-btn flex-1 min-w-[100px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all">All</button>
-<button data-semester="Fall 2023" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2023</button>
-<button data-semester="Spring 2024" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2024</button>
-<button data-semester="Fall 2024" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Fall 2024</button>
-<button data-semester="Spring 2025" class="sem-btn flex-1 min-w-[100px] px-4 py-2 rounded-lg text-sm font-medium text-[#9db9ab] hover:text-white transition-colors">Spring 2025</button>
+<div id="semester-bar" class="bg-card-dark rounded-xl p-2 border border-[#283930] flex overflow-x-auto no-scrollbar items-center gap-1">
+<button data-semester="all" class="sem-btn min-w-[80px] px-4 py-2 bg-primary text-background-dark shadow-md rounded-lg text-sm font-bold transition-all shrink-0">All</button>
+<!-- Dynamic semester buttons inserted by JS -->
+<button id="add-semester-btn" class="min-w-[40px] px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors shrink-0" title="Add semester">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
 </div>
 <!-- Course Table -->
 <div class="bg-card-dark rounded-xl border border-[#283930] overflow-hidden flex flex-col">
@@ -161,7 +161,7 @@
 </div>
 <div>
 <h4 class="text-white font-bold mb-1">Impact Insight</h4>
-<p class="text-sm text-[#9db9ab]">If you get an <span class="font-bold text-white">A</span> in <span class="text-white underline decoration-dotted">SPM</span>, your semester GPA will rise to <span class="text-primary font-bold">3.95</span>.</p>
+<p id="impact-text" class="text-sm text-[#9db9ab]">Add courses to see impact insights.</p>
 </div>
 </div>
 <button id="view-scenario-btn" class="text-sm font-medium text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg border border-white/10 transition-colors whitespace-nowrap">
@@ -197,7 +197,7 @@
 </div>
 <div class="bg-[#111814] rounded-lg p-3 text-center border border-[#283930]">
 <span class="block text-xs text-gray-500 uppercase font-bold mb-1">Credits</span>
-<span class="text-xl font-bold text-white">12</span>
+<span id="total-credits" class="text-xl font-bold text-white">0</span>
 </div>
 </div>
 </div>
@@ -211,7 +211,7 @@
 <div id="gpa-goal-bar" class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 0%"></div>
 </div>
 <div class="flex justify-between text-xs text-gray-500">
-<span>Current: 3.8</span>
+<span id="goal-current">Current: —</span>
 <span>Target: 4.0</span>
 </div>
 </div>
@@ -229,27 +229,11 @@
 </div>
 <!-- Mini Chart Placeholder -->
 <div class="bg-card-dark rounded-xl p-6 border border-[#283930] flex flex-col gap-4">
-<h3 class="text-white font-bold text-sm">GPA Trend (Last 4 Semesters)</h3>
-<div class="h-32 flex items-end justify-between gap-2 px-2">
-<div class="w-full bg-[#283930] rounded-t-sm h-[60%] relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.2</div>
+<h3 class="text-white font-bold text-sm">GPA Trend</h3>
+<div id="trend-chart" class="h-32 flex items-end justify-between gap-2 px-2">
+<div class="flex-1 flex items-center justify-center text-gray-500 text-sm">No data yet</div>
 </div>
-<div class="w-full bg-[#283930] rounded-t-sm h-[75%] relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.5</div>
-</div>
-<div class="w-full bg-[#283930] rounded-t-sm h-[70%] relative group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.4</div>
-</div>
-<div class="w-full bg-primary rounded-t-sm h-[90%] relative shadow-[0_0_15px_rgba(19,236,128,0.3)] group">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-primary font-bold text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.8</div>
-</div>
-</div>
-<div class="flex justify-between text-xs text-gray-500 font-mono">
-<span>Fa22</span>
-<span>Sp23</span>
-<span>Fa23</span>
-<span>Sp24</span>
-</div>
+<div id="trend-labels" class="flex justify-between text-xs text-gray-500 font-mono"></div>
 </div>
 </div>
 </div>
@@ -258,66 +242,99 @@
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData, pushUserData, updateUserData, removeUserData } from "./js/services/db.service.js";
-  import { showToast, showConfirm } from "./js/services/toast.js";
+  import { showToast, showConfirm, showPrompt } from "./js/services/toast.js";
   import { initNav } from "./js/services/nav.js";
 
   await authGuard();
   initNav("gpa");
 
-  const tbody         = document.querySelector("tbody");
-  const gpaDisplay    = document.getElementById("gpa-display");
+  const tbody          = document.querySelector("tbody");
+  const gpaDisplay     = document.getElementById("gpa-display");
   const progressCircle = document.getElementById("gpa-progress-circle");
-  const goalBar       = document.getElementById("gpa-goal-bar");
-  const goalPct       = document.getElementById("gpa-goal-pct");
-  const semTitle      = document.getElementById("semester-title");
-  const semBadge      = document.getElementById("semester-badge");
+  const goalBar        = document.getElementById("gpa-goal-bar");
+  const goalPct        = document.getElementById("gpa-goal-pct");
+  const semTitle       = document.getElementById("semester-title");
+  const semBadge       = document.getElementById("semester-badge");
+  const semBar         = document.getElementById("semester-bar");
+  const addSemBtn      = document.getElementById("add-semester-btn");
+  const totalCreditsEl = document.getElementById("total-credits");
+  const goalCurrentEl  = document.getElementById("goal-current");
+  const impactTextEl   = document.getElementById("impact-text");
+  const subtitleEl     = document.getElementById("gpa-subtitle");
+  const trendChart     = document.getElementById("trend-chart");
+  const trendLabels    = document.getElementById("trend-labels");
 
-  // ── Semester filter state ──
   let allGpas = {};
   let activeSemester = "all";
 
-  document.querySelectorAll(".sem-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      activeSemester = btn.dataset.semester;
-      document.querySelectorAll(".sem-btn").forEach(b => {
-        b.classList.remove("bg-primary", "text-background-dark", "shadow-md", "font-bold");
-        b.classList.add("text-[#9db9ab]", "hover:text-white", "font-medium");
-      });
-      btn.classList.remove("text-[#9db9ab]", "hover:text-white", "font-medium");
-      btn.classList.add("bg-primary", "text-background-dark", "shadow-md", "font-bold");
-      if (semTitle) semTitle.textContent = activeSemester === "all" ? "All Courses" : `${activeSemester} Courses`;
-      if (semBadge) semBadge.textContent = activeSemester === "all" ? "" : "FILTERED";
-      renderGpas();
-    });
-  });
+  // ── Dynamic Semester Buttons ──
+  function buildSemesterButtons() {
+    semBar.querySelectorAll(".sem-btn:not([data-semester='all'])").forEach(b => b.remove());
+    const semesters = [...new Set(Object.values(allGpas).map(g => g.semester).filter(Boolean))].sort();
 
-  function renderGpas() {
-    if (!tbody) return;
-    tbody.querySelectorAll("tr[data-gpa-id]").forEach(r => r.remove());
-    const addRow = tbody.querySelector("tr.bg-\\[\\#13ec80\\]\\/5");
-    let totalPoints = 0, totalCredits = 0;
-    Object.entries(allGpas).forEach(([id, gpa]) => {
-      if (activeSemester !== "all" && gpa.semester !== activeSemester) return;
-      const credits = parseFloat(gpa.credits || 0);
-      totalPoints += parseFloat(gpa.gpa || 0) * credits;
-      totalCredits += credits;
-      const row = createRow(id, gpa);
-      tbody.insertBefore(row, addRow || null);
+    semesters.forEach(sem => {
+      const btn = document.createElement("button");
+      btn.dataset.semester = sem;
+      const isActive = activeSemester === sem;
+      btn.className = `sem-btn min-w-[80px] px-4 py-2 rounded-lg text-sm transition-all shrink-0 ${
+        isActive ? "bg-primary text-background-dark shadow-md font-bold" : "text-[#9db9ab] hover:text-white font-medium"}`;
+      btn.textContent = sem;
+      btn.addEventListener("click", () => switchSemester(sem));
+      semBar.insertBefore(btn, addSemBtn);
     });
-    updateDisplay(totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00");
+
+    const allBtn = semBar.querySelector("[data-semester='all']");
+    if (allBtn) {
+      const isAll = activeSemester === "all";
+      allBtn.className = `sem-btn min-w-[80px] px-4 py-2 rounded-lg text-sm transition-all shrink-0 ${
+        isAll ? "bg-primary text-background-dark shadow-md font-bold" : "text-[#9db9ab] hover:text-white font-medium"}`;
+    }
   }
 
+  function switchSemester(sem) {
+    activeSemester = sem;
+    buildSemesterButtons();
+    if (semTitle) semTitle.textContent = sem === "all" ? "All Courses" : `${sem} Courses`;
+    if (semBadge) semBadge.textContent = sem === "all" ? "" : "FILTERED";
+    renderGpas();
+  }
+
+  semBar?.querySelector("[data-semester='all']")?.addEventListener("click", () => switchSemester("all"));
+
+  addSemBtn?.addEventListener("click", async () => {
+    const name = await showPrompt("Enter semester name (e.g., Fall 2024):");
+    if (!name || !name.trim()) return;
+    switchSemester(name.trim());
+    showToast(`Semester "${name.trim()}" ready — add courses to it`, "success");
+  });
+
+  // ── Grade helpers ──
   const GRADES = [
     ["4.0","A (4.0)"],["3.7","A- (3.7)"],["3.3","B+ (3.3)"],["3.0","B (3.0)"],
     ["2.7","B- (2.7)"],["2.3","C+ (2.3)"],["2.0","C (2.0)"],["1.7","C- (1.7)"],
     ["1.3","D+ (1.3)"],["1.0","D (1.0)"],["0.0","F (0.0)"]
   ];
   const COLORS = ["blue","purple","orange","green","red","yellow"];
+  const GRADE_MAP = { "4.0":"A","3.7":"A-","3.3":"B+","3.0":"B","2.7":"B-","2.3":"C+","2.0":"C","1.7":"C-","1.3":"D+","1.0":"D","0.0":"F" };
 
   function gradeOptions(selected) {
     return GRADES.map(([v, l]) =>
       `<option value="${v}" ${parseFloat(selected) === parseFloat(v) ? "selected" : ""}>${l}</option>`
     ).join("");
+  }
+
+  // ── Rendering ──
+  function renderGpas() {
+    if (!tbody) return;
+    tbody.querySelectorAll("tr[data-gpa-id]").forEach(r => r.remove());
+    const addRow = tbody.querySelector("tr.bg-\\[\\#13ec80\\]\\/5");
+
+    Object.entries(allGpas).forEach(([id, gpa]) => {
+      if (activeSemester !== "all" && gpa.semester !== activeSemester) return;
+      const row = createRow(id, gpa);
+      tbody.insertBefore(row, addRow || null);
+    });
+    updateStats();
   }
 
   function createRow(id, gpa) {
@@ -360,9 +377,38 @@
     return row;
   }
 
-  function updateDisplay(gpa) {
-    const val = parseFloat(gpa);
-    if (gpaDisplay) gpaDisplay.textContent = isNaN(val) ? "—" : val.toFixed(2);
+  // ── Stats & display ──
+  function updateStats() {
+    let totalPoints = 0, totalCredits = 0;
+    Object.values(allGpas).forEach(g => {
+      const cr = parseFloat(g.credits || 0);
+      totalPoints += parseFloat(g.gpa || 0) * cr;
+      totalCredits += cr;
+    });
+    const cgpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
+
+    updateCircle(cgpa);
+    if (totalCreditsEl) totalCreditsEl.textContent = totalCredits;
+    if (goalCurrentEl) goalCurrentEl.textContent = `Current: ${cgpa > 0 ? cgpa.toFixed(2) : "—"}`;
+
+    // Subtitle
+    if (subtitleEl) {
+      if (totalCredits === 0) subtitleEl.textContent = "Track your courses and grades across all semesters.";
+      else {
+        const gap = (4.0 - cgpa).toFixed(2);
+        subtitleEl.textContent = cgpa >= 4.0
+          ? "Perfect GPA! Keep up the excellent work."
+          : `You're ${gap} points away from a 4.0 — keep pushing!`;
+      }
+    }
+
+    updateImpactInsight(cgpa, totalPoints, totalCredits);
+    updateTrendChart();
+  }
+
+  function updateCircle(gpaVal) {
+    const val = parseFloat(gpaVal) || 0;
+    if (gpaDisplay) gpaDisplay.textContent = val > 0 ? val.toFixed(2) : "—";
     const pct = Math.min((val / 4.0) * 100, 100);
     if (progressCircle) {
       const circ = 2 * Math.PI * 45;
@@ -372,12 +418,68 @@
     if (goalPct) goalPct.textContent = Math.round(pct) + "% to Target";
   }
 
+  function updateImpactInsight(cgpa, totalPoints, totalCredits) {
+    if (!impactTextEl) return;
+    const entries = Object.entries(allGpas);
+    if (entries.length === 0) { impactTextEl.textContent = "Add courses to see impact insights."; return; }
+
+    let lowest = null;
+    entries.forEach(([id, g]) => {
+      const grade = parseFloat(g.gpa || 0);
+      if (!lowest || grade < parseFloat(lowest[1].gpa || 0)) lowest = [id, g];
+    });
+
+    if (lowest && parseFloat(lowest[1].gpa || 0) < 4.0) {
+      const cr = parseFloat(lowest[1].credits || 0);
+      const oldGrade = parseFloat(lowest[1].gpa || 0);
+      const newPoints = totalPoints - (oldGrade * cr) + (4.0 * cr);
+      const newCgpa = totalCredits > 0 ? (newPoints / totalCredits).toFixed(2) : "0.00";
+      const diff = (parseFloat(newCgpa) - cgpa).toFixed(2);
+      impactTextEl.textContent = `If you improve "${lowest[1].courseName}" to an A, your CGPA could rise to ${newCgpa} (+${diff}).`;
+    } else {
+      impactTextEl.textContent = "Outstanding! All your courses are at the highest grade.";
+    }
+  }
+
+  function updateTrendChart() {
+    if (!trendChart || !trendLabels) return;
+    const semGpas = {};
+    Object.values(allGpas).forEach(g => {
+      if (!g.semester) return;
+      if (!semGpas[g.semester]) semGpas[g.semester] = { points: 0, credits: 0 };
+      const cr = parseFloat(g.credits || 0);
+      semGpas[g.semester].points += parseFloat(g.gpa || 0) * cr;
+      semGpas[g.semester].credits += cr;
+    });
+    const semesters = Object.keys(semGpas).sort();
+    if (semesters.length === 0) {
+      trendChart.innerHTML = '<div class="flex-1 flex items-center justify-center text-gray-500 text-sm">No data yet</div>';
+      trendLabels.innerHTML = "";
+      return;
+    }
+    const lastIdx = semesters.length - 1;
+    trendChart.innerHTML = semesters.map((sem, i) => {
+      const d = semGpas[sem];
+      const gpa = d.credits > 0 ? d.points / d.credits : 0;
+      const pct = Math.max((gpa / 4.0) * 100, 5);
+      const isLast = i === lastIdx;
+      const bg = isLast ? "bg-primary shadow-[0_0_15px_rgba(19,236,128,0.3)]" : "bg-[#283930]";
+      const tip = isLast ? "text-primary font-bold" : "text-white";
+      return `<div class="w-full ${bg} rounded-t-sm relative group" style="height:${pct}%">
+        <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black ${tip} text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">${gpa.toFixed(2)}</div>
+      </div>`;
+    }).join("");
+    trendLabels.innerHTML = semesters.map(s => `<span>${s.length > 8 ? s.substring(0, 8) : s}</span>`).join("");
+  }
+
+  // ── DB listener ──
   listenToUserData("gpas", snap => {
     allGpas = snap || {};
+    buildSemesterButtons();
     renderGpas();
   });
 
-  // Delegated change for inline edits
+  // ── Inline edits ──
   tbody?.addEventListener("change", async e => {
     const { field, id } = e.target.dataset;
     if (!field || !id) return;
@@ -385,7 +487,7 @@
     await updateUserData(`gpas/${id}`, { [field]: value });
   });
 
-  // Delete
+  // ── Delete ──
   tbody?.addEventListener("click", async e => {
     const deleteId = e.target.closest("[data-delete]")?.dataset.delete;
     if (!deleteId) return;
@@ -393,7 +495,7 @@
     if (ok) { await removeUserData(`gpas/${deleteId}`); showToast("Course removed", "info"); }
   });
 
-  // Add new course
+  // ── Add course ──
   document.getElementById("add-course-btn")?.addEventListener("click", async () => {
     const courseName = document.getElementById("new-course-name").value.trim();
     const credits    = parseFloat(document.getElementById("new-course-credits").value) || 0;
@@ -402,29 +504,26 @@
     if (!courseName) { showToast("Please enter a course name", "warning"); return; }
     if (credits <= 0) { showToast("Please enter valid credits (greater than 0)", "warning"); return; }
 
-    const semester = activeSemester === "all" ? "Fall 2024" : activeSemester;
+    let semester = activeSemester;
+    if (semester === "all") {
+      semester = await showPrompt("Which semester is this course in?");
+      if (!semester || !semester.trim()) { showToast("Semester name is required", "warning"); return; }
+      semester = semester.trim();
+    }
     await pushUserData("gpas", { courseName, credits, gpa: gradeValue, semester, createdAt: new Date().toISOString() });
     showToast("Course added!", "success");
 
-    document.getElementById("new-course-name").value  = "";
+    document.getElementById("new-course-name").value = "";
     document.getElementById("new-course-credits").value = "";
-    document.getElementById("new-course-grade").value  = "0.0";
-  });
-
-  // ── Notifications placeholder ──
-  document.getElementById("gpa-notif-btn")?.addEventListener("click", () => {
-    showToast("Notifications coming soon!", "info");
+    document.getElementById("new-course-grade").value = "0.0";
   });
 
   // ── Study Mood buttons ──
   document.querySelector(".bg-primary\\/10 .flex.gap-2")?.addEventListener("click", e => {
     const btn = e.target.closest("button");
     if (!btn) return;
-    if (btn.textContent.trim() === "Log Mood") {
-      window.location.href = "journal.html";
-    } else if (btn.textContent.trim() === "View Trends") {
-      window.location.href = "insights.html";
-    }
+    if (btn.textContent.trim() === "Log Mood") window.location.href = "journal.html";
+    else if (btn.textContent.trim() === "View Trends") window.location.href = "insights.html";
   });
 
   // ── Export Report ──
@@ -432,27 +531,22 @@
     const entries = Object.values(allGpas);
     if (entries.length === 0) { showToast("No courses to export", "warning"); return; }
     const rows = [["Course", "Credits", "Grade", "Semester"]];
-    const gradeMap = { "4.0":"A","3.7":"A-","3.3":"B+","3.0":"B","2.7":"B-","2.3":"C+","2.0":"C","1.7":"C-","1.3":"D+","1.0":"D","0.0":"F" };
     let tp = 0, tc = 0;
     entries.forEach(g => {
       const cr = parseFloat(g.credits || 0);
-      tp += parseFloat(g.gpa || 0) * cr;
-      tc += cr;
-      rows.push([g.courseName || "", cr, gradeMap[String(g.gpa)] || g.gpa, g.semester || ""]);
+      tp += parseFloat(g.gpa || 0) * cr; tc += cr;
+      rows.push([g.courseName || "", cr, GRADE_MAP[String(g.gpa)] || g.gpa, g.semester || ""]);
     });
     rows.push([]);
     rows.push(["Cumulative GPA", tc > 0 ? (tp / tc).toFixed(2) : "N/A", "Total Credits", tc]);
     const csv = rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "gpa_report.csv";
-    a.click();
-    URL.revokeObjectURL(a.href);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = "gpa_report.csv"; a.click(); URL.revokeObjectURL(a.href);
     showToast("Report downloaded!", "success");
   });
 
-  // ── View Scenario modal ──
+  // ── What-If Scenario modal ──
   document.getElementById("view-scenario-btn")?.addEventListener("click", () => {
     const courses = Object.entries(allGpas);
     if (courses.length === 0) { showToast("Add courses first to simulate scenarios", "warning"); return; }
@@ -483,7 +577,7 @@
           </div>
           <button id="calc-scenario" class="w-full py-2.5 bg-primary text-[#111814] font-bold rounded-lg hover:bg-primary/90 transition-colors">Calculate</button>
           <div id="scenario-result" class="hidden p-4 rounded-xl bg-[#111814] border border-[#283930] text-center">
-            <p class="text-sm text-[#9db9ab] mb-1">Your projected GPA would be</p>
+            <p class="text-sm text-[#9db9ab] mb-1">Your projected CGPA would be</p>
             <p id="scenario-gpa" class="text-4xl font-black text-primary"></p>
             <p id="scenario-diff" class="text-sm mt-1"></p>
           </div>
@@ -491,9 +585,8 @@
       </div>`;
     document.body.appendChild(overlay);
 
-    function closeModal() { overlay.remove(); }
-    document.getElementById("close-scenario").addEventListener("click", closeModal);
-    overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+    document.getElementById("close-scenario").addEventListener("click", () => overlay.remove());
+    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
 
     document.getElementById("calc-scenario").addEventListener("click", () => {
       const cid = document.getElementById("scenario-course").value;
@@ -501,15 +594,13 @@
       let tp = 0, tc = 0;
       Object.entries(allGpas).forEach(([id, g]) => {
         const cr = parseFloat(g.credits || 0);
-        const grade = id === cid ? newGrade : parseFloat(g.gpa || 0);
-        tp += grade * cr;
+        tp += (id === cid ? newGrade : parseFloat(g.gpa || 0)) * cr;
         tc += cr;
       });
       const projected = tc > 0 ? (tp / tc).toFixed(2) : "0.00";
-      // Current GPA
       let ctp = 0, ctc = 0;
       Object.values(allGpas).forEach(g => { const c = parseFloat(g.credits||0); ctp += parseFloat(g.gpa||0)*c; ctc += c; });
-      const current = ctc > 0 ? (ctp / ctc) : 0;
+      const current = ctc > 0 ? ctp / ctc : 0;
       const diff = (parseFloat(projected) - current).toFixed(2);
       const diffText = diff > 0 ? `+${diff} from current` : diff < 0 ? `${diff} from current` : "No change";
       const diffColor = diff > 0 ? "text-green-400" : diff < 0 ? "text-red-400" : "text-gray-400";

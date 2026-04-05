@@ -91,7 +91,7 @@ export async function initNav(activePage) {
 
     // Load and apply profile photo to all avatar elements
     listenToUserData("profile/photoURL", snap => {
-      const url = (snap && typeof snap === "object" && snap.val) ? snap.val() : snap;
+      const url = snap;
       const photoUrl = (url && typeof url === "string" && url.startsWith("data:")) ? url : user.photoURL;
       if (photoUrl) {
         document.querySelectorAll("[role='img'][aria-label*='avatar']").forEach(el => {
