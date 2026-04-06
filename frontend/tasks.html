@@ -178,15 +178,15 @@
 </button>
 <input id="quick-task-input" class="bg-transparent border-none text-white w-full focus:ring-0 placeholder-[#5a7065] text-lg font-medium px-2" placeholder="I need to..." type="text"/>
 <div class="hidden md:flex items-center gap-2 pr-2">
-<button aria-label="Set due date" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button id="quick-date-btn" aria-label="Set due date" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">calendar_month</span>
 <span>Today</span>
 </button>
-<button aria-label="Add tag" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button id="quick-tag-btn" aria-label="Add tag" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">sell</span>
 <span>Tag</span>
 </button>
-<button aria-label="Set priority" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
+<button id="quick-priority-btn" aria-label="Set priority" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#283930] hover:bg-[#32473c] text-[#9db9ab] text-xs font-medium transition-colors">
 <span class="material-symbols-outlined text-[16px]">flag</span>
 <span>Priority</span>
 </button>
@@ -263,11 +263,12 @@
         </button>
         <div class="flex flex-col">
           <h3 class="${task.completed ? 'text-[#9db9ab] line-through' : 'text-white'} text-lg font-medium group-hover:text-primary transition-colors">${_esc(task.title || "Untitled Task")}</h3>
-          <div class="flex items-center gap-2 mt-1">
+          <div class="flex items-center gap-2 mt-1 flex-wrap">
             <span class="text-[#9db9ab] text-xs flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">schedule</span>
               ${task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "No date"}
             </span>
+            ${task.tag ? `<span class="text-primary/70 text-xs flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded-full"><span class="material-symbols-outlined text-[12px]">sell</span>${_esc(task.tag)}</span>` : ""}
           </div>
         </div>
       </div>
@@ -420,29 +421,128 @@
     }
   });
 
-  // New task modal
-  async function addTask(title, dueDate = null, priority = "medium") {
+  // ── Quick-add toolbar state ──
+  let quickDate = null;
+  let quickPriority = "medium";
+  let quickTag = "";
+
+  const quickDateBtn     = document.getElementById("quick-date-btn");
+  const quickTagBtn      = document.getElementById("quick-tag-btn");
+  const quickPriorityBtn = document.getElementById("quick-priority-btn");
+
+  // Date button — first click sets today, click again to change/clear
+  quickDateBtn?.addEventListener("click", async () => {
+    if (!quickDate) {
+      quickDate = new Date().toISOString().split("T")[0];
+    } else {
+      const val = await showPrompt("Due date (YYYY-MM-DD), or leave blank to clear:", quickDate);
+      if (val === null) return;
+      quickDate = val.trim() || null;
+    }
+    _updateDateBtn();
+  });
+
+  function _updateDateBtn() {
+    if (!quickDateBtn) return;
+    const label = quickDateBtn.querySelector("span:last-child");
+    if (quickDate) {
+      const d = new Date(quickDate + "T00:00:00");
+      const today = new Date();
+      const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+      let text;
+      if (d.toDateString() === today.toDateString()) text = "Today";
+      else if (d.toDateString() === tomorrow.toDateString()) text = "Tomorrow";
+      else text = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      label.textContent = text;
+      quickDateBtn.classList.remove("bg-[#283930]", "text-[#9db9ab]");
+      quickDateBtn.classList.add("bg-primary/20", "text-primary");
+    } else {
+      label.textContent = "Today";
+      quickDateBtn.classList.remove("bg-primary/20", "text-primary");
+      quickDateBtn.classList.add("bg-[#283930]", "text-[#9db9ab]");
+    }
+  }
+
+  // Priority button — cycles high → medium → low
+  const PRIO_CYCLE = ["medium", "high", "low"];
+  const PRIO_LABEL = { high: "High", medium: "Medium", low: "Low" };
+  const PRIO_STYLE = {
+    high:   ["bg-red-500/20", "text-red-400"],
+    medium: ["bg-[#283930]", "text-[#9db9ab]"],
+    low:    ["bg-gray-500/20", "text-gray-400"]
+  };
+  const ALL_PRIO_CLS = Object.values(PRIO_STYLE).flat();
+
+  quickPriorityBtn?.addEventListener("click", () => {
+    const idx = PRIO_CYCLE.indexOf(quickPriority);
+    quickPriority = PRIO_CYCLE[(idx + 1) % PRIO_CYCLE.length];
+    _updatePriorityBtn();
+  });
+
+  function _updatePriorityBtn() {
+    if (!quickPriorityBtn) return;
+    const label = quickPriorityBtn.querySelector("span:last-child");
+    label.textContent = PRIO_LABEL[quickPriority];
+    quickPriorityBtn.classList.remove(...ALL_PRIO_CLS);
+    quickPriorityBtn.classList.add(...PRIO_STYLE[quickPriority]);
+  }
+
+  // Tag button — prompt for tag text
+  quickTagBtn?.addEventListener("click", async () => {
+    const tag = await showPrompt("Enter tag (e.g., homework, exam, project):", quickTag);
+    if (tag === null) return;
+    quickTag = tag.trim();
+    _updateTagBtn();
+  });
+
+  function _updateTagBtn() {
+    if (!quickTagBtn) return;
+    const label = quickTagBtn.querySelector("span:last-child");
+    if (quickTag) {
+      label.textContent = quickTag;
+      quickTagBtn.classList.remove("bg-[#283930]", "text-[#9db9ab]");
+      quickTagBtn.classList.add("bg-primary/20", "text-primary");
+    } else {
+      label.textContent = "Tag";
+      quickTagBtn.classList.remove("bg-primary/20", "text-primary");
+      quickTagBtn.classList.add("bg-[#283930]", "text-[#9db9ab]");
+    }
+  }
+
+  function _resetToolbar() {
+    quickDate = null; quickPriority = "medium"; quickTag = "";
+    _updateDateBtn(); _updatePriorityBtn(); _updateTagBtn();
+  }
+
+  // ── Add task ──
+  async function addTask(title, dueDate = null, priority = "medium", tag = "") {
     const v = validateTaskTitle(title);
     if (!v.valid) { showToast(v.error, "warning"); return; }
-    await pushUserData("tasks", { title: title.trim(), dueDate, priority, completed: false, createdAt: new Date().toISOString() });
+    const data = { title: title.trim(), dueDate, priority, completed: false, createdAt: new Date().toISOString() };
+    if (tag) data.tag = tag;
+    await pushUserData("tasks", data);
     showToast("Task added!", "success");
   }
 
+  // "+ New Task" button (full modal flow)
   document.getElementById("new-task-btn")?.addEventListener("click", async () => {
     const title = await showPrompt("Task title:");
     if (!title) return;
     const dueDate = await showPrompt("Due date (YYYY-MM-DD) — leave blank to skip:");
     const priorityRaw = await showPrompt("Priority: high / medium / low", "medium");
     const priority = ["high", "medium", "low"].includes((priorityRaw || "").toLowerCase()) ? priorityRaw.toLowerCase() : "medium";
-    await addTask(title, dueDate || null, priority);
+    const tag = await showPrompt("Tag (e.g., homework, exam) — leave blank to skip:");
+    await addTask(title, dueDate || null, priority, (tag || "").trim());
   });
 
+  // Quick-add bar submit
   document.getElementById("quick-add-btn")?.addEventListener("click", async () => {
     const input = document.getElementById("quick-task-input");
     const title = input?.value.trim();
     if (!title) return;
-    await addTask(title);
+    await addTask(title, quickDate, quickPriority, quickTag);
     if (input) input.value = "";
+    _resetToolbar();
   });
 
   document.getElementById("quick-task-input")?.addEventListener("keypress", e => {
