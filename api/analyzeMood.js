@@ -22,8 +22,8 @@ module.exports = async function handler(req, res) {
 
     // Use fine-tuned MindMate model if set, otherwise fall back to generic model
     const modelUrl = process.env.HF_EMOTION_MODEL
-      ? `https://api-inference.huggingface.co/models/${process.env.HF_EMOTION_MODEL}`
-      : "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment";
+      ? `https://router.huggingface.co/hf-inference/models/${process.env.HF_EMOTION_MODEL}`
+      : "https://router.huggingface.co/hf-inference/models/cardiffnlp/twitter-roberta-base-sentiment";
 
     const response = await fetch(modelUrl, {
       method: "POST",

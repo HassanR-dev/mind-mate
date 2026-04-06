@@ -42,7 +42,7 @@ async function detectMoodFromMessage(message, hfApiKey) {
   if (!model || !hfApiKey) return null;
   try {
     const res = await fetch(
-      `https://api-inference.huggingface.co/models/${model}`,
+      `https://router.huggingface.co/hf-inference/models/${model}`,
       {
         method: "POST",
         headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
@@ -187,7 +187,7 @@ module.exports = async function handler(req, res) {
       ];
 
       const response = await fetch(
-        "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3",
+        "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3",
         {
           method: "POST",
           headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
