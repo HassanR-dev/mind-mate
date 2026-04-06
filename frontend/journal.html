@@ -261,7 +261,7 @@
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData, pushUserData, removeUserData } from "./js/services/db.service.js";
-  import { analyzeMood, triggerAnalytics } from "./js/services/ai.service.js";
+  import { triggerAnalytics } from "./js/services/ai.service.js";
   import { showToast, showPrompt, showConfirm } from "./js/services/toast.js";
   import { validateJournalText, sanitizeHtml, formatDateTime } from "./js/services/validators.js";
   import { initNav } from "./js/services/nav.js";
@@ -321,15 +321,22 @@
     });
   });
 
+  // Maps each button icon to a distinct mood value
+  const ICON_TO_MOOD = {
+    "sentiment_very_dissatisfied": "awful",
+    "sentiment_dissatisfied": "bad",
+    "sentiment_neutral": "okay",
+    "sentiment_satisfied": "good",
+    "sentiment_very_satisfied": "great"
+  };
+
   function getSelectedMood() {
     for (const btn of moodButtons) {
       if (!btn.classList.contains("bg-primary")) continue;
-      const icon = btn.querySelector("span.material-symbols-outlined")?.textContent || "";
-      if (icon.includes("very_dissatisfied") || icon.includes("dissatisfied")) return "negative";
-      if (icon.includes("very_satisfied") || (icon.includes("satisfied") && !icon.includes("dis"))) return "positive";
-      return "neutral";
+      const icon = (btn.querySelector("span.material-symbols-outlined")?.textContent || "").trim();
+      return ICON_TO_MOOD[icon] || "okay";
     }
-    return "neutral";
+    return "okay";
   }
 
   // Submit journal entry
@@ -343,16 +350,7 @@
     btn.disabled = true;
     btn.textContent = "Saving…";
 
-    const selectedMood = getSelectedMood();
-
-    // AI mood analysis via Cloud Function (no client-side HF key)
-    let mood = selectedMood;
-    try {
-      const result = await analyzeMood(text);
-      if (result?.moodLabel) mood = result.moodLabel;
-    } catch {
-      // Fall back to button selection on error
-    }
+    const mood = getSelectedMood();
 
     const tags = [...selectedTags];
     await pushUserData("journals", { text, mood, tags, timestamp: new Date().toISOString() });
@@ -413,7 +411,7 @@
         vibeLbl.textContent = "No data yet";
         if (vibeSub) vibeSub.textContent = "Log moods this week to see your vibe";
       } else {
-        const posCount = weekEntries.filter(e => e.mood === "positive").length;
+        const posCount = weekEntries.filter(e => ["great", "good", "positive"].includes(e.mood)).length;
         const pct = Math.round((posCount / weekEntries.length) * 100);
         vibePct.textContent = pct + "%";
         vibeLbl.textContent = pct >= 70 ? "Mostly Positive" : pct >= 40 ? "Mixed Feelings" : "Rough Week";
@@ -427,8 +425,17 @@
       return;
     }
 
-    const MOOD_ICON = { positive: "sentiment_satisfied", neutral: "sentiment_neutral", negative: "sentiment_dissatisfied" };
-    const MOOD_LABEL = { positive: "Feeling Good 😊", neutral: "Feeling Okay 😐", negative: "Feeling Low 😟" };
+    const MOOD_ICON = {
+      great: "sentiment_very_satisfied", good: "sentiment_satisfied",
+      okay: "sentiment_neutral", bad: "sentiment_dissatisfied", awful: "sentiment_very_dissatisfied",
+      // Legacy fallback for old entries saved as positive/neutral/negative
+      positive: "sentiment_satisfied", neutral: "sentiment_neutral", negative: "sentiment_dissatisfied"
+    };
+    const MOOD_LABEL = {
+      great: "Feeling Great 🤩", good: "Feeling Good 😊",
+      okay: "Feeling Okay 😐", bad: "Feeling Bad 😔", awful: "Feeling Awful 😢",
+      positive: "Feeling Good 😊", neutral: "Feeling Okay 😐", negative: "Feeling Low 😟"
+    };
 
     entries.forEach(entry => {
       const div = document.createElement("div");
@@ -501,7 +508,11 @@
       moodByDate[ds] = e.mood || "neutral";
     });
 
-    const MOOD_BG = { positive: "bg-primary", neutral: "bg-primary/30", negative: "bg-red-400/50" };
+    const MOOD_BG = {
+      great: "bg-primary", good: "bg-primary/70", okay: "bg-primary/30",
+      bad: "bg-red-400/40", awful: "bg-red-400/70",
+      positive: "bg-primary", neutral: "bg-primary/30", negative: "bg-red-400/50"
+    };
     let html = "";
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) html += `<div class="aspect-square rounded-md bg-[#283930]"></div>`;

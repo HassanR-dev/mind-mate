@@ -18,30 +18,44 @@ module.exports = async function handler(req, res) {
 
   try {
     const hfApiKey = process.env.HF_API_KEY;
-    if (!hfApiKey) return res.json({ moodLabel: "neutral", moodScore: 0.5 });
+    if (!hfApiKey) return res.json({ moodLabel: "okay", moodScore: 0.5 });
 
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment",
-      {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ inputs: trimmed })
-      }
-    );
+    // Use fine-tuned MindMate model if set, otherwise fall back to generic model
+    const modelUrl = process.env.HF_EMOTION_MODEL
+      ? `https://api-inference.huggingface.co/models/${process.env.HF_EMOTION_MODEL}`
+      : "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment";
 
-    if (!response.ok) return res.json({ moodLabel: "neutral", moodScore: 0.5 });
+    const response = await fetch(modelUrl, {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ inputs: trimmed })
+    });
+
+    if (!response.ok) return res.json({ moodLabel: "okay", moodScore: 0.5 });
 
     const data = await response.json();
-    const topLabel = data && data[0] && data[0][0] && data[0][0].label;
-    const topScore = (data && data[0] && data[0][0] && data[0][0].score) || 0.5;
+    const topResult = data && data[0] && data[0][0];
+    if (!topResult) return res.json({ moodLabel: "okay", moodScore: 0.5 });
 
-    let moodLabel = "neutral";
-    if (topLabel === "LABEL_2") moodLabel = "positive";
-    else if (topLabel === "LABEL_0") moodLabel = "negative";
+    const topLabel = topResult.label;
+    const topScore = topResult.score || 0.5;
+
+    // Fine-tuned model returns mood names directly: awful/bad/okay/good/great
+    const FINE_TUNED_MOODS = ["awful", "bad", "okay", "good", "great"];
+    let moodLabel;
+    if (FINE_TUNED_MOODS.includes(topLabel)) {
+      // Fine-tuned model — use label directly
+      moodLabel = topLabel;
+    } else {
+      // Legacy generic model — LABEL_0=negative, LABEL_1=neutral, LABEL_2=positive
+      if (topLabel === "LABEL_2") moodLabel = "good";
+      else if (topLabel === "LABEL_0") moodLabel = "bad";
+      else moodLabel = "okay";
+    }
 
     return res.json({ moodLabel, moodScore: parseFloat(topScore.toFixed(3)) });
   } catch (err) {
     console.error("analyzeMood error:", err);
-    return res.json({ moodLabel: "neutral", moodScore: 0.5 });
+    return res.json({ moodLabel: "okay", moodScore: 0.5 });
   }
 };
