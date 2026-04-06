@@ -391,7 +391,7 @@
     }
 
     filtered.forEach(e => {
-      const mood = e.mood || "okay";
+      const mood = e.detectedMood || e.mood || "okay";
       const cat = moodCategory(mood);
       dist[cat]++;
       const score = MOOD_SCORE[mood] ?? 5;
@@ -407,7 +407,7 @@
 
     // Average mood across ALL entries
     const avgMood = allJournalEntries.length > 0
-      ? (allJournalEntries.reduce((s, e) => s + (MOOD_SCORE[e.mood] ?? 5), 0) / allJournalEntries.length).toFixed(1)
+      ? (allJournalEntries.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / allJournalEntries.length).toFixed(1)
       : "—";
     if (avgMoodEl) avgMoodEl.textContent = avgMood;
 
@@ -433,8 +433,8 @@
     const thisWeek = allJournalEntries.filter(e => new Date(e.timestamp) >= weekAgo);
     const lastWeek = allJournalEntries.filter(e => { const d = new Date(e.timestamp); return d >= twoWeeksAgo && d < weekAgo; });
     if (thisWeek.length === 0 || lastWeek.length === 0) { trendEl.textContent = "Log more to see trends"; return; }
-    const avgThis = thisWeek.reduce((s, e) => s + (MOOD_SCORE[e.mood] ?? 5), 0) / thisWeek.length;
-    const avgLast = lastWeek.reduce((s, e) => s + (MOOD_SCORE[e.mood] ?? 5), 0) / lastWeek.length;
+    const avgThis = thisWeek.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / thisWeek.length;
+    const avgLast = lastWeek.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / lastWeek.length;
     const diff = Math.round(((avgThis - avgLast) / avgLast) * 100);
     if (diff > 0) trendEl.textContent = `+${diff}% vs last week`;
     else if (diff < 0) trendEl.textContent = `${diff}% vs last week`;
@@ -463,7 +463,7 @@
       if (d.getFullYear() !== year || d.getMonth() !== month) return;
       const ds = d.toDateString();
       if (!dayScores[ds]) dayScores[ds] = { sum: 0, count: 0 };
-      dayScores[ds].sum += MOOD_SCORE[e.mood] ?? 5;
+      dayScores[ds].sum += MOOD_SCORE[e.detectedMood || e.mood] ?? 5;
       dayScores[ds].count++;
     });
 
@@ -537,7 +537,7 @@
 
         highlightsEl.innerHTML = allJournalEntries.slice(0, 2).map(e => {
           const preview = (e.text || "").length > 60 ? e.text.slice(0, 60) + "..." : (e.text || "No text");
-          const tag = MOOD_TAG[e.mood] || "#journal";
+          const tag = MOOD_TAG[e.detectedMood || e.mood] || "#journal";
           return `<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
             <div class="flex justify-between items-start mb-2">
               <div class="flex items-center gap-2">
@@ -572,7 +572,7 @@
     allJournalEntries.forEach(e => {
       const day = new Date(e.timestamp).getDay();
       if (!dayScores[day]) dayScores[day] = { sum: 0, count: 0 };
-      dayScores[day].sum += MOOD_SCORE[e.mood] ?? 5;
+      dayScores[day].sum += MOOD_SCORE[e.detectedMood || e.mood] ?? 5;
       dayScores[day].count++;
     });
     let bestDay = null, bestAvg = 0;
@@ -595,7 +595,7 @@
     // Mood streak direction
     const recent = allJournalEntries.slice(0, 5);
     if (recent.length >= 3) {
-      const recentAvg = recent.reduce((s, e) => s + (MOOD_SCORE[e.mood] ?? 5), 0) / recent.length;
+      const recentAvg = recent.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / recent.length;
       if (recentAvg >= 7) insights.push({ icon: "trending_up", primary: true, title: "On a roll", desc: `Your last ${recent.length} entries average ${recentAvg.toFixed(1)}/10. Keep it up!` });
       else if (recentAvg <= 4) insights.push({ icon: "warning", primary: false, title: "Check in", desc: `Your recent entries average ${recentAvg.toFixed(1)}/10. Consider talking to someone you trust.` });
     }

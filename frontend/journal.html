@@ -261,7 +261,7 @@
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData, pushUserData, removeUserData } from "./js/services/db.service.js";
-  import { triggerAnalytics } from "./js/services/ai.service.js";
+  import { triggerAnalytics, analyzeMood } from "./js/services/ai.service.js";
   import { showToast, showPrompt, showConfirm } from "./js/services/toast.js";
   import { validateJournalText, sanitizeHtml, formatDateTime } from "./js/services/validators.js";
   import { initNav } from "./js/services/nav.js";
@@ -352,8 +352,23 @@
 
     const mood = getSelectedMood();
 
+    // Analyze journal text with fine-tuned emotion model
+    let detectedMood = null;
+    try {
+      const analysis = await analyzeMood(text);
+      detectedMood = analysis.mood || null;
+    } catch { /* don't block save if analysis fails */ }
+
     const tags = [...selectedTags];
-    await pushUserData("journals", { text, mood, tags, timestamp: new Date().toISOString() });
+    await pushUserData("journals", { text, mood, detectedMood, tags, timestamp: new Date().toISOString() });
+
+    // Mismatch warning: user says good/great but text reveals distress
+    const MOOD_RANK = { awful: 1, bad: 2, okay: 3, good: 4, great: 5 };
+    if (detectedMood && MOOD_RANK[mood] >= 4 && MOOD_RANK[detectedMood] <= 1) {
+      showToast("Your words suggest you may be going through a tough time. It's okay to not be okay — please reach out to someone you trust or text HOME to 741741.", "warning", 8000);
+    } else if (detectedMood && MOOD_RANK[mood] >= 4 && MOOD_RANK[detectedMood] <= 2) {
+      showToast("Your entry suggests you might be feeling worse than you selected. It's okay to be honest with yourself — that's what this journal is for.", "info", 5000);
+    }
 
     // Recompute weekly analytics in the background
     triggerAnalytics().catch(() => {});
@@ -411,7 +426,7 @@
         vibeLbl.textContent = "No data yet";
         if (vibeSub) vibeSub.textContent = "Log moods this week to see your vibe";
       } else {
-        const posCount = weekEntries.filter(e => ["great", "good", "positive"].includes(e.mood)).length;
+        const posCount = weekEntries.filter(e => ["great", "good", "positive"].includes(e.detectedMood || e.mood)).length;
         const pct = Math.round((posCount / weekEntries.length) * 100);
         vibePct.textContent = pct + "%";
         vibeLbl.textContent = pct >= 70 ? "Mostly Positive" : pct >= 40 ? "Mixed Feelings" : "Rough Week";
@@ -440,8 +455,9 @@
     entries.forEach(entry => {
       const div = document.createElement("div");
       div.className = "group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all";
-      const icon  = MOOD_ICON[entry.mood] || "sentiment_neutral";
-      const label = MOOD_LABEL[entry.mood] || "Feeling Okay";
+      const displayMood = entry.detectedMood || entry.mood;
+      const icon  = MOOD_ICON[displayMood] || "sentiment_neutral";
+      const label = MOOD_LABEL[displayMood] || "Feeling Okay";
       div.innerHTML = `
         <div class="flex justify-between items-start">
           <div class="flex items-center gap-3">
