@@ -36,10 +36,37 @@ function formatMessagesForMistral(messages) {
   return prompt;
 }
 
+// ── Detect mood from the user's message using fine-tuned model ──
+async function detectMoodFromMessage(message, hfApiKey) {
+  const model = process.env.HF_EMOTION_MODEL;
+  if (!model || !hfApiKey) return null;
+  try {
+    const res = await fetch(
+      `https://api-inference.huggingface.co/models/${model}`,
+      {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ inputs: message }),
+        signal: AbortSignal.timeout(5000) // don't slow chatbot > 5s
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const results = data && data[0];
+    if (!Array.isArray(results) || !results.length) return null;
+    const top = [...results].sort((a, b) => b.score - a.score)[0];
+    const MOODS = ["awful", "bad", "okay", "good", "great"];
+    return MOODS.includes(top.label) ? { mood: top.label, score: top.score } : null;
+  } catch {
+    return null;
+  }
+}
+
 // ── Smart local fallback when HF API is unavailable ──
 function localReply(message, context) {
   const lower = message.toLowerCase();
-  const mood = (context && context.moodLabel) || "okay";
+  // Prefer the live mood detected from this message, fall back to journal mood
+  const mood = (context && context.messageMoodLabel) || (context && context.moodLabel) || "okay";
 
   // Greeting patterns
   if (/^(hi|hello|hey|howdy|yo|sup|what'?s up|good (morning|afternoon|evening))/.test(lower)) {
@@ -91,9 +118,15 @@ function localReply(message, context) {
     return "You're welcome! I'm always here when you need a study buddy or just want to check in. Keep up the great work!";
   }
 
-  // Mood-aware responses
-  if (["awful", "bad", "negative"].includes(mood)) {
-    return "I noticed you've been having a tough time lately. That's completely valid. Sometimes just acknowledging how you feel is the first step. Is there anything specific weighing on you — academics, personal stuff, or just feeling drained?";
+  // Mood-aware responses based on detected emotion
+  if (mood === "awful") {
+    return "It sounds like things are really hard right now, and that's okay to admit. You don't have to push through alone. Is there something specific that's weighing on you — an assignment, something personal, or just feeling completely drained?";
+  }
+  if (mood === "bad") {
+    return "Sounds like you're going through a rough patch. That happens to everyone, especially during busy university periods. Want to talk about what's going on, or would some practical tips to get through the day help more?";
+  }
+  if (mood === "great" || mood === "good") {
+    return "Love the energy! Sounds like things are going well. Want to use that momentum? It's a great time to tackle something you've been putting off or plan ahead for the week. What's on your plate?";
   }
 
   // Default helpful response
@@ -135,8 +168,15 @@ module.exports = async function handler(req, res) {
     }
   } catch { /* DB read failed, continue with defaults */ }
 
-  // Try HF API first, fall back to local replies
+  // Detect mood from the user's current message using fine-tuned model
   const hfApiKey = process.env.HF_API_KEY;
+  const detectedMood = await detectMoodFromMessage(message, hfApiKey);
+  if (detectedMood) {
+    context.messageMoodLabel = detectedMood.mood;
+    context.messageMoodScore = detectedMood.score;
+  }
+
+  // Try HF API first, fall back to local replies
   if (hfApiKey) {
     try {
       const systemPrompt = buildSystemPrompt(context);
