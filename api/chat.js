@@ -22,24 +22,13 @@ const CRISIS_RESOURCES = [
   { name: "International Crisis Centers", contact: "https://www.iasp.info/resources/Crisis_Centres/" }
 ];
 
-function formatMessagesForMistral(messages) {
-  let prompt = "<s>";
-  for (const msg of messages) {
-    if (msg.role === "system") {
-      prompt += `[INST] ${msg.content} [/INST] Understood. I am Mind Mate, your academic companion. </s><s>`;
-    } else if (msg.role === "user") {
-      prompt += `[INST] ${msg.content} [/INST]`;
-    } else if (msg.role === "assistant") {
-      prompt += ` ${msg.content} </s><s>`;
-    }
-  }
-  return prompt;
-}
+// Llama 3.1 uses OpenAI-compatible chat format — no special formatting needed
 
-// ── Detect mood from the user's message using fine-tuned model ──
+// ── Detect mood from the user's message using emotion model ──
 async function detectMoodFromMessage(message, hfApiKey) {
-  const model = process.env.HF_EMOTION_MODEL;
-  if (!model || !hfApiKey) return null;
+  if (!hfApiKey) return null;
+  // Use fine-tuned model if env var is set, else j-hartmann's hosted emotion model
+  const model = process.env.HF_EMOTION_MODEL || "j-hartmann/emotion-english-distilroberta-base";
   try {
     const res = await fetch(
       `https://router.huggingface.co/hf-inference/models/${model}`,
@@ -47,16 +36,26 @@ async function detectMoodFromMessage(message, hfApiKey) {
         method: "POST",
         headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({ inputs: message }),
-        signal: AbortSignal.timeout(5000) // don't slow chatbot > 5s
+        signal: AbortSignal.timeout(5000)
       }
     );
     if (!res.ok) return null;
     const data = await res.json();
-    const results = data && data[0];
-    if (!Array.isArray(results) || !results.length) return null;
-    const top = [...results].sort((a, b) => b.score - a.score)[0];
-    const MOODS = ["awful", "bad", "okay", "good", "great"];
-    return MOODS.includes(top.label) ? { mood: top.label, score: top.score } : null;
+    let results = Array.isArray(data) ? data : [];
+    if (results.length && Array.isArray(results[0])) results = results[0];
+    if (!results.length) return null;
+    const top = [...results].sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+    if (!top || !top.label) return null;
+
+    const FINE_TUNED = ["awful", "bad", "okay", "good", "great"];
+    const J_HARTMANN_MAP = {
+      joy: "great", surprise: "good", neutral: "okay",
+      fear: "bad", disgust: "bad", sadness: "awful", anger: "awful"
+    };
+    const lower = String(top.label).toLowerCase();
+    if (FINE_TUNED.includes(lower)) return { mood: lower, score: top.score };
+    if (J_HARTMANN_MAP[lower]) return { mood: J_HARTMANN_MAP[lower], score: top.score };
+    return null;
   } catch {
     return null;
   }
@@ -176,7 +175,7 @@ module.exports = async function handler(req, res) {
     context.messageMoodScore = detectedMood.score;
   }
 
-  // Try HF API first, fall back to local replies
+  // Try Llama 3.1 8B via HF router (OpenAI-compatible), fall back to local replies
   if (hfApiKey) {
     try {
       const systemPrompt = buildSystemPrompt(context);
@@ -187,26 +186,29 @@ module.exports = async function handler(req, res) {
       ];
 
       const response = await fetch(
-        "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3",
+        "https://router.huggingface.co/v1/chat/completions",
         {
           method: "POST",
           headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            inputs: formatMessagesForMistral(messages),
-            parameters: { max_new_tokens: 300, temperature: 0.7, return_full_text: false }
+            model: "meta-llama/Llama-3.1-8B-Instruct",
+            messages,
+            max_tokens: 300,
+            temperature: 0.7
           })
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-        let reply = (data && data[0] && data[0].generated_text && data[0].generated_text.trim()) || "";
-        reply = reply.replace(/^\[\/INST\]\s*/i, "").trim();
+        const reply = data?.choices?.[0]?.message?.content?.trim() || "";
         if (reply) return res.json({ reply, crisisFlag: false });
+      } else {
+        const errText = await response.text().catch(() => "");
+        console.error("Llama API error:", response.status, errText.slice(0, 200));
       }
-      // If HF failed, fall through to local reply
     } catch (err) {
-      console.error("HF API error (falling back to local):", err.message);
+      console.error("HF chat API error (falling back to local):", err.message);
     }
   }
 
