@@ -20,10 +20,11 @@ module.exports = async function handler(req, res) {
     const hfApiKey = process.env.HF_API_KEY;
     if (!hfApiKey) return res.json({ moodLabel: "okay", moodScore: 0.5 });
 
-    // Use fine-tuned MindMate model if set, otherwise fall back to generic model
+    // Use fine-tuned MindMate model if set AND it has live inference,
+    // otherwise use j-hartmann's 7-emotion model (production-ready, hosted)
     const modelUrl = process.env.HF_EMOTION_MODEL
       ? `https://router.huggingface.co/hf-inference/models/${process.env.HF_EMOTION_MODEL}`
-      : "https://router.huggingface.co/hf-inference/models/cardiffnlp/twitter-roberta-base-sentiment";
+      : "https://router.huggingface.co/hf-inference/models/j-hartmann/emotion-english-distilroberta-base";
 
     const response = await fetch(modelUrl, {
       method: "POST",
@@ -52,17 +53,30 @@ module.exports = async function handler(req, res) {
     const topLabel = topResult.label;
     const topScore = topResult.score || 0.5;
 
-    // Fine-tuned model returns mood names directly: awful/bad/okay/good/great
+    // Map model output to Mind Mate's 5 mood levels
+    // Supports: fine-tuned (awful/bad/okay/good/great), j-hartmann (7 emotions), and legacy LABEL_*
     const FINE_TUNED_MOODS = ["awful", "bad", "okay", "good", "great"];
+    const J_HARTMANN_MAP = {
+      joy:      "great",
+      surprise: "good",
+      neutral:  "okay",
+      fear:     "bad",
+      disgust:  "bad",
+      sadness:  "awful",
+      anger:    "awful"
+    };
     let moodLabel;
-    if (FINE_TUNED_MOODS.includes(topLabel)) {
-      // Fine-tuned model — use label directly
-      moodLabel = topLabel;
+    const lowerLabel = String(topLabel).toLowerCase();
+    if (FINE_TUNED_MOODS.includes(lowerLabel)) {
+      moodLabel = lowerLabel;
+    } else if (J_HARTMANN_MAP[lowerLabel]) {
+      moodLabel = J_HARTMANN_MAP[lowerLabel];
+    } else if (topLabel === "LABEL_2") {
+      moodLabel = "good";
+    } else if (topLabel === "LABEL_0") {
+      moodLabel = "bad";
     } else {
-      // Legacy generic model — LABEL_0=negative, LABEL_1=neutral, LABEL_2=positive
-      if (topLabel === "LABEL_2") moodLabel = "good";
-      else if (topLabel === "LABEL_0") moodLabel = "bad";
-      else moodLabel = "okay";
+      moodLabel = "okay";
     }
 
     return res.json({ moodLabel, moodScore: parseFloat(topScore.toFixed(3)) });

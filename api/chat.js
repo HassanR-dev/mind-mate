@@ -36,10 +36,11 @@ function formatMessagesForMistral(messages) {
   return prompt;
 }
 
-// ── Detect mood from the user's message using fine-tuned model ──
+// ── Detect mood from the user's message using emotion model ──
 async function detectMoodFromMessage(message, hfApiKey) {
-  const model = process.env.HF_EMOTION_MODEL;
-  if (!model || !hfApiKey) return null;
+  if (!hfApiKey) return null;
+  // Use fine-tuned model if env var is set, else j-hartmann's hosted emotion model
+  const model = process.env.HF_EMOTION_MODEL || "j-hartmann/emotion-english-distilroberta-base";
   try {
     const res = await fetch(
       `https://router.huggingface.co/hf-inference/models/${model}`,
@@ -47,16 +48,26 @@ async function detectMoodFromMessage(message, hfApiKey) {
         method: "POST",
         headers: { "Authorization": `Bearer ${hfApiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({ inputs: message }),
-        signal: AbortSignal.timeout(5000) // don't slow chatbot > 5s
+        signal: AbortSignal.timeout(5000)
       }
     );
     if (!res.ok) return null;
     const data = await res.json();
-    const results = data && data[0];
-    if (!Array.isArray(results) || !results.length) return null;
-    const top = [...results].sort((a, b) => b.score - a.score)[0];
-    const MOODS = ["awful", "bad", "okay", "good", "great"];
-    return MOODS.includes(top.label) ? { mood: top.label, score: top.score } : null;
+    let results = Array.isArray(data) ? data : [];
+    if (results.length && Array.isArray(results[0])) results = results[0];
+    if (!results.length) return null;
+    const top = [...results].sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+    if (!top || !top.label) return null;
+
+    const FINE_TUNED = ["awful", "bad", "okay", "good", "great"];
+    const J_HARTMANN_MAP = {
+      joy: "great", surprise: "good", neutral: "okay",
+      fear: "bad", disgust: "bad", sadness: "awful", anger: "awful"
+    };
+    const lower = String(top.label).toLowerCase();
+    if (FINE_TUNED.includes(lower)) return { mood: lower, score: top.score };
+    if (J_HARTMANN_MAP[lower]) return { mood: J_HARTMANN_MAP[lower], score: top.score };
+    return null;
   } catch {
     return null;
   }
