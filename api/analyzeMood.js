@@ -31,11 +31,23 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({ inputs: trimmed })
     });
 
-    if (!response.ok) return res.json({ moodLabel: "okay", moodScore: 0.5 });
+    if (!response.ok) {
+      const errText = await response.text().catch(() => "");
+      console.error("analyzeMood HF error:", response.status, errText.slice(0, 200));
+      return res.json({ moodLabel: "okay", moodScore: 0.5 });
+    }
 
     const data = await response.json();
-    const topResult = data && data[0] && data[0][0];
-    if (!topResult) return res.json({ moodLabel: "okay", moodScore: 0.5 });
+    console.log("analyzeMood HF raw:", JSON.stringify(data).slice(0, 300));
+
+    // HF text-classification may return [[{label,score},...]] OR [{label,score},...]
+    let results = Array.isArray(data) ? data : [];
+    if (results.length && Array.isArray(results[0])) results = results[0];
+    if (!results.length) return res.json({ moodLabel: "okay", moodScore: 0.5 });
+
+    // Get top prediction (highest score)
+    const topResult = [...results].sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+    if (!topResult || !topResult.label) return res.json({ moodLabel: "okay", moodScore: 0.5 });
 
     const topLabel = topResult.label;
     const topScore = topResult.score || 0.5;
