@@ -157,16 +157,17 @@ module.exports = async function handler(req, res) {
   let context = Object.assign({}, userContext);
   try {
     const db = admin.database();
-    const [profileSnap, journalsSnap, tasksSnap, coursesSnap] = await Promise.all([
+    const [profileSnap, journalsSnap, tasksSnap, gpasSnap, authUser] = await Promise.all([
       db.ref(`users/${uid}/profile`).once("value"),
       db.ref(`users/${uid}/journals`).limitToLast(7).once("value"),
       db.ref(`users/${uid}/tasks`).once("value"),
-      db.ref(`users/${uid}/courses`).once("value"),
+      db.ref(`users/${uid}/gpas`).once("value"),
+      admin.auth().getUser(uid).catch(() => null),
     ]);
 
-    // Profile
+    // Profile — name from Firebase Auth, rest from DB
     const profile = profileSnap.val() || {};
-    context.name       = profile.displayName || profile.name || null;
+    context.name       = authUser?.displayName || null;
     context.university = profile.university || null;
     context.major      = profile.major || null;
     context.gradYear   = profile.graduationYear || null;
@@ -198,14 +199,13 @@ module.exports = async function handler(req, res) {
     context.overdueTasks  = overdueTasks.slice(0, 5);
     context.overdueCount  = overdueTasks.length;
 
-    // GPA — compute CGPA from courses
+    // GPA — compute CGPA from gpas node (each entry has gpa + credits fields)
     let totalPoints = 0, totalCredits = 0;
-    const GRADE_POINTS = { 'A+':4.0,'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'C-':1.7,'D':1.0,'F':0 };
-    coursesSnap.forEach(c => {
+    gpasSnap.forEach(c => {
       const course = c.val();
-      const gp = GRADE_POINTS[course.grade];
+      const gp = parseFloat(course.gpa) || 0;
       const cr = parseFloat(course.credits) || 0;
-      if (gp !== undefined && cr > 0) { totalPoints += gp * cr; totalCredits += cr; }
+      if (cr > 0) { totalPoints += gp * cr; totalCredits += cr; }
     });
     context.cgpa         = totalCredits > 0 ? parseFloat((totalPoints / totalCredits).toFixed(2)) : null;
     context.totalCredits = totalCredits || null;
