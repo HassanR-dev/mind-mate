@@ -153,19 +153,64 @@ module.exports = async function handler(req, res) {
     return res.json({ reply: CRISIS_RESPONSE, crisisFlag: true, resources: CRISIS_RESOURCES });
   }
 
-  // Gather user context from DB
+  // Gather full user context from DB
   let context = Object.assign({}, userContext);
   try {
-    if (!context.moodLabel) {
-      const db = admin.database();
-      const journalsSnap = await db.ref(`users/${uid}/journals`).limitToLast(1).once("value");
-      journalsSnap.forEach(child => {
-        const j = child.val();
-        context.moodLabel = j.moodLabel || j.mood || "okay";
-        context.moodScore = j.moodScore || 0.5;
-      });
+    const db = admin.database();
+    const [profileSnap, journalsSnap, tasksSnap, coursesSnap] = await Promise.all([
+      db.ref(`users/${uid}/profile`).once("value"),
+      db.ref(`users/${uid}/journals`).limitToLast(7).once("value"),
+      db.ref(`users/${uid}/tasks`).once("value"),
+      db.ref(`users/${uid}/courses`).once("value"),
+    ]);
+
+    // Profile
+    const profile = profileSnap.val() || {};
+    context.name       = profile.displayName || profile.name || null;
+    context.university = profile.university || null;
+    context.major      = profile.major || null;
+    context.gradYear   = profile.graduationYear || null;
+
+    // Recent mood (last 7 journal entries)
+    const journals = [];
+    journalsSnap.forEach(c => journals.push(c.val()));
+    if (journals.length) {
+      const last = journals[journals.length - 1];
+      context.moodLabel = last.detectedMood || last.mood || "okay";
+      context.moodScore = last.moodScore || 0.5;
+      // Mood trend over last 7 entries
+      const MOOD_SCORE = { great:10, good:8, okay:5, bad:3, awful:1 };
+      const avg = journals.reduce((s,e) => s + (MOOD_SCORE[e.detectedMood||e.mood]||5), 0) / journals.length;
+      context.weeklyMoodAvg = parseFloat(avg.toFixed(1));
+      context.journalCount  = journals.length;
     }
-  } catch { /* DB read failed, continue with defaults */ }
+
+    // Tasks — pending and overdue
+    const now = new Date();
+    let pendingTasks = [], overdueTasks = [];
+    tasksSnap.forEach(c => {
+      const t = c.val();
+      if (t.completed) return;
+      if (t.dueDate && new Date(t.dueDate) < now) overdueTasks.push(t.title);
+      else pendingTasks.push(t.title);
+    });
+    context.pendingTasks  = pendingTasks.slice(0, 5);   // top 5
+    context.overdueTasks  = overdueTasks.slice(0, 5);
+    context.overdueCount  = overdueTasks.length;
+
+    // GPA — compute CGPA from courses
+    let totalPoints = 0, totalCredits = 0;
+    const GRADE_POINTS = { 'A+':4.0,'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'C-':1.7,'D':1.0,'F':0 };
+    coursesSnap.forEach(c => {
+      const course = c.val();
+      const gp = GRADE_POINTS[course.grade];
+      const cr = parseFloat(course.credits) || 0;
+      if (gp !== undefined && cr > 0) { totalPoints += gp * cr; totalCredits += cr; }
+    });
+    context.cgpa         = totalCredits > 0 ? parseFloat((totalPoints / totalCredits).toFixed(2)) : null;
+    context.totalCredits = totalCredits || null;
+
+  } catch (e) { console.error("Context fetch error:", e.message); }
 
   // Detect mood from the user's current message using fine-tuned model
   const hfApiKey = process.env.HF_API_KEY;
