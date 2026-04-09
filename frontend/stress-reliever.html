@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mind Mate - Stress Reliever</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#13ec80",
+          "background-light": "#f6f8f7",
+          "background-dark": "#102219",
+          "card-dark": "#111814",
+          "card-inner": "#283930",
+          "text-secondary": "#9db9ab"
+        },
+        fontFamily: {
+          "display": ["Lexend", "Noto Sans", "sans-serif"]
+        },
+        borderRadius: {
+          "DEFAULT": "0.5rem",
+          "lg": "1rem",
+          "xl": "1.5rem",
+          "2xl": "2rem",
+          "full": "9999px"
+        },
+      },
+    },
+  }
+</script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Bean mascot animations */
+  .mascot-character {
+    animation: float 4s ease-in-out infinite;
+    cursor: pointer;
+    user-select: none;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-14px); }
+  }
+  .tap-active .mascot-character {
+    animation: impact-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes impact-shake {
+    0%   { transform: scale(1, 1); }
+    20%  { transform: scale(1.2, 0.8); }
+    40%  { transform: scale(0.8, 1.1) translateY(-10px); }
+    60%  { transform: scale(1.05, 0.95) translateY(0); }
+    80%  { transform: scale(0.98, 1.02); }
+    100% { transform: scale(1, 1); }
+  }
+  .stick-limb {
+    background-color: #1a1a1a;
+    border-radius: 999px;
+    position: absolute;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+  }
+  /* Tap particle burst */
+  @keyframes burst {
+    0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+  }
+  .burst-ring {
+    position: absolute;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid #13ec80;
+    animation: burst 0.5s ease-out forwards;
+    pointer-events: none;
+    top: 50%; left: 50%;
+  }
+  /* Floating tap text */
+  @keyframes floatUp {
+    0%   { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-60px); opacity: 0; }
+  }
+  .tap-text {
+    position: absolute;
+    font-size: 14px;
+    font-weight: 700;
+    color: #13ec80;
+    pointer-events: none;
+    animation: floatUp 0.8s ease-out forwards;
+    white-space: nowrap;
+  }
+  /* Counter pulse */
+  @keyframes countPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+  .count-pulse {
+    animation: countPulse 0.2s ease-out;
+  }
+  /* Glow around mascot on high tap count */
+  .mascot-glow {
+    filter: drop-shadow(0 0 20px rgba(255, 92, 92, 0.6));
+  }
+  /* Progress bar fill animation */
+  @keyframes fillBar {
+    from { width: 0%; }
+  }
+</style>
+</head>
+<body class="bg-background-light dark:bg-[#111814] text-slate-900 dark:text-white font-display overflow-x-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+
+  <!-- Mobile header -->
+  <div class="lg:hidden flex items-center justify-between p-4 bg-[#111814] border-b border-[#3b5447]/30 w-full absolute top-0 z-30">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary">school</span>
+      <span class="font-bold text-lg">Mind Mate</span>
+    </div>
+    <button aria-label="Open menu" class="text-gray-400 hover:text-white">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+
+  <!-- Side Navigation -->
+  <div class="hidden lg:flex w-72 flex-col justify-between border-r border-[#3b5447]/30 bg-[#111814] p-5">
+    <div class="flex flex-col gap-8">
+      <div class="flex gap-3 items-center">
+        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-[#283930]" role="img" aria-label="Mind Mate logo" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
+        <div class="flex flex-col">
+          <h1 class="text-white text-lg font-bold leading-tight tracking-tight">Mind Mate</h1>
+          <p class="text-text-secondary text-xs font-normal">Student Companion</p>
+        </div>
+      </div>
+      <nav class="flex flex-col gap-2">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="dashboard.html">
+          <span class="material-symbols-outlined text-text-secondary group-hover:text-white">dashboard</span>
+          <p class="text-text-secondary group-hover:text-white text-sm font-medium">Dashboard</p>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="tasks.html">
+          <span class="material-symbols-outlined text-text-secondary group-hover:text-white">check_box</span>
+          <p class="text-text-secondary group-hover:text-white text-sm font-medium">Tasks</p>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="gpa.html">
+          <span class="material-symbols-outlined text-text-secondary group-hover:text-white">school</span>
+          <p class="text-text-secondary group-hover:text-white text-sm font-medium">GPA Tracker</p>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="journal.html">
+          <span class="material-symbols-outlined text-text-secondary group-hover:text-white">mood</span>
+          <p class="text-text-secondary group-hover:text-white text-sm font-medium">Mood Journal</p>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="insights.html">
+          <span class="material-symbols-outlined text-text-secondary group-hover:text-white">insights</span>
+          <p class="text-text-secondary group-hover:text-white text-sm font-medium">Insights</p>
+        </a>
+        <!-- Active State -->
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#283930] border border-[#3b5447]" href="stress-reliever.html">
+          <span class="material-symbols-outlined text-primary fill">sentiment_calm</span>
+          <p class="text-white text-sm font-medium">Stress Reliever</p>
+        </a>
+      </nav>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="p-4 rounded-xl bg-gradient-to-br from-[#13ec80]/20 to-[#111814] border border-[#13ec80]/20">
+        <p class="text-white text-sm font-bold mb-1">Remember</p>
+        <p class="text-text-secondary text-xs italic">"You don't have to be positive all the time. It's okay to feel sad, angry or stressed."</p>
+      </div>
+      <button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
+        <span class="material-symbols-outlined">logout</span>
+        <p class="text-sm font-medium">Log Out</p>
+      </button>
+      <div class="flex items-center gap-3 px-2 pt-4 border-t border-[#283930]">
+        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-[#283930] shrink-0" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 font-size=%2250%22>👤</text></svg>");'></div>
+        <div class="flex flex-col min-w-0">
+          <p class="text-white text-sm font-medium truncate" data-user-name>Student</p>
+          <p class="text-text-secondary text-xs truncate" data-user-email></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden pt-16 lg:pt-0">
+    <!-- Top bar -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[#3b5447]/30 bg-[#111814] shrink-0">
+      <div>
+        <h2 class="text-white text-xl font-bold">Stress Reliever</h2>
+        <p class="text-text-secondary text-sm">Tap the bean to release tension</p>
+      </div>
+      <button id="reset-btn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-colors text-sm font-medium">
+        <span class="material-symbols-outlined text-[18px]">refresh</span>
+        Reset
+      </button>
+    </div>
+
+    <!-- Scrollable area -->
+    <div class="flex-1 overflow-y-auto p-6 flex flex-col items-center gap-6">
+
+      <!-- Tap counter + milestone bar -->
+      <div class="w-full max-w-md">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-text-secondary text-sm">Taps</span>
+          <span id="tap-display" class="text-white text-2xl font-bold tabular-nums">0</span>
+        </div>
+        <div class="w-full h-2 bg-[#283930] rounded-full overflow-hidden">
+          <div id="progress-bar" class="h-full bg-gradient-to-r from-primary to-[#0fd673] rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between mt-1">
+          <span class="text-text-secondary text-xs">0</span>
+          <span id="milestone-label" class="text-text-secondary text-xs">Next milestone: 10 taps</span>
+          <span class="text-text-secondary text-xs" id="milestone-max">10</span>
+        </div>
+      </div>
+
+      <!-- Mood message -->
+      <div id="mood-message" class="w-full max-w-md px-4 py-3 rounded-xl bg-[#111814] border border-[#3b5447]/50 text-center transition-all duration-500">
+        <p id="mood-text" class="text-text-secondary text-sm italic">Give the bean a tap to get started...</p>
+      </div>
+
+      <!-- Bean mascot stage -->
+      <div class="relative flex flex-col items-center justify-center" style="min-height: 320px;">
+        <div class="relative cursor-pointer z-10 w-64 h-80 flex flex-col items-center justify-center" id="mascot-stage" onclick="tapMascot(this)">
+          <!-- Character -->
+          <div id="mascot-character" class="mascot-character relative w-40 h-52 bg-[#FF5C5C] rounded-[100px] shadow-2xl flex flex-col items-center justify-center transition-all duration-300 select-none">
+            <!-- Highlight -->
+            <div class="absolute top-6 left-8 w-12 h-6 bg-white/25 rounded-full blur-sm pointer-events-none"></div>
+            <!-- Arms -->
+            <div class="stick-limb w-1.5 h-10 -left-6 top-1/2 -rotate-12"></div>
+            <div class="stick-limb w-1.5 h-10 -right-6 top-1/2 rotate-12"></div>
+            <!-- Legs -->
+            <div class="stick-limb w-1.5 h-8 bottom-[-8px] left-12"></div>
+            <div class="stick-limb w-1.5 h-8 bottom-[-8px] right-12"></div>
+            <!-- Faces -->
+            <div class="relative w-full flex flex-col items-center justify-center" id="face-container">
+              <!-- Happy -->
+              <div class="flex flex-col items-center gap-3" id="face-happy">
+                <div class="flex gap-10">
+                  <div class="w-5 h-5 bg-[#1a1a1a] rounded-full"></div>
+                  <div class="w-5 h-5 bg-[#1a1a1a] rounded-full"></div>
+                </div>
+                <div class="w-6 h-3 border-b-4 border-[#1a1a1a] rounded-full"></div>
+              </div>
+              <!-- Shocked -->
+              <div class="hidden flex flex-col items-center gap-4" id="face-wide">
+                <div class="flex gap-8">
+                  <div class="w-8 h-8 bg-white border-2 border-[#1a1a1a] rounded-full flex items-center justify-center">
+                    <div class="w-2 h-2 bg-[#1a1a1a] rounded-full"></div>
+                  </div>
+                  <div class="w-8 h-8 bg-white border-2 border-[#1a1a1a] rounded-full flex items-center justify-center">
+                    <div class="w-2 h-2 bg-[#1a1a1a] rounded-full"></div>
+                  </div>
+                </div>
+                <div class="w-6 h-6 bg-[#1a1a1a] rounded-full"></div>
+              </div>
+              <!-- Dizzy -->
+              <div class="hidden flex flex-col items-center gap-2" id="face-crossed">
+                <div class="flex gap-8">
+                  <span class="material-symbols-outlined text-[#1a1a1a] text-4xl">close</span>
+                  <span class="material-symbols-outlined text-[#1a1a1a] text-4xl">close</span>
+                </div>
+                <div class="w-10 h-1 bg-[#1a1a1a] rounded-full"></div>
+              </div>
+              <!-- Open mouth -->
+              <div class="hidden flex flex-col items-center gap-4" id="face-mouth">
+                <div class="flex gap-10">
+                  <div class="w-6 h-2 bg-[#1a1a1a] rounded-full"></div>
+                  <div class="w-6 h-2 bg-[#1a1a1a] rounded-full"></div>
+                </div>
+                <div class="w-8 h-10 bg-[#1a1a1a] rounded-full relative overflow-hidden">
+                  <div class="absolute bottom-1 left-1 w-6 h-3 bg-red-400 rounded-full opacity-50"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Shadow -->
+          <div class="mt-4 w-24 h-3 bg-black/20 rounded-full blur-md"></div>
+        </div>
+        <p class="text-text-secondary text-xs mt-2 animate-pulse">tap me!</p>
+      </div>
+
+      <!-- Milestone badges -->
+      <div class="w-full max-w-md">
+        <p class="text-text-secondary text-xs font-medium uppercase tracking-wider mb-3">Milestones</p>
+        <div class="flex flex-wrap gap-2" id="badges-container">
+          <span class="px-3 py-1.5 rounded-full bg-[#283930] text-text-secondary text-xs font-medium opacity-50" data-milestone="10">🌱 10 taps</span>
+          <span class="px-3 py-1.5 rounded-full bg-[#283930] text-text-secondary text-xs font-medium opacity-50" data-milestone="25">💨 25 taps</span>
+          <span class="px-3 py-1.5 rounded-full bg-[#283930] text-text-secondary text-xs font-medium opacity-50" data-milestone="50">🔥 50 taps</span>
+          <span class="px-3 py-1.5 rounded-full bg-[#283930] text-text-secondary text-xs font-medium opacity-50" data-milestone="100">⚡ 100 taps</span>
+          <span class="px-3 py-1.5 rounded-full bg-[#283930] text-text-secondary text-xs font-medium opacity-50" data-milestone="200">🌊 200 taps</span>
+          <span class="px-3 py-1.5 rounded-full bg-[#283930] text-text-secondary text-xs font-medium opacity-50" data-milestone="500">👑 500 taps</span>
+        </div>
+      </div>
+
+      <!-- Tip -->
+      <div class="w-full max-w-md p-4 rounded-xl bg-[#111814] border border-[#3b5447]/40">
+        <div class="flex items-start gap-3">
+          <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">tips_and_updates</span>
+          <p class="text-text-secondary text-sm">Deep breaths help too — try inhaling for 4 seconds, holding for 4, exhaling for 4 while you tap.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initNav } from "./js/services/nav.js";
+  initNav("stress");
+</script>
+
+<script>
+  const FACES = ['happy', 'wide', 'crossed', 'mouth'];
+  const MESSAGES = [
+    "Keep going, you got this! 💪",
+    "Feel that tension leaving... 😮‍💨",
+    "Every tap helps. You're doing great! 🌿",
+    "Channel that stress into the bean! 🫘",
+    "The bean can take it! Tap away! 😤",
+    "Breathe in... breathe out... tap! 🧘",
+    "Stress? What stress? 😌",
+    "You're smashing it! Literally. 💥",
+    "That's it! Let it all out! 🎯",
+    "Feeling lighter yet? Keep tapping! ✨",
+  ];
+  const MILESTONES = {
+    10:  { text: "Nice start — 10 taps! Keep breathing 🌱", color: "#13ec80" },
+    25:  { text: "25 taps! You're releasing some steam 💨", color: "#13ec80" },
+    50:  { text: "50 taps! Halfway to feeling better 🔥", color: "#fbbf24" },
+    100: { text: "100 taps! You're a stress-busting machine ⚡", color: "#f97316" },
+    200: { text: "200 taps! Absolute zen mode unlocked 🌊", color: "#a78bfa" },
+    500: { text: "500 taps! LEGENDARY. You've conquered stress 👑", color: "#ec4899" },
+  };
+
+  let tapCount = 0;
+  let faceIndex = 0;
+  const MILESTONES_SORTED = [10, 25, 50, 100, 200, 500];
+
+  function getNextMilestone() {
+    return MILESTONES_SORTED.find(m => m > tapCount) || null;
+  }
+
+  function updateProgress() {
+    const next = getNextMilestone();
+    const prev = MILESTONES_SORTED.filter(m => m <= tapCount).pop() || 0;
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('milestone-label');
+    const maxEl = document.getElementById('milestone-max');
+
+    if (next) {
+      const pct = ((tapCount - prev) / (next - prev)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+      label.textContent = `Next milestone: ${next} taps`;
+      maxEl.textContent = next;
+    } else {
+      bar.style.width = '100%';
+      label.textContent = 'All milestones unlocked! 👑';
+      maxEl.textContent = '500+';
+    }
+  }
+
+  function unlockBadge(milestone) {
+    const badge = document.querySelector(`[data-milestone="${milestone}"]`);
+    if (badge) {
+      badge.classList.remove('opacity-50');
+      badge.classList.add('bg-[#13ec80]/20', 'text-primary', 'border', 'border-primary/30');
+    }
+  }
+
+  function spawnBurstRing(stage) {
+    const ring = document.createElement('div');
+    ring.className = 'burst-ring';
+    stage.style.position = 'relative';
+    stage.appendChild(ring);
+    setTimeout(() => ring.remove(), 500);
+  }
+
+  function spawnTapText(stage) {
+    const texts = ['+1', 'bop!', 'squish!', 'smash!', 'whack!'];
+    const msg = tapCount % 10 === 0 && tapCount > 0 ? `${tapCount}! 🎉` : texts[Math.floor(Math.random() * texts.length)];
+    const el = document.createElement('span');
+    el.className = 'tap-text';
+    el.textContent = msg;
+    el.style.left = (30 + Math.random() * 40) + '%';
+    el.style.top = (20 + Math.random() * 30) + '%';
+    stage.appendChild(el);
+    setTimeout(() => el.remove(), 800);
+  }
+
+  function updateMoodMessage() {
+    const el = document.getElementById('mood-text');
+    if (MILESTONES[tapCount]) {
+      el.textContent = MILESTONES[tapCount].text;
+      el.style.color = MILESTONES[tapCount].color;
+    } else {
+      el.style.color = '';
+      el.textContent = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+    }
+  }
+
+  window.tapMascot = function(stage) {
+    tapCount++;
+
+    // Update counter with pulse
+    const display = document.getElementById('tap-display');
+    display.textContent = tapCount;
+    display.classList.remove('count-pulse');
+    void display.offsetWidth;
+    display.classList.add('count-pulse');
+
+    // Impact animation
+    stage.classList.remove('tap-active');
+    void stage.offsetWidth;
+    stage.classList.add('tap-active');
+
+    // Cycle face
+    const prev = FACES[faceIndex];
+    faceIndex = (faceIndex + 1) % FACES.length;
+    const next = FACES[faceIndex];
+    document.getElementById(`face-${prev}`).classList.add('hidden');
+    document.getElementById(`face-${next}`).classList.remove('hidden');
+
+    // Visual effects
+    spawnBurstRing(stage);
+    spawnTapText(stage);
+    updateMoodMessage();
+    updateProgress();
+
+    // Milestone badge unlock
+    if (MILESTONES[tapCount]) unlockBadge(tapCount);
+
+    // High tap glow
+    const char = document.getElementById('mascot-character');
+    if (tapCount >= 50) char.classList.add('mascot-glow');
+
+    // Reset animation after
+    setTimeout(() => stage.classList.remove('tap-active'), 400);
+  };
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    tapCount = 0;
+    faceIndex = 0;
+    document.getElementById('tap-display').textContent = '0';
+    document.getElementById('mood-text').textContent = 'Give the bean a tap to get started...';
+    document.getElementById('mood-text').style.color = '';
+    document.getElementById('progress-bar').style.width = '0%';
+    document.getElementById('milestone-label').textContent = 'Next milestone: 10 taps';
+    document.getElementById('milestone-max').textContent = '10';
+    document.getElementById('mascot-character').classList.remove('mascot-glow');
+    // Reset faces
+    FACES.forEach((f, i) => {
+      const el = document.getElementById(`face-${f}`);
+      if (i === 0) el.classList.remove('hidden');
+      else el.classList.add('hidden');
+    });
+    // Reset badges
+    document.querySelectorAll('[data-milestone]').forEach(b => {
+      b.classList.add('opacity-50');
+      b.classList.remove('bg-[#13ec80]/20', 'text-primary', 'border', 'border-primary/30');
+    });
+  });
+</script>
+</body>
+</html>

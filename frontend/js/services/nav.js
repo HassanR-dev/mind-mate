@@ -3,12 +3,13 @@ import { showToast } from "./toast.js";
 import { listenToUserData } from "./db.service.js";
 
 const NAV_ITEMS = [
-  { href: "dashboard.html",    icon: "dashboard",   label: "Dashboard",    page: "dashboard" },
-  { href: "tasks.html",        icon: "check_box",   label: "Tasks",        page: "tasks" },
-  { href: "gpa.html",          icon: "school",      label: "GPA Tracker",  page: "gpa" },
-  { href: "journal.html",      icon: "mood",        label: "Mood Journal", page: "journal" },
-  { href: "insights.html",     icon: "insights",    label: "Insights",     page: "insights" },
-  { href: "user-profile.html", icon: "person",      label: "Profile",      page: "profile" },
+  { href: "dashboard.html",       icon: "dashboard",       label: "Dashboard",       page: "dashboard" },
+  { href: "tasks.html",           icon: "check_box",       label: "Tasks",           page: "tasks" },
+  { href: "gpa.html",             icon: "school",          label: "GPA Tracker",     page: "gpa" },
+  { href: "journal.html",         icon: "mood",            label: "Mood Journal",    page: "journal" },
+  { href: "insights.html",        icon: "insights",        label: "Insights",        page: "insights" },
+  { href: "stress-reliever.html", icon: "sentiment_calm",  label: "Stress Reliever", page: "stress" },
+  { href: "user-profile.html",    icon: "person",          label: "Profile",         page: "profile" },
 ];
 
 function injectMobileNav(activePage) {
