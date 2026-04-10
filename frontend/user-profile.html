@@ -284,6 +284,16 @@
 </label>
 </div>
 </div>
+<!-- Appearance / Theme -->
+<div class="rounded-2xl bg-white dark:bg-surface-dark p-6 border border-gray-200 dark:border-white/5 shadow-sm mb-4">
+  <div class="flex items-center gap-3 mb-5">
+    <span class="material-symbols-outlined text-primary">palette</span>
+    <h3 class="font-bold text-slate-900 dark:text-white text-lg">Appearance</h3>
+  </div>
+  <p class="text-sm text-slate-500 dark:text-[#9db9ab] mb-5">Choose a theme that suits your mood. Changes apply instantly across all pages.</p>
+  <div id="profile-theme-grid" class="grid grid-cols-2 gap-3"></div>
+</div>
+
 <!-- Danger Zone -->
 <div class="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
 <h3 class="text-red-500 font-bold mb-2">Danger Zone</h3>
@@ -302,9 +312,85 @@
   import { initNav } from "./js/services/nav.js";
   import { showToast, showConfirm } from "./js/services/toast.js";
   import { updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { THEMES, applyTheme, getCurrentThemeId } from "./js/services/theme.service.js";
 
   await authGuard();
   initNav("profile");
+
+  // ── Build full theme grid in profile page ──
+  (function buildThemeGrid() {
+    const grid = document.getElementById('profile-theme-grid');
+    if (!grid) return;
+    const currentId = getCurrentThemeId();
+
+    THEMES.forEach(theme => {
+      const card = document.createElement('button');
+      const isActive = theme.id === currentId;
+      card.dataset.themeId = theme.id;
+      card.style.cssText = `
+        display: flex; align-items: center; gap: 12px;
+        padding: 12px 14px; border-radius: 12px; cursor: pointer; text-align: left;
+        border: 2px solid ${isActive ? theme.accent : 'rgba(128,128,128,0.2)'};
+        background: ${theme.dark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.6)'};
+        transition: border-color 0.2s, transform 0.15s;
+        position: relative; overflow: hidden;
+      `;
+
+      // mini preview swatch
+      const swatch = document.createElement('div');
+      swatch.style.cssText = `
+        width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+        background: conic-gradient(${theme.bg} 0 50%, ${theme.accent} 50% 100%);
+        border: 2px solid rgba(255,255,255,0.2);
+      `;
+
+      const info = document.createElement('div');
+      info.innerHTML = `
+        <p style="font-weight:700; font-size:13px; color:${theme.dark ? '#fff' : '#111'}; margin:0 0 2px;">${theme.name}</p>
+        <p style="font-size:11px; color:${theme.dark ? '#9db9ab' : '#666'}; margin:0;">${theme.desc}</p>
+      `;
+
+      if (isActive) {
+        const tick = document.createElement('span');
+        tick.id = `tick-${theme.id}`;
+        tick.textContent = '✓';
+        tick.style.cssText = `
+          margin-left: auto; font-weight: 900; font-size: 16px; color: ${theme.accent};
+        `;
+        card.appendChild(swatch);
+        card.appendChild(info);
+        card.appendChild(tick);
+      } else {
+        card.appendChild(swatch);
+        card.appendChild(info);
+      }
+
+      card.addEventListener('mouseenter', () => { card.style.transform = 'scale(1.02)'; });
+      card.addEventListener('mouseleave', () => { card.style.transform = 'scale(1)'; });
+
+      card.addEventListener('click', () => {
+        applyTheme(theme.id);
+        // Update all cards
+        grid.querySelectorAll('button').forEach(c => {
+          const tid = c.dataset.themeId;
+          const t = THEMES.find(x => x.id === tid);
+          const active = tid === theme.id;
+          c.style.borderColor = active ? t.accent : 'rgba(128,128,128,0.2)';
+          const existingTick = c.querySelector('span');
+          if (active && !existingTick) {
+            const tick = document.createElement('span');
+            tick.textContent = '✓';
+            tick.style.cssText = `margin-left: auto; font-weight: 900; font-size: 16px; color: ${t.accent};`;
+            c.appendChild(tick);
+          } else if (!active && existingTick) {
+            existingTick.remove();
+          }
+        });
+      });
+
+      grid.appendChild(card);
+    });
+  })();
 
   const user = await getCurrentUser();
   const email = user.email || "";

@@ -20,9 +20,15 @@
           "card-inner": "#283930",
           "text-secondary": "#9db9ab"
         },
-        fontFamily: { "display": ["Lexend", "Noto Sans", "sans-serif"] },
+        fontFamily: {
+          "display": ["Lexend", "Noto Sans", "sans-serif"]
+        },
         borderRadius: {
-          "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"
+          "DEFAULT": "0.5rem",
+          "lg": "1rem",
+          "xl": "1.5rem",
+          "2xl": "2rem",
+          "full": "9999px"
         },
       },
     },
@@ -30,74 +36,39 @@
 </script>
 <link rel="stylesheet" href="styles.css">
 <style>
-  /* ── Idle float ── */
+  /* Bean mascot animations */
   .mascot-character {
     animation: float 4s ease-in-out infinite;
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.1s;
   }
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-14px); }
+    50% { transform: translateY(-14px); }
   }
-
-  /* ── Player hits bean (squash) ── */
   .tap-active .mascot-character {
     animation: impact-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
   }
   @keyframes impact-shake {
-    0%   { transform: scale(1,1); }
-    20%  { transform: scale(1.2,0.8); }
-    40%  { transform: scale(0.8,1.1) translateY(-10px); }
-    60%  { transform: scale(1.05,0.95); }
-    80%  { transform: scale(0.98,1.02); }
-    100% { transform: scale(1,1); }
+    0%   { transform: scale(1, 1); }
+    20%  { transform: scale(1.2, 0.8); }
+    40%  { transform: scale(0.8, 1.1) translateY(-10px); }
+    60%  { transform: scale(1.05, 0.95) translateY(0); }
+    80%  { transform: scale(0.98, 1.02); }
+    100% { transform: scale(1, 1); }
   }
-
-  /* ── Bean fights back: hammer swing ── */
-  #hammer-arm {
-    position: absolute;
-    right: -34px;
-    top: 36%;
-    transform-origin: 4px 2px;   /* shoulder pivot */
-    transform: rotate(18deg);    /* resting: arm hangs down-right */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  @keyframes hammerSwing {
-    0%   { transform: rotate(18deg); }
-    18%  { transform: rotate(55deg); }   /* wind-up back */
-    55%  { transform: rotate(-115deg); } /* SLAM forward */
-    72%  { transform: rotate(-95deg); }  /* bounce */
-    100% { transform: rotate(18deg); }   /* return */
-  }
-  .hammer-attack {
-    animation: hammerSwing 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-
-  /* ── Bean angry glow ── */
-  .bean-angry {
-    background-color: #cc1f1f !important;
-    filter: drop-shadow(0 0 18px rgba(255,40,40,0.85));
-  }
-
-  /* ── Generic stick limb ── */
   .stick-limb {
     background-color: #1a1a1a;
     border-radius: 999px;
     position: absolute;
   }
-
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
   }
-
-  /* ── Player tap: green burst ── */
+  /* Tap particle burst */
   @keyframes burst {
-    0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+    0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
   }
   .burst-ring {
     position: absolute;
@@ -108,57 +79,35 @@
     pointer-events: none;
     top: 50%; left: 50%;
   }
-
-  /* ── Player tap float text (green) ── */
+  /* Floating tap text */
   @keyframes floatUp {
     0%   { transform: translateY(0); opacity: 1; }
     100% { transform: translateY(-60px); opacity: 0; }
   }
   .tap-text {
     position: absolute;
-    font-size: 14px; font-weight: 700;
+    font-size: 14px;
+    font-weight: 700;
     color: #13ec80;
     pointer-events: none;
     animation: floatUp 0.8s ease-out forwards;
     white-space: nowrap;
-    z-index: 20;
   }
-
-  /* ── Bean counter-attack text (red) ── */
-  @keyframes beanAttackFloat {
-    0%   { transform: translateY(0) scale(0.7); opacity: 1; }
-    100% { transform: translateY(-70px) scale(1.05); opacity: 0; }
-  }
-  .attack-text {
-    position: absolute;
-    font-size: 13px; font-weight: 800;
-    color: #ff4444;
-    pointer-events: none;
-    animation: beanAttackFloat 0.85s ease-out forwards;
-    white-space: nowrap;
-    z-index: 20;
-    text-shadow: 0 0 10px rgba(255,0,0,0.5);
-  }
-
-  /* ── Counter pulse ── */
+  /* Counter pulse */
   @keyframes countPulse {
     0%, 100% { transform: scale(1); }
-    50%       { transform: scale(1.3); }
+    50% { transform: scale(1.3); }
   }
-  .count-pulse { animation: countPulse 0.2s ease-out; }
-
-  /* ── High-tap glow ── */
+  .count-pulse {
+    animation: countPulse 0.2s ease-out;
+  }
+  /* Glow around mascot on high tap count */
   .mascot-glow {
-    filter: drop-shadow(0 0 22px rgba(255,92,92,0.65));
+    filter: drop-shadow(0 0 20px rgba(255, 92, 92, 0.6));
   }
-
-  /* ── Hammer wobble when idle (subtle) ── */
-  @keyframes hammerIdle {
-    0%, 100% { transform: rotate(18deg); }
-    50%       { transform: rotate(22deg); }
-  }
-  #hammer-arm:not(.hammer-attack) {
-    animation: hammerIdle 4s ease-in-out infinite;
+  /* Progress bar fill animation */
+  @keyframes fillBar {
+    from { width: 0%; }
   }
 </style>
 </head>
@@ -207,6 +156,7 @@
           <span class="material-symbols-outlined text-text-secondary group-hover:text-white">insights</span>
           <p class="text-text-secondary group-hover:text-white text-sm font-medium">Insights</p>
         </a>
+        <!-- Active State -->
         <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#283930] border border-[#3b5447]" href="stress-reliever.html">
           <span class="material-symbols-outlined text-primary fill">sentiment_calm</span>
           <p class="text-white text-sm font-medium">Stress Reliever</p>
@@ -238,7 +188,7 @@
     <div class="flex items-center justify-between px-6 py-4 border-b border-[#3b5447]/30 bg-[#111814] shrink-0">
       <div>
         <h2 class="text-white text-xl font-bold">Stress Reliever</h2>
-        <p class="text-text-secondary text-sm">Tap the bean — but watch out, it fights back!</p>
+        <p class="text-text-secondary text-sm">Tap the bean to release tension</p>
       </div>
       <button id="reset-btn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-colors text-sm font-medium">
         <span class="material-symbols-outlined text-[18px]">refresh</span>
@@ -265,45 +215,27 @@
         </div>
       </div>
 
-      <!-- Battle message -->
-      <div class="w-full max-w-md px-4 py-3 rounded-xl bg-[#111814] border border-[#3b5447]/50 text-center transition-all duration-300">
-        <p id="mood-text" class="text-text-secondary text-sm italic">Tap the bean to start the fight...</p>
+      <!-- Mood message -->
+      <div id="mood-message" class="w-full max-w-md px-4 py-3 rounded-xl bg-[#111814] border border-[#3b5447]/50 text-center transition-all duration-500">
+        <p id="mood-text" class="text-text-secondary text-sm italic">Give the bean a tap to get started...</p>
       </div>
 
       <!-- Bean mascot stage -->
-      <div class="relative flex flex-col items-center justify-center" style="min-height: 340px;">
-        <div class="relative cursor-pointer z-10 w-72 h-80 flex flex-col items-center justify-center" id="mascot-stage" onclick="tapMascot(this)">
-
-          <!-- ═══ Bean character ═══ -->
-          <div id="mascot-character" class="mascot-character relative w-40 h-52 bg-[#FF5C5C] rounded-[100px] shadow-2xl flex flex-col items-center justify-center select-none">
-
-            <!-- Body highlight -->
+      <div class="relative flex flex-col items-center justify-center" style="min-height: 320px;">
+        <div class="relative cursor-pointer z-10 w-64 h-80 flex flex-col items-center justify-center" id="mascot-stage" onclick="tapMascot(this)">
+          <!-- Character -->
+          <div id="mascot-character" class="mascot-character relative w-40 h-52 bg-[#FF5C5C] rounded-[100px] shadow-2xl flex flex-col items-center justify-center transition-all duration-300 select-none">
+            <!-- Highlight -->
             <div class="absolute top-6 left-8 w-12 h-6 bg-white/25 rounded-full blur-sm pointer-events-none"></div>
-
-            <!-- Left arm -->
+            <!-- Arms -->
             <div class="stick-limb w-1.5 h-10 -left-6 top-1/2 -rotate-12"></div>
-
-            <!-- Right arm + HAMMER -->
-            <div id="hammer-arm">
-              <!-- Arm -->
-              <div style="width:6px; height:36px; background:#1a1a1a; border-radius:999px;"></div>
-              <!-- Handle -->
-              <div style="width:5px; height:20px; background:#8B4513; border-radius:2px; margin-left:0.5px;"></div>
-              <!-- Hammer head (cartoon mallet style) -->
-              <div style="position:relative; width:28px; height:16px; background:linear-gradient(135deg,#777,#444); border-radius:5px; margin-left:-11px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 3px 6px rgba(0,0,0,0.4);">
-                <!-- Metal face highlight -->
-                <div style="position:absolute; top:3px; left:4px; width:8px; height:4px; background:rgba(255,255,255,0.3); border-radius:2px;"></div>
-              </div>
-            </div>
-
+            <div class="stick-limb w-1.5 h-10 -right-6 top-1/2 rotate-12"></div>
             <!-- Legs -->
             <div class="stick-limb w-1.5 h-8 bottom-[-8px] left-12"></div>
             <div class="stick-limb w-1.5 h-8 bottom-[-8px] right-12"></div>
-
-            <!-- ── Faces ── -->
+            <!-- Faces -->
             <div class="relative w-full flex flex-col items-center justify-center" id="face-container">
-
-              <!-- HAPPY (idle default) -->
+              <!-- Happy -->
               <div class="flex flex-col items-center gap-3" id="face-happy">
                 <div class="flex gap-10">
                   <div class="w-5 h-5 bg-[#1a1a1a] rounded-full"></div>
@@ -311,36 +243,42 @@
                 </div>
                 <div class="w-6 h-3 border-b-4 border-[#1a1a1a] rounded-full"></div>
               </div>
-
-              <!-- ANGRY (shows on every hit) -->
-              <div class="hidden flex-col items-center" id="face-angry" style="gap:5px;">
-                <!-- Eyebrows (V-angry slant) -->
-                <div style="display:flex; gap:18px; margin-bottom:-2px;">
-                  <div style="width:20px; height:5px; background:#1a1a1a; border-radius:3px; transform:rotate(28deg); transform-origin:right center;"></div>
-                  <div style="width:20px; height:5px; background:#1a1a1a; border-radius:3px; transform:rotate(-28deg); transform-origin:left center;"></div>
-                </div>
-                <!-- Squinting eyes -->
-                <div style="display:flex; gap:18px;">
-                  <div style="width:15px; height:7px; background:#1a1a1a; border-radius:2px;"></div>
-                  <div style="width:15px; height:7px; background:#1a1a1a; border-radius:2px;"></div>
-                </div>
-                <!-- Gritted teeth mouth -->
-                <div style="margin-top:5px; width:34px; height:15px; background:#1a1a1a; border-radius:4px; overflow:hidden; position:relative;">
-                  <!-- teeth row -->
-                  <div style="position:absolute; bottom:0; left:0; right:0; height:9px; background:white; display:flex; justify-content:space-around; padding:0 3px;">
-                    <div style="width:5px; height:100%; background:#1a1a1a; border-radius:1px 1px 0 0;"></div>
-                    <div style="width:5px; height:100%; background:#1a1a1a; border-radius:1px 1px 0 0;"></div>
-                    <div style="width:5px; height:100%; background:#1a1a1a; border-radius:1px 1px 0 0;"></div>
+              <!-- Shocked -->
+              <div class="hidden flex flex-col items-center gap-4" id="face-wide">
+                <div class="flex gap-8">
+                  <div class="w-8 h-8 bg-white border-2 border-[#1a1a1a] rounded-full flex items-center justify-center">
+                    <div class="w-2 h-2 bg-[#1a1a1a] rounded-full"></div>
+                  </div>
+                  <div class="w-8 h-8 bg-white border-2 border-[#1a1a1a] rounded-full flex items-center justify-center">
+                    <div class="w-2 h-2 bg-[#1a1a1a] rounded-full"></div>
                   </div>
                 </div>
+                <div class="w-6 h-6 bg-[#1a1a1a] rounded-full"></div>
               </div>
-
+              <!-- Dizzy -->
+              <div class="hidden flex flex-col items-center gap-2" id="face-crossed">
+                <div class="flex gap-8">
+                  <span class="material-symbols-outlined text-[#1a1a1a] text-4xl">close</span>
+                  <span class="material-symbols-outlined text-[#1a1a1a] text-4xl">close</span>
+                </div>
+                <div class="w-10 h-1 bg-[#1a1a1a] rounded-full"></div>
+              </div>
+              <!-- Open mouth -->
+              <div class="hidden flex flex-col items-center gap-4" id="face-mouth">
+                <div class="flex gap-10">
+                  <div class="w-6 h-2 bg-[#1a1a1a] rounded-full"></div>
+                  <div class="w-6 h-2 bg-[#1a1a1a] rounded-full"></div>
+                </div>
+                <div class="w-8 h-10 bg-[#1a1a1a] rounded-full relative overflow-hidden">
+                  <div class="absolute bottom-1 left-1 w-6 h-3 bg-red-400 rounded-full opacity-50"></div>
+                </div>
+              </div>
             </div>
           </div>
           <!-- Shadow -->
           <div class="mt-4 w-24 h-3 bg-black/20 rounded-full blur-md"></div>
         </div>
-        <p id="tap-hint" class="text-text-secondary text-xs mt-2 animate-pulse">tap me!</p>
+        <p class="text-text-secondary text-xs mt-2 animate-pulse">tap me!</p>
       </div>
 
       <!-- Milestone badges -->
@@ -360,7 +298,7 @@
       <div class="w-full max-w-md p-4 rounded-xl bg-[#111814] border border-[#3b5447]/40">
         <div class="flex items-start gap-3">
           <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">tips_and_updates</span>
-          <p class="text-text-secondary text-sm">Deep breaths help too — try inhaling for 4 seconds, holding for 4, exhaling for 4 while you fight the bean.</p>
+          <p class="text-text-secondary text-sm">Deep breaths help too — try inhaling for 4 seconds, holding for 4, exhaling for 4 while you tap.</p>
         </div>
       </div>
 
@@ -374,36 +312,31 @@
 </script>
 
 <script>
-  const PLAYER_TEXTS = ['+1', 'bop!', 'squish!', 'smash!', 'whack!', 'pow!'];
-  const BEAN_REPLIES  = [
-    'TAKE THAT! 💢', 'How dare you! 😡', 'BACK OFF! 🔨',
-    "I'll get you! ⚡", 'NOT SO FAST! 🫘', 'FEEL MY WRATH! 💥',
-    'You asked for it! 😤', "THAT'S IT! 🤬",
-  ];
+  const FACES = ['happy', 'wide', 'crossed', 'mouth'];
   const MESSAGES = [
-    "The bean is furious! Hit it again! 💢",
-    "Feel the stress leaving... punch it out! 👊",
-    "It's fighting back! Show it who's boss! 😤",
-    "Channel your stress into the bean! 🫘",
-    "The bean can take it! Don't hold back! 💪",
-    "Breathe in... breathe out... SMASH! 🧘",
-    "Stress? Punch the bean! 😌",
-    "You're winning the fight! Keep going! 💥",
-    "The bean won't give up — neither should you! 🎯",
-    "Every hit releases a little tension ✨",
+    "Keep going, you got this! 💪",
+    "Feel that tension leaving... 😮‍💨",
+    "Every tap helps. You're doing great! 🌿",
+    "Channel that stress into the bean! 🫘",
+    "The bean can take it! Tap away! 😤",
+    "Breathe in... breathe out... tap! 🧘",
+    "Stress? What stress? 😌",
+    "You're smashing it! Literally. 💥",
+    "That's it! Let it all out! 🎯",
+    "Feeling lighter yet? Keep tapping! ✨",
   ];
   const MILESTONES = {
-    10:  { text: "10 hits! The bean is getting annoyed 😠", color: "#13ec80" },
-    25:  { text: "25 hits! It's swinging harder! 💨", color: "#13ec80" },
-    50:  { text: "50 hits! Bean RAGE MODE activated 🔥", color: "#fbbf24" },
-    100: { text: "100 hits! Legendary stress-buster ⚡", color: "#f97316" },
-    200: { text: "200 hits! The bean respects you now 🌊", color: "#a78bfa" },
-    500: { text: "500 hits! You've DEFEATED the stress bean 👑", color: "#ec4899" },
+    10:  { text: "Nice start — 10 taps! Keep breathing 🌱", color: "#13ec80" },
+    25:  { text: "25 taps! You're releasing some steam 💨", color: "#13ec80" },
+    50:  { text: "50 taps! Halfway to feeling better 🔥", color: "#fbbf24" },
+    100: { text: "100 taps! You're a stress-busting machine ⚡", color: "#f97316" },
+    200: { text: "200 taps! Absolute zen mode unlocked 🌊", color: "#a78bfa" },
+    500: { text: "500 taps! LEGENDARY. You've conquered stress 👑", color: "#ec4899" },
   };
-  const MILESTONES_SORTED = [10, 25, 50, 100, 200, 500];
 
   let tapCount = 0;
-  let isAnimating = false;
+  let faceIndex = 0;
+  const MILESTONES_SORTED = [10, 25, 50, 100, 200, 500];
 
   function getNextMilestone() {
     return MILESTONES_SORTED.find(m => m > tapCount) || null;
@@ -412,11 +345,13 @@
   function updateProgress() {
     const next = getNextMilestone();
     const prev = MILESTONES_SORTED.filter(m => m <= tapCount).pop() || 0;
-    const bar  = document.getElementById('progress-bar');
+    const bar = document.getElementById('progress-bar');
     const label = document.getElementById('milestone-label');
     const maxEl = document.getElementById('milestone-max');
+
     if (next) {
-      bar.style.width = Math.min(((tapCount - prev) / (next - prev)) * 100, 100) + '%';
+      const pct = ((tapCount - prev) / (next - prev)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
       label.textContent = `Next milestone: ${next} taps`;
       maxEl.textContent = next;
     } else {
@@ -427,44 +362,34 @@
   }
 
   function unlockBadge(milestone) {
-    const b = document.querySelector(`[data-milestone="${milestone}"]`);
-    if (b) {
-      b.classList.remove('opacity-50');
-      b.classList.add('bg-[#13ec80]/20', 'text-primary', 'border', 'border-primary/30');
+    const badge = document.querySelector(`[data-milestone="${milestone}"]`);
+    if (badge) {
+      badge.classList.remove('opacity-50');
+      badge.classList.add('bg-[#13ec80]/20', 'text-primary', 'border', 'border-primary/30');
     }
   }
 
   function spawnBurstRing(stage) {
     const ring = document.createElement('div');
     ring.className = 'burst-ring';
+    stage.style.position = 'relative';
     stage.appendChild(ring);
     setTimeout(() => ring.remove(), 500);
   }
 
-  function spawnPlayerText(stage) {
-    const msg = tapCount % 10 === 0 ? `${tapCount}! 🎉`
-              : PLAYER_TEXTS[Math.floor(Math.random() * PLAYER_TEXTS.length)];
+  function spawnTapText(stage) {
+    const texts = ['+1', 'bop!', 'squish!', 'smash!', 'whack!'];
+    const msg = tapCount % 10 === 0 && tapCount > 0 ? `${tapCount}! 🎉` : texts[Math.floor(Math.random() * texts.length)];
     const el = document.createElement('span');
     el.className = 'tap-text';
     el.textContent = msg;
-    el.style.left = (20 + Math.random() * 30) + '%';
-    el.style.top  = (15 + Math.random() * 25) + '%';
+    el.style.left = (30 + Math.random() * 40) + '%';
+    el.style.top = (20 + Math.random() * 30) + '%';
     stage.appendChild(el);
     setTimeout(() => el.remove(), 800);
   }
 
-  function spawnBeanCounterText(stage) {
-    const msg = BEAN_REPLIES[Math.floor(Math.random() * BEAN_REPLIES.length)];
-    const el = document.createElement('span');
-    el.className = 'attack-text';
-    el.textContent = msg;
-    el.style.right = '4%';
-    el.style.top   = (10 + Math.random() * 30) + '%';
-    stage.appendChild(el);
-    setTimeout(() => el.remove(), 850);
-  }
-
-  function updateBattleMessage() {
+  function updateMoodMessage() {
     const el = document.getElementById('mood-text');
     if (MILESTONES[tapCount]) {
       el.textContent = MILESTONES[tapCount].text;
@@ -478,70 +403,59 @@
   window.tapMascot = function(stage) {
     tapCount++;
 
-    // Counter
+    // Update counter with pulse
     const display = document.getElementById('tap-display');
     display.textContent = tapCount;
     display.classList.remove('count-pulse');
     void display.offsetWidth;
     display.classList.add('count-pulse');
 
-    // ─── Player hits bean ───
+    // Impact animation
     stage.classList.remove('tap-active');
     void stage.offsetWidth;
     stage.classList.add('tap-active');
 
-    // ─── Bean fights back ───
-    const char      = document.getElementById('mascot-character');
-    const hammerArm = document.getElementById('hammer-arm');
-    const faceHappy = document.getElementById('face-happy');
-    const faceAngry = document.getElementById('face-angry');
+    // Cycle face
+    const prev = FACES[faceIndex];
+    faceIndex = (faceIndex + 1) % FACES.length;
+    const next = FACES[faceIndex];
+    document.getElementById(`face-${prev}`).classList.add('hidden');
+    document.getElementById(`face-${next}`).classList.remove('hidden');
 
-    // Go angry
-    faceHappy.classList.add('hidden');
-    faceAngry.classList.remove('hidden');
-    faceAngry.style.display = 'flex';
-
-    // Bean turns dark red
-    char.classList.add('bean-angry');
-
-    // Hammer SWING
-    hammerArm.classList.remove('hammer-attack');
-    void hammerArm.offsetWidth;
-    hammerArm.classList.add('hammer-attack');
-
-    // Floating texts
-    spawnPlayerText(stage);
-    spawnBeanCounterText(stage);
+    // Visual effects
     spawnBurstRing(stage);
-
-    updateBattleMessage();
+    spawnTapText(stage);
+    updateMoodMessage();
     updateProgress();
+
+    // Milestone badge unlock
     if (MILESTONES[tapCount]) unlockBadge(tapCount);
+
+    // High tap glow
+    const char = document.getElementById('mascot-character');
     if (tapCount >= 50) char.classList.add('mascot-glow');
 
-    // Revert to happy after swing finishes
-    setTimeout(() => {
-      stage.classList.remove('tap-active');
-      char.classList.remove('bean-angry');
-      faceAngry.classList.add('hidden');
-      faceAngry.style.display = '';
-      faceHappy.classList.remove('hidden');
-      hammerArm.classList.remove('hammer-attack');
-    }, 680);
+    // Reset animation after
+    setTimeout(() => stage.classList.remove('tap-active'), 400);
   };
 
   document.getElementById('reset-btn').addEventListener('click', () => {
     tapCount = 0;
-    document.getElementById('tap-display').textContent  = '0';
-    document.getElementById('mood-text').textContent    = 'Tap the bean to start the fight...';
-    document.getElementById('mood-text').style.color    = '';
+    faceIndex = 0;
+    document.getElementById('tap-display').textContent = '0';
+    document.getElementById('mood-text').textContent = 'Give the bean a tap to get started...';
+    document.getElementById('mood-text').style.color = '';
     document.getElementById('progress-bar').style.width = '0%';
     document.getElementById('milestone-label').textContent = 'Next milestone: 10 taps';
-    document.getElementById('milestone-max').textContent   = '10';
-    document.getElementById('mascot-character').classList.remove('mascot-glow', 'bean-angry');
-    document.getElementById('face-angry').classList.add('hidden');
-    document.getElementById('face-happy').classList.remove('hidden');
-    document.getElementById('hammer-arm').classList.remove('hammer-attack');
+    document.getElementById('milestone-max').textContent = '10';
+    document.getElementById('mascot-character').classList.remove('mascot-glow');
+    // Reset faces
+    FACES.forEach((f, i) => {
+      const el = document.getElementById(`face-${f}`);
+      if (i === 0) el.classList.remove('hidden');
+      else el.classList.add('hidden');
+    });
+    // Reset badges
     document.querySelectorAll('[data-milestone]').forEach(b => {
       b.classList.add('opacity-50');
       b.classList.remove('bg-[#13ec80]/20', 'text-primary', 'border', 'border-primary/30');

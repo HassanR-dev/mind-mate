@@ -1,6 +1,7 @@
 import { logout, getCurrentUser } from "./auth.service.js";
 import { showToast } from "./toast.js";
 import { listenToUserData } from "./db.service.js";
+import { THEMES, applyTheme, loadTheme, getCurrentThemeId } from "./theme.service.js";
 
 const NAV_ITEMS = [
   { href: "dashboard.html",       icon: "dashboard",       label: "Dashboard",       page: "dashboard" },
@@ -66,7 +67,65 @@ function injectMobileNav(activePage) {
   });
 }
 
+function injectThemePicker() {
+  // Find sidebar bottom section (works across all page layouts)
+  const sidebar = document.querySelector('.lg\\:flex.w-72, .hidden.lg\\:flex.w-72');
+  if (!sidebar) return;
+
+  const bottomSection = sidebar.children[sidebar.children.length - 1];
+  if (!bottomSection) return;
+
+  const logoutBtn = bottomSection.querySelector('[data-action="logout"]');
+  if (!logoutBtn) return;
+
+  const currentId = getCurrentThemeId();
+
+  const wrapper = document.createElement('div');
+  wrapper.id = 'mm-theme-picker';
+  wrapper.style.cssText = 'padding: 4px 8px 8px; display: flex; flex-direction: column; gap: 6px;';
+  wrapper.innerHTML = `
+    <span style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color: var(--th-text-sec, #9db9ab);">Theme</span>
+    <div id="mm-swatches" style="display:flex; gap:8px; align-items:center;"></div>
+  `;
+
+  logoutBtn.parentNode.insertBefore(wrapper, logoutBtn);
+
+  const container = wrapper.querySelector('#mm-swatches');
+  THEMES.forEach(theme => {
+    const btn = document.createElement('button');
+    btn.title = `${theme.name} — ${theme.desc}`;
+    btn.setAttribute('aria-label', theme.name);
+    const isActive = currentId === theme.id;
+    btn.style.cssText = `
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: conic-gradient(${theme.bg} 0 50%, ${theme.accent} 50% 100%);
+      border: 2.5px solid ${isActive ? theme.accent : 'transparent'};
+      outline: ${isActive ? `2px solid ${theme.accent}` : 'none'};
+      outline-offset: 1px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s, outline 0.15s;
+      flex-shrink: 0;
+    `;
+    btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.25)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
+    btn.addEventListener('click', () => {
+      applyTheme(theme.id);
+      container.querySelectorAll('button').forEach((b, i) => {
+        const t = THEMES[i];
+        const active = t.id === theme.id;
+        b.style.borderColor = active ? t.accent : 'transparent';
+        b.style.outline = active ? `2px solid ${t.accent}` : 'none';
+      });
+    });
+    container.appendChild(btn);
+  });
+}
+
 export async function initNav(activePage) {
+  // Load saved theme first (before any render)
+  loadTheme();
+
   // Inject mobile nav overlay
   injectMobileNav(activePage);
 
@@ -82,6 +141,9 @@ export async function initNav(activePage) {
       btn.addEventListener("click", () => showToast("Notifications coming soon!", "info"));
     }
   });
+
+  // Inject theme picker into sidebar
+  injectThemePicker();
 
   // Update user name everywhere
   const user = await getCurrentUser();
