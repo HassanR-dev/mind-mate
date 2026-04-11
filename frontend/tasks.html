@@ -86,6 +86,10 @@
 <span class="material-symbols-outlined text-[24px]">settings</span>
 <p class="text-sm font-medium leading-normal">Settings</p>
 </a>
+<button id="logout-btn" class="flex items-center gap-3 px-3 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[24px]">logout</span>
+<p class="text-sm font-medium leading-normal">Log Out</p>
+</button>
 </div>
 </aside>
 <!-- Main Content -->
@@ -93,6 +97,9 @@
 <!-- Top Bar / Header -->
 <header class="pt-8 px-8 pb-4 shrink-0 flex justify-between items-end">
 <div class="flex flex-col gap-1">
+<button id="mobile-menu-btn" class="md:hidden text-[#9db9ab] hover:text-white transition-colors mb-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <p class="text-[#9db9ab] text-sm font-medium tracking-wide uppercase">Tuesday, October 24th</p>
 <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">My Tasks</h1>
 </div>
@@ -121,7 +128,7 @@
 </div>
 <p class="text-[#9db9ab] text-sm font-medium leading-normal z-10">Due Today</p>
 <div class="flex items-baseline gap-2 z-10 mt-2">
-<p class="text-white text-3xl font-bold leading-tight">4</p>
+<p id="stat-due-today" class="text-white text-3xl font-bold leading-tight">0</p>
 <span class="text-xs text-red-400 font-medium">1 Overdue</span>
 </div>
 </div>
@@ -131,21 +138,21 @@
 </div>
 <p class="text-[#9db9ab] text-sm font-medium leading-normal z-10">Completed</p>
 <div class="flex items-baseline gap-2 z-10 mt-2">
-<p class="text-white text-3xl font-bold leading-tight">12</p>
+<p id="stat-completed" class="text-white text-3xl font-bold leading-tight">0</p>
 <span class="text-xs text-primary font-medium">+2 today</span>
-</div>
-</div>
+    </div>
+  </div>
 <div class="flex flex-col justify-between rounded-2xl p-6 bg-surface-dark border border-white/5 relative overflow-hidden group hover:border-primary/30 transition-colors">
 <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-6xl text-white">hourglass_empty</span>
-</div>
+      </div>
 <p class="text-[#9db9ab] text-sm font-medium leading-normal z-10">Pending</p>
 <div class="flex items-baseline gap-2 z-10 mt-2">
-<p class="text-white text-3xl font-bold leading-tight">8</p>
+<p id="stat-pending" class="text-white text-3xl font-bold leading-tight">0</p>
 <span class="text-xs text-[#9db9ab] font-medium">Next: DSA</span>
-</div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 <!-- Daily Progress -->
 <div class="lg:col-span-4 rounded-2xl p-6 bg-gradient-to-br from-surface-dark to-[#13201a] border border-white/5 flex flex-col justify-center">
 <div class="flex justify-between items-end mb-3">
@@ -153,12 +160,12 @@
 <p class="text-white text-lg font-bold">Daily Goal</p>
 <p class="text-[#9db9ab] text-xs">Stay consistent!</p>
 </div>
-<span class="text-primary text-2xl font-black">60%</span>
+<span id="stat-goal-percent" class="text-primary text-2xl font-black">0%</span>
 </div>
 <div class="w-full bg-[#3b5447] rounded-full h-3 mb-2">
-<div class="bg-primary h-3 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(19,236,128,0.4)]" style="width: 60%"></div>
+<div id="stat-goal-bar" class="bg-primary h-3 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(19,236,128,0.4)]" style="width: 0%"></div>
 </div>
-<p class="text-[#9db9ab] text-xs font-normal text-right">3/5 tasks completed</p>
+<p id="stat-goal-text" class="text-[#9db9ab] text-xs font-normal text-right">0/0 tasks completed</p>
 </div>
 </div>
 <!-- Quick Add Bar -->
@@ -204,152 +211,67 @@
 </div>
 <!-- Task List -->
 <div class="flex flex-col gap-3">
-<!-- Task Item: High Priority -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<!-- Checkbox -->
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#9db9ab] group-hover:border-primary transition-colors cursor-pointer shrink-0">
-<div class="w-full h-full rounded-full bg-primary opacity-0 group-hover:opacity-10 transition-opacity"></div>
-<span class="material-symbols-outlined text-primary text-lg opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center transition-opacity scale-75 group-hover:scale-100">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-white text-lg font-medium group-hover:text-primary transition-colors">Finish OB Assignment</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">CourseID#</span>
-<span class="text-[#9db9ab] text-xs flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">schedule</span> 11:59 PM
-                                </span>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/10">
-<div class="w-2 h-2 rounded-full bg-red-500"></div>
-<span class="text-xs text-red-400 font-medium">High Priority</span>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Task Item: Normal -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#9db9ab] group-hover:border-primary transition-colors cursor-pointer shrink-0">
-<span class="material-symbols-outlined text-primary text-lg opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center transition-opacity scale-75 group-hover:scale-100">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-white text-lg font-medium group-hover:text-primary transition-colors">MAD ass 3</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">CourseID#</span>
-<span class="text-[#9db9ab] text-xs flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">calendar_today</span> Tomorrow
-                                </span>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/10">
-<div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-<span class="text-xs text-yellow-400 font-medium">Medium</span>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Task Item: Completed -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 opacity-60 hover:opacity-100 transition-all cursor-pointer">
-<div class="flex items-center gap-4 flex-1">
-<!-- Checked State -->
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-primary bg-primary cursor-pointer shrink-0">
-<span class="material-symbols-outlined text-black text-lg font-bold">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-[#9db9ab] line-through text-lg font-medium">Submit SPM report</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">CourseID#</span>
-<span class="text-[#9db9ab] text-xs">Completed 2h ago</span>
-</div>
-</div>
-</div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-[#283930] px-3 py-1 rounded-full border border-white/5">
-<span class="text-xs text-[#9db9ab] font-medium">Done</span>
-</div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">undo</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Task Item: Normal -->
-<div class="group flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/40 hover:bg-surface-dark-hover transition-all cursor-pointer shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<div class="relative flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#9db9ab] group-hover:border-primary transition-colors cursor-pointer shrink-0">
-<span class="material-symbols-outlined text-primary text-lg opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center transition-opacity scale-75 group-hover:scale-100">check</span>
-</div>
-<div class="flex flex-col">
-<h3 class="text-white text-lg font-medium group-hover:text-primary transition-colors">Group Meeting: Project MINDMATE</h3>
-<div class="flex items-center gap-2 mt-1">
-<span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CS 300</span>
-<span class="text-[#9db9ab] text-xs flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">calendar_today</span> Oct 26
-                                </span>
-</div>
-</div>
-    </div>
-<div class="flex items-center justify-between md:justify-end gap-4 pl-10 md:pl-0">
-<div class="flex items-center gap-2 bg-gray-500/10 px-3 py-1 rounded-full border border-gray-500/10">
-<div class="w-2 h-2 rounded-full bg-gray-400"></div>
-<span class="text-xs text-gray-400 font-medium">Low</span>
-  </div>
-<div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-<button class="p-2 text-[#9db9ab] hover:text-white hover:bg-white/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">edit</span>
-</button>
-<button class="p-2 text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 rounded-lg">
-<span class="material-symbols-outlined text-[20px]">delete</span>
-</button>
-      </div>
-      </div>
-    </div>
-  </div>
-<!-- Empty state illustration (Hidden for now as we have tasks, but good to have in structure) -->
-<!-- 
-            <div class="flex flex-col items-center justify-center py-20 text-center opacity-50">
-                <div class="bg-surface-dark p-6 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-6xl text-primary">spa</span>
-                </div>
-                <h3 class="text-white text-xl font-medium">All caught up!</h3>
-                <p class="text-[#9db9ab] mt-2">Take a break or add a new task to get started.</p>
-            </div> 
-            -->
+  <div id="tasks-loading" class="empty-state">Loading tasks...</div>
+  <div id="tasks-empty" class="empty-state hidden">No tasks yet. Add your first task above.</div>
+  <div id="task-list" class="flex flex-col gap-3"></div>
 </div>
 </main>
 
-<script type="module">
+<div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+<aside id="mobile-nav-panel" class="mobile-nav-panel md:hidden">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="font-bold text-lg text-white">Mind Mate</span>
+</div>
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-background-dark font-medium transition-colors" href="tasks.html">
+<span class="material-symbols-outlined fill-1">check_box</span>
+Tasks
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="gpa.html">
+<span class="material-symbols-outlined">calculate</span>
+GPA Calculator
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="journal.html">
+<span class="material-symbols-outlined">mood</span>
+Mood Journal
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="insights.html">
+<span class="material-symbols-outlined">insights</span>
+Insights
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="user-profile.html">
+<span class="material-symbols-outlined">settings</span>
+Profile
+</a>
+</nav>
+<button id="mobile-logout-btn" class="mt-6 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</aside>
+
+  <script type="module">
   import { app } from "./firebase-config.js";
   import { watchAuth } from "./auth.js";
+  import { showToast, attachLogout, initMobileNav, showConfirm, showFormModal } from "./ui.js";
   import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
   const db = getDatabase(app);
-  const tasksRef = ref(db, "tasks");
+  let tasksRef = null;
   let currentUserId = null;
+  const taskList = document.getElementById("task-list");
+  const tasksLoading = document.getElementById("tasks-loading");
+  const tasksEmpty = document.getElementById("tasks-empty");
 
   // Check auth
   watchAuth((user) => {
@@ -358,18 +280,18 @@
       return;
     }
     currentUserId = user.uid;
+    tasksRef = ref(db, `users/${currentUserId}/tasks`);
     loadTasks();
   });
 
   // Load tasks
   function loadTasks() {
+    if (tasksLoading) tasksLoading.classList.remove("hidden");
+    if (tasksEmpty) tasksEmpty.classList.add("hidden");
     onValue(tasksRef, (snapshot) => {
-      const taskList = document.querySelector(".flex.flex-col.gap-3");
       if (!taskList) return;
 
-      // Clear existing tasks (keep structure)
-      const existingTasks = taskList.querySelectorAll(".group.flex");
-      existingTasks.forEach(el => el.remove());
+      taskList.innerHTML = "";
 
       let taskCount = 0;
       let todayCount = 0;
@@ -378,7 +300,6 @@
 
       snapshot.forEach(child => {
         const task = child.val();
-        if (task.userId !== currentUserId) return;
 
         taskCount++;
         if (task.completed) completedCount++;
@@ -390,6 +311,11 @@
 
       // Update stats
       updateStats(taskCount, todayCount, completedCount);
+
+      if (tasksLoading) tasksLoading.classList.add("hidden");
+      if (tasksEmpty) {
+        tasksEmpty.classList.toggle("hidden", taskCount !== 0);
+      }
     });
   }
 
@@ -447,36 +373,25 @@
 
   function updateStats(total, today, completed) {
     // Update Due Today
-    const dueTodayCard = Array.from(document.querySelectorAll("p")).find(p => p.textContent.includes("Due Today"));
-    if (dueTodayCard) {
-      const countEl = dueTodayCard.parentElement?.querySelector(".text-3xl");
-      if (countEl) countEl.textContent = today;
-    }
+    const dueTodayEl = document.getElementById("stat-due-today");
+    if (dueTodayEl) dueTodayEl.textContent = today;
     
     // Update Completed
-    const completedCard = Array.from(document.querySelectorAll("p")).find(p => p.textContent.includes("Completed"));
-    if (completedCard) {
-      const countEl = completedCard.parentElement?.querySelector(".text-3xl");
-      if (countEl) countEl.textContent = completed;
-    }
+    const completedEl = document.getElementById("stat-completed");
+    if (completedEl) completedEl.textContent = completed;
     
     // Update Pending
-    const pendingCard = Array.from(document.querySelectorAll("p")).find(p => p.textContent.includes("Pending"));
-    if (pendingCard) {
-      const countEl = pendingCard.parentElement?.querySelector(".text-3xl");
-      if (countEl) countEl.textContent = total - completed;
-    }
+    const pendingEl = document.getElementById("stat-pending");
+    if (pendingEl) pendingEl.textContent = total - completed;
     
     // Update daily goal progress
-    const goalText = document.querySelector("p:contains('tasks completed')");
-    if (goalText) {
-      const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
-      const progressBar = document.querySelector(".bg-primary.h-3");
-      if (progressBar) progressBar.style.width = progress + "%";
-      const progressText = document.querySelector(".text-primary.text-2xl");
-      if (progressText) progressText.textContent = progress + "%";
-      goalText.textContent = `${completed}/${total} tasks completed`;
-    }
+    const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+    const progressBar = document.getElementById("stat-goal-bar");
+    const progressText = document.getElementById("stat-goal-percent");
+    const goalText = document.getElementById("stat-goal-text");
+    if (progressBar) progressBar.style.width = progress + "%";
+    if (progressText) progressText.textContent = progress + "%";
+    if (goalText) goalText.textContent = `${completed}/${total} tasks completed`;
   }
 
   // Add task with modal
@@ -484,42 +399,88 @@
     showTaskModal();
   };
 
-  function showTaskModal() {
-    const title = prompt("Enter task title:");
-    if (!title) return;
-    
-    const dueDateInput = prompt("Enter due date (YYYY-MM-DD) or press Enter to skip:");
-    const dueDate = dueDateInput && dueDateInput.trim() ? dueDateInput.trim() : null;
-    
-    const priorityInput = prompt("Priority: high, medium, or low (default: medium):");
-    const priority = priorityInput ? priorityInput.toLowerCase() : "medium";
-    
-    if (!["high", "medium", "low"].includes(priority)) {
-      alert("Invalid priority. Using 'medium'.");
+  async function showTaskModal(existingTask = null, taskId = null) {
+    const result = await showFormModal({
+      title: existingTask ? "Edit Task" : "New Task",
+      confirmText: existingTask ? "Update" : "Create",
+      fields: [
+        { name: "title", label: "Task Title", type: "text", value: existingTask?.title || "" },
+        { name: "dueDate", label: "Due Date (YYYY-MM-DD)", type: "date", value: existingTask?.dueDate || "" },
+        {
+          name: "priority",
+          label: "Priority",
+          type: "select",
+          value: existingTask?.priority || "medium",
+          options: [
+            { label: "High", value: "high" },
+            { label: "Medium", value: "medium" },
+            { label: "Low", value: "low" }
+          ]
+        }
+      ]
+    });
+
+    if (!result) return;
+    const title = (result.title || "").trim();
+    if (!title) {
+      showToast("Task title is required.", "warning");
+      return;
     }
 
-    push(tasksRef, {
-      title: title.trim(),
-      dueDate: dueDate,
-      priority: ["high", "medium", "low"].includes(priority) ? priority : "medium",
-      completed: false,
-      userId: currentUserId,
-      createdAt: new Date().toISOString()
-    });
+    const payload = {
+      title,
+      dueDate: result.dueDate || null,
+      priority: ["high", "medium", "low"].includes(result.priority) ? result.priority : "medium"
+    };
+
+    if (existingTask && taskId) {
+      try {
+        await update(ref(db, `users/${currentUserId}/tasks/${taskId}`), payload);
+        showToast("Task updated.", "success");
+      } catch (error) {
+        showToast("Update failed: " + error.message, "error");
+      }
+      return;
+    }
+
+    if (!tasksRef) {
+      showToast("Please wait for your account to load.", "warning");
+      return;
+    }
+
+    try {
+      await push(tasksRef, {
+        ...payload,
+        completed: false,
+        createdAt: new Date().toISOString()
+      });
+      showToast("Task created.", "success");
+    } catch (error) {
+      showToast("Create failed: " + error.message, "error");
+    }
   };
 
   document.getElementById("quick-add-btn").onclick = () => {
     const input = document.getElementById("quick-task-input");
     const title = input.value.trim();
-    if (!title) return;
+    if (!title) {
+      showToast("Please enter a task title.", "warning");
+      return;
+    }
+
+    if (!tasksRef) {
+      showToast("Please wait for your account to load.", "warning");
+      return;
+    }
 
     push(tasksRef, {
       title,
       dueDate: null,
       priority: "medium",
       completed: false,
-      userId: currentUserId,
       createdAt: new Date().toISOString()
+    }).catch((error) => {
+      showToast("Create failed: " + error.message, "error");
     });
 
     input.value = "";
@@ -533,32 +494,48 @@
 
   // Toggle task completion
   window.toggleTask = (taskId) => {
-    const taskRef = ref(db, `tasks/${taskId}`);
+    const taskRef = ref(db, `users/${currentUserId}/tasks/${taskId}`);
     onValue(taskRef, (snap) => {
       const task = snap.val();
-      update(taskRef, { completed: !task.completed });
+      update(taskRef, { completed: !task.completed }).catch((error) => {
+        showToast("Update failed: " + error.message, "error");
+      });
     }, { onlyOnce: true });
   };
 
   // Delete task
-  window.deleteTask = (taskId) => {
-    if (confirm("Delete this task?")) {
-      remove(ref(db, `tasks/${taskId}`));
+  window.deleteTask = async (taskId) => {
+    const ok = await showConfirm({
+      title: "Delete Task",
+      message: "Are you sure you want to delete this task?",
+      confirmText: "Delete",
+      cancelText: "Cancel"
+    });
+    if (ok) {
+      remove(ref(db, `users/${currentUserId}/tasks/${taskId}`))
+        .then(() => showToast("Task deleted.", "success"))
+        .catch((error) => showToast("Delete failed: " + error.message, "error"));
     }
   };
 
   // Edit task
   window.editTask = (taskId) => {
-    const taskRef = ref(db, `tasks/${taskId}`);
+    const taskRef = ref(db, `users/${currentUserId}/tasks/${taskId}`);
     onValue(taskRef, (snap) => {
       const task = snap.val();
-      const newTitle = prompt("Edit task title:", task.title);
-      if (newTitle && newTitle !== task.title) {
-        update(taskRef, { title: newTitle });
-      }
+      if (!task) return;
+      showTaskModal(task, taskId);
     }, { onlyOnce: true });
   };
 
-</script>
+  attachLogout("#logout-btn, #mobile-logout-btn");
+  initMobileNav({
+    button: "#mobile-menu-btn",
+    panel: "#mobile-nav-panel",
+    overlay: "#mobile-nav-overlay",
+    close: "#mobile-nav-close"
+  });
+
+  </script>
 
 </body></html>

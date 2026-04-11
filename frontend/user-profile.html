@@ -40,6 +40,9 @@
 <!-- Top Navigation -->
 <header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-white/10 bg-background-light dark:bg-background-dark px-6 py-3 lg:px-10">
 <div class="flex items-center gap-4">
+<button id="mobile-menu-btn" class="md:hidden text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <div class="size-8 flex items-center justify-center text-primary">
 <svg class="w-full h-full" fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z"></path>
@@ -99,7 +102,7 @@
 </a>
 </div>
 <div class="mt-auto pt-6">
-<button class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
+<button id="logout-btn" class="flex items-center gap-3 px-4 py-2 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
 <span class="material-symbols-outlined">logout</span>
 <span class="text-sm font-medium">Log Out</span>
 </button>
@@ -116,7 +119,7 @@
 </div>
 <div class="flex gap-3">
 <button class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-white/10 text-slate-700 dark:text-white font-medium text-sm hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Cancel</button>
-<button class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
+<button id="save-profile-btn" class="px-5 py-2.5 rounded-lg bg-primary text-black font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors">Save Changes</button>
 </div>
 </div>
 <!-- Profile Header Card -->
@@ -164,11 +167,11 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">First Name</label>
-<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="text" value="Hassan"/>
+<input id="first-name" class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="text" value="Hassan"/>
 </div>
 <div class="space-y-2">
 <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Last Name</label>
-<input class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="text" value="Rehan"/>
+<input id="last-name" class="w-full bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-slate-400" type="text" value="Rehan"/>
 </div>
 <div class="space-y-2 md:col-span-2">
 <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Email Address</label>
@@ -288,9 +291,49 @@
 </main>
 </div>
 
+<div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+<aside id="mobile-nav-panel" class="mobile-nav-panel md:hidden">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="font-bold text-lg text-white">Mind Mate</span>
+</div>
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="tasks.html">
+<span class="material-symbols-outlined">check_box</span>
+Tasks
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="journal.html">
+<span class="material-symbols-outlined">book_2</span>
+Journal
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="insights.html">
+<span class="material-symbols-outlined">insights</span>
+Insights
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-background-dark font-medium transition-colors" href="user-profile.html">
+<span class="material-symbols-outlined">person</span>
+Profile
+</a>
+</nav>
+<button id="mobile-logout-btn" class="mt-6 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</aside>
+
 <script type="module">
   import { app } from "./firebase-config.js";
   import { watchAuth, auth } from "./auth.js";
+  import { showToast, attachLogout, initMobileNav } from "./ui.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
   import { updateProfile } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
@@ -325,13 +368,13 @@
     });
 
     // Load GPA
-    onValue(ref(db, "gpas"), (snap) => {
+    onValue(ref(db, `users/${user.uid}/gpas`), (snap) => {
       let totalPoints = 0;
       let totalCredits = 0;
 
       snap.forEach(child => {
         const gpa = child.val();
-        if (gpa.userId !== user.uid) return;
+        if (!gpa) return;
         const credits = parseFloat(gpa.credits || 0);
         const points = parseFloat(gpa.gpa || 0);
         totalPoints += points * credits;
@@ -347,30 +390,27 @@
     });
 
     // Save profile button
-    document.querySelector("button:contains('Save Changes')")?.addEventListener("click", async () => {
-      const firstName = document.querySelector("input[placeholder*='First']")?.value || "";
-      const lastName = document.querySelector("input[placeholder*='Last']")?.value || "";
+    document.getElementById("save-profile-btn")?.addEventListener("click", async () => {
+      const firstName = document.getElementById("first-name")?.value || "";
+      const lastName = document.getElementById("last-name")?.value || "";
       const fullName = `${firstName} ${lastName}`.trim();
 
       if (fullName) {
         try {
           await updateProfile(auth.currentUser, { displayName: fullName });
-          alert("Profile updated!");
+          showToast("Profile updated!", "success");
         } catch (error) {
-          alert("Error updating profile: " + error.message);
+          showToast("Error updating profile: " + error.message, "error");
         }
       }
     });
 
-    // Logout button
-    document.querySelector("button:contains('Log Out')")?.addEventListener("click", () => {
-      import("./auth.js").then(({ auth }) => {
-        import("https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js").then(({ signOut }) => {
-          signOut(auth).then(() => {
-            window.location.href = "login.html";
-          });
-        });
-      });
+    attachLogout("#logout-btn, #mobile-logout-btn");
+    initMobileNav({
+      button: "#mobile-menu-btn",
+      panel: "#mobile-nav-panel",
+      overlay: "#mobile-nav-overlay",
+      close: "#mobile-nav-close"
     });
   }
 

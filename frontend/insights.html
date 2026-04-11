@@ -83,6 +83,10 @@
 <p class="text-[#9db9ab] text-xs truncate">Software Engineering</p>
 </div>
 </div>
+<button id="logout-btn" class="mt-4 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
 </div>
 </aside>
 <!-- Main Content -->
@@ -90,6 +94,9 @@
 <!-- Header Area -->
 <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-6 lg:px-10 lg:py-8 sticky top-0 z-20 bg-background-dark/80 backdrop-blur-md border-b border-card-border/50">
 <div class="flex flex-col gap-1">
+<button id="mobile-menu-btn" class="lg:hidden text-[#9db9ab] hover:text-white transition-colors mb-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <h2 class="text-white text-3xl lg:text-4xl font-black tracking-tight">Well-Being Insights</h2>
 <p class="text-[#9db9ab] text-sm lg:text-base">Visualize the rhythm of your academic and emotional health.</p>
 </div>
@@ -383,9 +390,49 @@
 </main>
 </div>
 
+<div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+<aside id="mobile-nav-panel" class="mobile-nav-panel lg:hidden">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="font-bold text-lg text-white">Mind Mate</span>
+</div>
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="tasks.html">
+<span class="material-symbols-outlined">check_circle</span>
+Tasks
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="journal.html">
+<span class="material-symbols-outlined">book_2</span>
+Journal
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-background-dark font-medium transition-colors" href="insights.html">
+<span class="material-symbols-outlined fill-1">insights</span>
+Insights
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="user-profile.html">
+<span class="material-symbols-outlined">settings</span>
+Profile
+</a>
+</nav>
+<button id="mobile-logout-btn" class="mt-6 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</aside>
+
 <script type="module">
   import { app } from "./firebase-config.js";
   import { watchAuth } from "./auth.js";
+  import { attachLogout, initMobileNav } from "./ui.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
   const db = getDatabase(app);
@@ -403,14 +450,14 @@
 
   function loadInsights() {
     // Load mood data
-    onValue(ref(db, "journals"), (snap) => {
+    onValue(ref(db, `users/${currentUserId}/journals`), (snap) => {
       let moodSum = 0;
       let moodCount = 0;
       const moodMap = { positive: 0, neutral: 0, negative: 0 };
 
       snap.forEach(child => {
         const journal = child.val();
-        if (journal.userId !== currentUserId) return;
+        if (!journal) return;
 
         moodCount++;
         const mood = journal.mood || "neutral";
@@ -430,13 +477,13 @@
     });
 
     // Load task completion
-    onValue(ref(db, "tasks"), (snap) => {
+    onValue(ref(db, `users/${currentUserId}/tasks`), (snap) => {
       let total = 0;
       let completed = 0;
 
       snap.forEach(child => {
         const task = child.val();
-        if (task.userId !== currentUserId) return;
+        if (!task) return;
         total++;
         if (task.completed) completed++;
       });
@@ -450,13 +497,13 @@
     });
 
     // Load GPA
-    onValue(ref(db, "gpas"), (snap) => {
+    onValue(ref(db, `users/${currentUserId}/gpas`), (snap) => {
       let totalPoints = 0;
       let totalCredits = 0;
 
       snap.forEach(child => {
         const gpa = child.val();
-        if (gpa.userId !== currentUserId) return;
+        if (!gpa) return;
         const credits = parseFloat(gpa.credits || 0);
         const points = parseFloat(gpa.gpa || 0);
         totalPoints += points * credits;
@@ -471,6 +518,14 @@
       });
     });
   }
+
+  attachLogout("#logout-btn, #mobile-logout-btn");
+  initMobileNav({
+    button: "#mobile-menu-btn",
+    panel: "#mobile-nav-panel",
+    overlay: "#mobile-nav-overlay",
+    close: "#mobile-nav-close"
+  });
 
 </script>
 

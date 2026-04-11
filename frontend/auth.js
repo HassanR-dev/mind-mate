@@ -1,5 +1,6 @@
 // auth.js
 import { app } from "./firebase-config.js";
+import { showToast } from "./ui.js";
 import {
   getAuth,
   signOut,
@@ -19,8 +20,8 @@ window.login = () => {
   const password = document.getElementById("password")?.value || document.getElementById("password-login")?.value;
 
   signInWithEmailAndPassword(auth, email, password)
-    .then(() => (window.location.href = "index.html"))
-    .catch(err => alert("Login error: " + err.message));
+    .then(() => (window.location.href = "dashboard.html"))
+    .catch(err => showToast("Login error: " + err.message, "error"));
 };
 
 window.signup = () => {
@@ -28,21 +29,23 @@ window.signup = () => {
   const password = document.getElementById("password-signup")?.value || document.getElementById("password")?.value;
 
   createUserWithEmailAndPassword(auth, email, password)
-    .then(() => alert("Account created!"))
-    .catch(err => alert("Signup error: " + err.message));
+    .then(() => showToast("Account created!", "success"))
+    .catch(err => showToast("Signup error: " + err.message, "error"));
 };
 
 window.googleLogin = () => {
   signInWithPopup(auth, provider)
-    .then(() => (window.location.href = "index.html"))
-    .catch(err => alert("Google login error: " + err.message));
+    .then(() => (window.location.href = "dashboard.html"))
+    .catch(err => showToast("Google login error: " + err.message, "error"));
 };
 
 window.logout = () => {
-  signOut(auth).then(() => {
-    alert("Logged out");
-    window.location.href = "login.html";
-  });
+  signOut(auth)
+    .then(() => {
+      showToast("Logged out", "success");
+      window.location.href = "login.html";
+    })
+    .catch(err => showToast("Logout error: " + err.message, "error"));
 };
 
 // Export current user listener

@@ -86,10 +86,23 @@
 <p class="text-text-secondary text-xs">Software Engineering</p>
 </div>
 </div>
+<button id="logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-xs font-medium">Log Out</span>
+</button>
 </div>
 </div>
 <!-- Main Content -->
 <main class="flex-1 flex flex-col h-full overflow-y-auto bg-[#111814] relative">
+<div class="lg:hidden flex items-center justify-between px-6 py-4 border-b border-[#283930]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">mood</span>
+<span class="text-white font-bold">Mind Mate</span>
+</div>
+<button id="mobile-menu-btn" class="text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- Header Section -->
 <header class="w-full px-6 py-8 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div class="flex flex-col gap-2">
@@ -174,47 +187,9 @@
 </div>
 <!-- Timeline Feed -->
 <div class="flex flex-col gap-4">
-<!-- Entry 1 -->
-<div class="group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all">
-<div class="flex justify-between items-start">
-<div class="flex items-center gap-3">
-<div class="bg-[#283930] p-2 rounded-lg text-primary">
-<span class="material-symbols-outlined fill">sentiment_satisfied</span>
-</div>
-<div>
-<p class="text-white font-medium">Feeling Good</p>
-<p class="text-text-secondary text-xs">Today, 10:30 AM</p>
-</div>
-</div>
-<div class="flex gap-2">
-<span class="px-2 py-1 rounded bg-[#283930] text-text-secondary text-[10px] uppercase font-bold tracking-wider">#Sleep</span>
-</div>
-</div>
-<p class="text-slate-300 text-sm leading-relaxed">
-                                Had a really good sleep last night which definitely helped. Feeling ready to tackle the assignment due next week.
-                            </p>
-</div>
-<!-- Entry 2 -->
-<div class="group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all">
-<div class="flex justify-between items-start">
-<div class="flex items-center gap-3">
-<div class="bg-[#283930] p-2 rounded-lg text-yellow-500">
-<span class="material-symbols-outlined fill">sentiment_neutral</span>
-</div>
-<div>
-<p class="text-white font-medium">A bit overwhelmed</p>
-<p class="text-text-secondary text-xs">Yesterday, 8:15 PM</p>
-</div>
-</div>
-<div class="flex gap-2">
-<span class="px-2 py-1 rounded bg-[#283930] text-text-secondary text-[10px] uppercase font-bold tracking-wider">#Exams</span>
-<span class="px-2 py-1 rounded bg-[#283930] text-text-secondary text-[10px] uppercase font-bold tracking-wider">#Stress</span>
-</div>
-</div>
-<p class="text-slate-300 text-sm leading-relaxed">
-                                Struggled to focus in the library today. The noise was distracting. Need to find a quieter spot tomorrow.
-                            </p>
-</div>
+  <div id="journal-loading" class="empty-state">Loading entries...</div>
+  <div id="journal-empty" class="empty-state hidden">No entries yet. Write your first log above.</div>
+  <div id="journal-entries" class="flex flex-col gap-4"></div>
 </div>
 </div>
 <!-- Right Column: Reflection Zone -->
@@ -320,14 +295,62 @@
 </main>
 </div>
 
+<div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+<aside id="mobile-nav-panel" class="mobile-nav-panel lg:hidden">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="font-bold text-lg text-white">Mind Mate</span>
+</div>
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="tasks.html">
+<span class="material-symbols-outlined">check_box</span>
+Tasks
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="gpa.html">
+<span class="material-symbols-outlined">school</span>
+GPA Tracker
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#283930] text-white font-medium transition-colors" href="journal.html">
+<span class="material-symbols-outlined fill">mood</span>
+Mood Journal
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="insights.html">
+<span class="material-symbols-outlined">insights</span>
+Insights
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="user-profile.html">
+<span class="material-symbols-outlined">settings</span>
+Profile
+</a>
+</nav>
+<button id="mobile-logout-btn" class="mt-6 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</aside>
+
 <script type="module">
   import { app } from "./firebase-config.js";
   import { watchAuth } from "./auth.js";
+  import { showToast, setButtonLoading, attachLogout, initMobileNav } from "./ui.js";
   import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
   const db = getDatabase(app);
-  const journalRef = ref(db, "journals");
+  let journalRef = null;
   let currentUserId = null;
+  const journalLoading = document.getElementById("journal-loading");
+  const journalEmpty = document.getElementById("journal-empty");
+  const entriesContainer = document.getElementById("journal-entries");
+  const submitButton = document.getElementById("submit-journal");
 
   const crisisKeywords = [
     "i want to die", "can't go on", "hopeless", "hurt myself",
@@ -341,6 +364,7 @@
       return;
     }
     currentUserId = user.uid;
+    journalRef = ref(db, `users/${currentUserId}/journals`);
     loadJournalEntries();
   });
 
@@ -348,13 +372,13 @@
   document.getElementById("submit-journal").onclick = async () => {
     const text = document.getElementById("journal-text").value.trim();
     if (!text) {
-      alert("Please write something.");
+      showToast("Please write something.", "warning");
       return;
     }
 
     const lower = text.toLowerCase();
     if (crisisKeywords.some(k => lower.includes(k))) {
-      alert("💛 You deserve support. If you're feeling overwhelmed, please reach out to someone you trust or a local helpline.");
+      showToast("You deserve support. Please reach out to someone you trust or a local helpline.", "warning", 6000);
     }
 
     // Get selected mood (from mood buttons)
@@ -374,73 +398,68 @@
       }
     });
 
-    // Call HuggingFace API for sentiment analysis
+    // ── Call the Cloud Function for sentiment analysis
+    // The API key lives securely in the backend — never in this file.
+    const SENTIMENT_URL = "https://us-central1-mind-mate-ff2cf.cloudfunctions.net/sentiment";
     let mood = selectedMood;
+    let moodScore = 0.5;
     try {
-      // TODO: Replace with your Hugging Face API key
-      // Get your free API key from: https://huggingface.co/settings/tokens
-      const HF_API_KEY = "YOUR_HUGGINGFACE_API_KEY_HERE";
-      
-      if (HF_API_KEY === "YOUR_HUGGINGFACE_API_KEY_HERE") {
-        console.warn("Hugging Face API key not configured. Using selected mood only.");
-        // Use the selected mood if API key is not configured
-      } else {
-        const response = await fetch(
-        "https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment",
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${HF_API_KEY}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ inputs: text })
-        }
-      );
+      setButtonLoading(submitButton, true, "Analyzing...");
+      const response = await fetch(SENTIMENT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
 
+      if (response.ok) {
         const data = await response.json();
-        const label = data?.[0]?.[0]?.label;
-        
-        if (label === "LABEL_2") mood = "positive";
-        else if (label === "LABEL_1") mood = "neutral";
-        else if (label === "LABEL_0") mood = "negative";
+        mood = data.mood || selectedMood;
+        moodScore = data.score ?? 0.5;
+      } else {
+        showToast("Mood analysis unavailable. Using your selection.", "warning");
       }
-      } catch (err) {
-        console.error("Sentiment analysis error:", err);
-        // Fall back to selected mood on error
-      }
+    } catch (err) {
+      console.error("Sentiment analysis error:", err);
+      showToast("Mood analysis unavailable. Using your selection.", "warning");
+    } finally {
+      setButtonLoading(submitButton, false);
+    }
 
     // Save to Firebase
+    if (!journalRef) {
+      showToast("Please wait for your account to load.", "warning");
+      return;
+    }
+
     push(journalRef, {
       text,
       mood,
-      timestamp: new Date().toISOString(),
-      userId: currentUserId
+      moodScore,
+      timestamp: new Date().toISOString()
+    }).catch((error) => {
+      showToast("Save failed: " + error.message, "error");
     });
 
     document.getElementById("journal-text").value = "";
-    alert("Journal entry saved!");
+    showToast("Journal entry saved!", "success");
     loadJournalEntries();
   };
 
   // Load journal entries
   function loadJournalEntries() {
+    if (journalLoading) journalLoading.classList.remove("hidden");
+    if (journalEmpty) journalEmpty.classList.add("hidden");
     onValue(journalRef, (snapshot) => {
-      const entriesContainer = document.querySelector(".flex.flex-col.gap-4");
       if (!entriesContainer) return;
 
-      // Clear existing entries (keep the structure)
-      const existingEntries = entriesContainer.querySelectorAll(".group.flex.flex-col");
-      existingEntries.forEach(el => el.remove());
+      entriesContainer.innerHTML = "";
+      if (journalLoading) journalLoading.classList.add("hidden");
 
+      let entryCount = 0;
       snapshot.forEach(child => {
         const entry = child.val();
-        if (entry.userId !== currentUserId) return;
-
-        const moodEmoji = {
-          positive: "😊",
-          neutral: "😐",
-          negative: "😟"
-        };
+        if (!entry) return;
+        entryCount += 1;
 
         const entryDiv = document.createElement("div");
         entryDiv.className = "group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all";
@@ -451,39 +470,55 @@
                 <span class="material-symbols-outlined fill">sentiment_satisfied</span>
               </div>
               <div>
-                <p class="text-white font-medium">Feeling ${entry.mood || "neutral"}</p>
+                <p class="text-white font-medium">Feeling ${escapeHtml(entry.mood || "neutral")}</p>
                 <p class="text-text-secondary text-xs">${new Date(entry.timestamp).toLocaleString()}</p>
               </div>
             </div>
           </div>
-          <p class="text-slate-300 text-sm leading-relaxed">${entry.text}</p>
+          <p class="text-slate-300 text-sm leading-relaxed">${escapeHtml(entry.text)}</p>
         `;
         entriesContainer.appendChild(entryDiv);
       });
+
+      if (journalEmpty) {
+        journalEmpty.classList.toggle("hidden", entryCount !== 0);
+      }
     });
   }
 
-  // Mood button selection - wait for DOM to be ready
-  setTimeout(() => {
-    const moodButtons = document.querySelectorAll("button.flex-1.aspect-square.rounded-2xl");
-    moodButtons.forEach(btn => {
-      btn.onclick = () => {
-        // Reset all buttons
-        moodButtons.forEach(b => {
-          b.classList.remove("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105", "fill");
-          b.classList.add("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
-          const icon = b.querySelector("span.material-symbols-outlined");
-          if (icon) icon.classList.remove("fill");
-        });
-        
-        // Set selected button
-        btn.classList.remove("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
-        btn.classList.add("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
-        const icon = btn.querySelector("span.material-symbols-outlined");
-        if (icon) icon.classList.add("fill");
-      };
-    });
-  }, 100);
+  function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text || "";
+    return div.innerHTML;
+  }
+
+  // Mood button selection
+  const moodButtons = document.querySelectorAll("button.flex-1.aspect-square.rounded-2xl");
+  moodButtons.forEach(btn => {
+    btn.onclick = () => {
+      // Reset all buttons
+      moodButtons.forEach(b => {
+        b.classList.remove("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105", "fill");
+        b.classList.add("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
+        const icon = b.querySelector("span.material-symbols-outlined");
+        if (icon) icon.classList.remove("fill");
+      });
+      
+      // Set selected button
+      btn.classList.remove("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
+      btn.classList.add("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
+      const icon = btn.querySelector("span.material-symbols-outlined");
+      if (icon) icon.classList.add("fill");
+    };
+  });
+
+  attachLogout("#logout-btn, #mobile-logout-btn");
+  initMobileNav({
+    button: "#mobile-menu-btn",
+    panel: "#mobile-nav-panel",
+    overlay: "#mobile-nav-overlay",
+    close: "#mobile-nav-close"
+  });
 </script>
 
 </body></html>

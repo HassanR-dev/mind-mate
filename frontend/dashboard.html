@@ -38,7 +38,7 @@
 <span class="material-symbols-outlined text-primary">smart_toy</span>
 <span class="font-bold text-lg">Mind Mate</span>
 </div>
-<button class="text-gray-500 dark:text-gray-400">
+<button id="mobile-menu-btn" class="text-gray-500 dark:text-gray-400">
 <span class="material-symbols-outlined">menu</span>
 </button>
 </div>
@@ -80,19 +80,23 @@
 <div class="flex items-center gap-3">
 <div class="size-10 rounded-full bg-cover bg-center" data-alt="User profile picture showing a smiling student" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdWVr0iZ7s7uRvbhdI3W4Y8zO39ee1y0Y4tjsaCCuzezaW-vVXVLn12vXZPlqWRwcG-7El7yLZlFiVDljMLYJgMAl-PmokUNNVaFgqAKgpTFrxZ9B-Bt30ecnN99itd03BLVz8wZAewoJ5mj4B9xKl8dH-WfSNdtxK6l4CJ4t_VI26DZKkirhknCGztSj6HLECWxbrd7ku-eISJH4-3iiFDSzSOo_Gmp2h7BX-ry0VZdf-ERvU22mrD-T4YkjVCH13IXTDFHIbR0NI')"></div>
 <div class="flex-1 min-w-0">
-<p class="font-medium truncate">Hassan Rehan</p>
+<p id="sidebar-user-name" class="font-medium truncate">User</p>
 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Software Engineering</p>
 </div>
 <a href="user-profile.html" class="text-gray-400 hover:text-white">
 <span class="material-symbols-outlined">settings</span>
 </a>
 </div>
+<button id="logout-btn" class="mt-4 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
 </div>
 </aside>
 <main class="flex-1 flex flex-col h-full relative overflow-hidden">
 <header class="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 bg-background-light dark:bg-background-dark z-10 shrink-0">
 <div>
-<h2 class="font-bold text-xl">Good Morning, Hassan ☀️</h2>
+<h2 class="font-bold text-xl">Good Morning, <span id="greeting-name">User</span> ☀️</h2>
 <p class="text-xs text-gray-500">Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-4">
@@ -117,7 +121,7 @@
 <span class="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">+0.2</span>
 </div>
 <p class="text-sm text-gray-500">Current GPA</p>
-<p class="text-2xl font-bold font-display">3.8</p>
+<p id="dashboard-gpa" class="text-2xl font-bold font-display">0.0</p>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
@@ -127,7 +131,7 @@
 <span class="text-xs text-gray-500">Today</span>
 </div>
 <p class="text-sm text-gray-500">Mood</p>
-<p class="text-lg font-bold font-display">Stressed 😟</p>
+<p id="dashboard-mood" class="text-lg font-bold font-display">Neutral</p>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
@@ -137,7 +141,7 @@
 <span class="text-xs text-gray-500">Today</span>
 </div>
 <p class="text-sm text-gray-500">Tasks Left</p>
-<p class="text-2xl font-bold font-display">4</p>
+<p id="dashboard-tasks-left" class="text-2xl font-bold font-display">0</p>
 </div>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
@@ -192,69 +196,40 @@
 </div>
 </div>
 </div>
-<button class="text-gray-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-xl">open_in_full</span>
-</button>
 </div>
-<div class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-light/50 dark:bg-background-dark/50 scrollbar-hide">
+<!-- Crisis banner — hidden by default, shown when crisisFlag is true -->
+<div id="crisis-banner" class="hidden px-4 py-3 bg-red-500/10 border-b border-red-500/20 text-red-400 text-xs font-medium flex items-start gap-2">
+<span class="material-symbols-outlined text-sm shrink-0 mt-0.5">warning</span>
+<span>If you're in crisis, please reach out to a trusted person or a helpline. You are not alone.</span>
+</div>
+<!-- Chat messages -->
+<div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-light/50 dark:bg-background-dark/50 scrollbar-hide">
 <div class="text-center">
 <span class="text-[10px] text-gray-400 bg-gray-100 dark:bg-background-dark px-2 py-0.5 rounded-full">Today</span>
 </div>
-<div class="flex gap-3">
+<div class="flex gap-3" id="welcome-message">
 <div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
 <span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
 </div>
 <div class="flex flex-col gap-1 max-w-[85%]">
 <div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-200 dark:border-gray-700 text-sm">
-<p class="leading-relaxed">Hi Hassan! I see your <span class="font-bold text-primary">OB assignment deadline</span> is coming up. Want to create a study plan?</p>
-</div>
-</div>
-</div>
-<div class="flex gap-3 flex-row-reverse">
-<div class="flex flex-col gap-1 items-end max-w-[85%]">
-<div class="bg-primary p-3 rounded-2xl rounded-tr-none shadow-sm text-background-dark font-medium text-sm">
-<p class="leading-relaxed">Yes please! I'm feeling overwhelmed.</p>
-</div>
-</div>
-</div>
-<div class="flex gap-3">
-<div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
-<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
-</div>
-<div class="flex flex-col gap-1 max-w-[90%]">
-<div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-200 dark:border-gray-700 text-sm">
-<p class="mb-2">No worries. Let's break it down:</p>
-<div class="space-y-2">
-<button class="w-full flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-background-dark border border-gray-200 dark:border-gray-600 hover:border-primary transition-colors text-left group">
-<span class="material-symbols-outlined text-gray-400 group-hover:text-primary text-sm">timer</span>
-<span class="text-xs font-medium">Start 25m Pomodoro</span>
-</button>
-<button class="w-full flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-background-dark border border-gray-200 dark:border-gray-600 hover:border-primary transition-colors text-left group">
-<span class="material-symbols-outlined text-gray-400 group-hover:text-primary text-sm">list</span>
-<span class="text-xs font-medium">Review Topic List</span>
-</button>
+<p class="leading-relaxed">Hi! I'm your Mind Mate companion. How are you feeling today? I'm here to help you reflect, plan, and stay on track. 🌱</p>
 </div>
 </div>
 </div>
 </div>
-</div>
+<!-- Input area -->
 <div class="p-3 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700 shrink-0">
 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-1">
-<button class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                                    Explain Patents
-                                </button>
-<button class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                                    I need a break
-                                </button>
+<button class="chat-suggestion whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Help me focus</button>
+<button class="chat-suggestion whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">I'm overwhelmed</button>
+<button class="chat-suggestion whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Plan my study session</button>
 </div>
 <div class="relative flex items-center gap-2">
 <div class="flex-1 relative">
-<input class="w-full bg-gray-50 dark:bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-10 text-sm focus:ring-1 focus:ring-primary placeholder-gray-400 dark:placeholder-gray-500" placeholder="Ask Mind Mate..." type="text"/>
-<button class="absolute right-1.5 top-1.5 p-1 text-gray-400 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-lg">mic</span>
-</button>
+<input id="chat-input" class="w-full bg-gray-50 dark:bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-4 text-sm focus:ring-1 focus:ring-primary placeholder-gray-400 dark:placeholder-gray-500" placeholder="Ask Mind Mate..." type="text"/>
 </div>
-<button class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors shadow-sm">
+<button id="chat-send-btn" class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
 <span class="material-symbols-outlined text-lg fill-1">send</span>
 </button>
 </div>
@@ -265,9 +240,53 @@
 </div>
 </main>
 
+<div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+<aside id="mobile-nav-panel" class="mobile-nav-panel lg:hidden">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="font-bold text-lg text-white">Mind Mate</span>
+</div>
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-background-dark font-medium transition-colors" href="dashboard.html">
+<span class="material-symbols-outlined fill-1">dashboard</span>
+Dashboard
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="tasks.html">
+<span class="material-symbols-outlined">check_box</span>
+Tasks
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="gpa.html">
+<span class="material-symbols-outlined">trending_up</span>
+GPA Tracker
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="journal.html">
+<span class="material-symbols-outlined">mood</span>
+Mood Journal
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="insights.html">
+<span class="material-symbols-outlined">insights</span>
+Insights
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="user-profile.html">
+<span class="material-symbols-outlined">settings</span>
+Profile
+</a>
+</nav>
+<button id="mobile-logout-btn" class="mt-6 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</aside>
+
 <script type="module">
   import { app } from "./firebase-config.js";
   import { watchAuth, auth } from "./auth.js";
+  import { attachLogout, initMobileNav } from "./ui.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
   const db = getDatabase(app);
@@ -288,73 +307,209 @@
   function updateUserInfo(user) {
     const userEmail = user.email || "User";
     const userName = user.displayName || userEmail.split("@")[0];
-    document.querySelectorAll("p").forEach(p => {
-      if (p.textContent.includes("Hassan Rehan")) {
-        p.textContent = userName;
-      }
-    });
+    const sidebarName = document.getElementById("sidebar-user-name");
+    const greetingName = document.getElementById("greeting-name");
+    if (sidebarName) sidebarName.textContent = userName;
+    if (greetingName) greetingName.textContent = userName;
   }
 
   // Load dashboard data
   function loadDashboardData(uid) {
     // Load tasks count
-    onValue(ref(db, "tasks"), (snap) => {
+    onValue(ref(db, `users/${uid}/tasks`), (snap) => {
       let count = 0;
       let todayCount = 0;
       const today = new Date().toDateString();
       
       snap.forEach(child => {
         const task = child.val();
-        if (task.userId === uid) {
-          count++;
-          if (task.dueDate && new Date(task.dueDate).toDateString() === today) {
-            todayCount++;
-          }
+        if (!task) return;
+        count++;
+        if (task.dueDate && new Date(task.dueDate).toDateString() === today) {
+          todayCount++;
         }
       });
       
-      const taskCountEl = document.querySelector("p:contains('Tasks Left')")?.parentElement?.querySelector(".text-2xl");
+      const taskCountEl = document.getElementById("dashboard-tasks-left");
       if (taskCountEl) taskCountEl.textContent = count;
     });
 
     // Load GPA
-    onValue(ref(db, "gpas"), (snap) => {
+    onValue(ref(db, `users/${uid}/gpas`), (snap) => {
       let total = 0, count = 0;
       snap.forEach(child => {
         const g = child.val();
-        if (g.userId === uid) {
-          total += parseFloat(g.gpa || 0);
-          count++;
-        }
+        if (!g) return;
+        total += parseFloat(g.gpa || 0);
+        count++;
       });
       const avgGpa = count ? (total / count).toFixed(1) : "0.0";
-      document.querySelectorAll(".text-2xl").forEach(el => {
-        if (el.textContent.includes("3.8")) {
-          el.textContent = avgGpa;
-        }
-      });
+      const gpaEl = document.getElementById("dashboard-gpa");
+      if (gpaEl) gpaEl.textContent = avgGpa;
     });
 
     // Load recent mood
-    onValue(ref(db, "journals"), (snap) => {
+    onValue(ref(db, `users/${uid}/journals`), (snap) => {
       let lastMood = "Neutral";
       let lastEntry = null;
       
       snap.forEach(child => {
         const j = child.val();
-        if (j.userId === uid && (!lastEntry || j.timestamp > lastEntry.timestamp)) {
+        if (!j) return;
+        if (!lastEntry || j.timestamp > lastEntry.timestamp) {
           lastEntry = j;
           lastMood = j.mood || "Neutral";
         }
       });
       
-      document.querySelectorAll("p").forEach(p => {
-        if (p.textContent.includes("Stressed")) {
-          p.textContent = lastMood;
-        }
-      });
+      const moodEl = document.getElementById("dashboard-mood");
+      if (moodEl) moodEl.textContent = lastMood;
     });
   }
+
+  attachLogout("#logout-btn, #mobile-logout-btn");
+  initMobileNav({
+    button: "#mobile-menu-btn",
+    panel: "#mobile-nav-panel",
+    overlay: "#mobile-nav-overlay",
+    close: "#mobile-nav-close"
+  });
+
+  // ── Mind Mate Chat ─────────────────────────────────────────
+  const CHAT_URL = "https://us-central1-mind-mate-ff2cf.cloudfunctions.net/chat";
+  const chatMessages = document.getElementById("chat-messages");
+  const chatInput = document.getElementById("chat-input");
+  const chatSendBtn = document.getElementById("chat-send-btn");
+  const crisisBanner = document.getElementById("crisis-banner");
+
+  // In-memory history — lives only for this session (no sensitive data stored)
+  let chatHistory = [];
+  let isChatLoading = false;
+
+  function escapeHtml(str) {
+    const d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function appendBotMessage(text, isCrisis = false) {
+    // Show crisis banner if needed
+    if (isCrisis && crisisBanner) {
+      crisisBanner.classList.remove("hidden");
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex gap-3";
+    wrapper.innerHTML = `
+      <div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
+        <span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
+      </div>
+      <div class="flex flex-col gap-1 max-w-[85%]">
+        <div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border ${isCrisis ? "border-red-500/30" : "border-gray-200 dark:border-gray-700"} text-sm">
+          <p class="leading-relaxed whitespace-pre-line">${escapeHtml(text)}</p>
+        </div>
+      </div>`;
+    chatMessages.appendChild(wrapper);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function appendUserMessage(text) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex gap-3 flex-row-reverse";
+    wrapper.innerHTML = `
+      <div class="flex flex-col gap-1 items-end max-w-[85%]">
+        <div class="bg-primary p-3 rounded-2xl rounded-tr-none shadow-sm text-background-dark font-medium text-sm">
+          <p class="leading-relaxed">${escapeHtml(text)}</p>
+        </div>
+      </div>`;
+    chatMessages.appendChild(wrapper);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    const el = document.createElement("div");
+    el.id = "typing-indicator";
+    el.className = "flex gap-3";
+    el.innerHTML = `
+      <div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
+        <span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
+      </div>
+      <div class="flex items-center gap-1 bg-white dark:bg-surface-dark px-4 py-3 rounded-2xl rounded-tl-none border border-gray-200 dark:border-gray-700">
+        <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0ms"></span>
+        <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:150ms"></span>
+        <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:300ms"></span>
+      </div>`;
+    chatMessages.appendChild(el);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return el;
+  }
+
+  async function sendChatMessage(text) {
+    if (!text.trim() || isChatLoading) return;
+    isChatLoading = true;
+    chatSendBtn.disabled = true;
+
+    appendUserMessage(text);
+    chatInput.value = "";
+
+    const typingEl = showTypingIndicator();
+
+    try {
+      const response = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          history: chatHistory,
+          userContext: {
+            moodLabel: document.getElementById("dashboard-mood")?.textContent || "unknown",
+            stressLevel: "unknown",
+            overdueCount: 0,
+          },
+        }),
+      });
+
+      const data = await response.json();
+      typingEl.remove();
+
+      const reply = data.reply || "I'm here — what's on your mind?";
+      appendBotMessage(reply, data.crisisFlag === true);
+
+      // Update in-memory history (keep last 10 turns)
+      chatHistory.push({ role: "user", content: text });
+      chatHistory.push({ role: "assistant", content: reply });
+      if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+
+    } catch (err) {
+      console.error("Chat error:", err);
+      typingEl.remove();
+      appendBotMessage("Hmm, I had trouble connecting. Try again in a moment.");
+    } finally {
+      isChatLoading = false;
+      chatSendBtn.disabled = false;
+      chatInput.focus();
+    }
+  }
+
+  // Send on button click
+  chatSendBtn?.addEventListener("click", () => {
+    sendChatMessage(chatInput.value.trim());
+  });
+
+  // Send on Enter key
+  chatInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendChatMessage(chatInput.value.trim());
+    }
+  });
+
+  // Suggestion chips
+  document.querySelectorAll(".chat-suggestion").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      sendChatMessage(btn.textContent.trim());
+    });
+  });
 
 </script>
 

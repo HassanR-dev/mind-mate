@@ -83,3 +83,6 @@ pglite-debug.log
 *.swp
 *.swo
 *~
+
+.vercel
+.env*.local

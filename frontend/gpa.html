@@ -37,6 +37,9 @@
 <header class="sticky top-0 z-50 w-full border-b border-[#283930] bg-background-dark/95 backdrop-blur-sm">
 <div class="flex h-16 items-center justify-between px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
 <div class="flex items-center gap-4">
+<button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
 <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
 <span class="material-symbols-outlined text-2xl">school</span>
 </div>
@@ -54,6 +57,9 @@
 <div class="flex items-center gap-4">
 <button class="text-gray-400 hover:text-white transition-colors">
 <span class="material-symbols-outlined">notifications</span>
+</button>
+<button id="logout-btn" class="text-red-400 hover:text-red-300 transition-colors text-sm font-medium">
+Log Out
 </button>
 <div class="size-9 rounded-full bg-center bg-cover border border-[#283930]" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrL0BvNA3GJnyxj83jNDC_e0IGBh85E8oOng4NrR5whxz1uMKcf5nFjvkO4vMfOgax2iV1_ZmXLNjGhUVuMjmAvHHXYL6sjDV74YqsT4NugvZ7ZDJMR84Ntqu9baANSWH3Spr_zz_ddUyblRfayajh1NF93YDmV4_E2kTL2wytJlfmULFgZPSvKDN22-fEJ720CtdwQ-l1TnDMrrYL05owsd3wan96ujlT1uoccvQ2eeWeWfetxuMut3e5tHAYFw3k4LKdn3eW7ch5');"></div>
 </div>
@@ -103,7 +109,7 @@
 <th class="px-6 py-4 font-medium text-right w-[20%]">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-[#283930]">
+<tbody id="gpa-table-body" class="divide-y divide-[#283930]">
 <tr class="group hover:bg-[#283930]/30 transition-colors">
 <td class="px-6 py-4">
 <div class="flex items-center gap-3">
@@ -240,6 +246,8 @@
 </table>
 </div>
 </div>
+<div id="gpa-loading" class="empty-state">Loading courses...</div>
+<div id="gpa-empty" class="empty-state hidden">No courses yet. Add your first course above.</div>
 <!-- Simulation Widget -->
 <div class="bg-gradient-to-r from-card-dark to-[#16221d] rounded-xl p-6 border border-[#283930] flex items-center justify-between gap-4">
 <div class="flex items-start gap-4">
@@ -270,10 +278,10 @@
 <!-- Background circle -->
 <circle cx="50" cy="50" fill="none" r="45" stroke="#283930" stroke-width="8"></circle>
 <!-- Progress circle -->
-<circle class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="20" stroke-linecap="round" stroke-width="8"></circle>
+<circle id="gpa-progress-circle" class="drop-shadow-[0_0_10px_rgba(19,236,128,0.5)]" cx="50" cy="50" fill="none" r="45" stroke="#13ec80" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" stroke-width="8"></circle>
 </svg>
 <div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-5xl font-black text-white tracking-tighter">3.8</span>
+<span id="gpa-display" class="text-5xl font-black text-white tracking-tighter">0.0</span>
 <span class="text-sm font-medium text-primary mt-1">+0.2 this term</span>
 </div>
 </div>
@@ -295,7 +303,7 @@
 <span class="text-xs font-medium text-[#9db9ab]">95% to Target</span>
 </div>
 <div class="w-full bg-[#111814] rounded-full h-3 mb-2">
-<div class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 95%"></div>
+<div id="gpa-goal-bar" class="bg-primary h-3 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(19,236,128,0.3)]" style="width: 0%"></div>
 </div>
 <div class="flex justify-between text-xs text-gray-500">
 <span>Current: 3.8</span>
@@ -342,14 +350,57 @@
 </div>
 </main>
 
+<div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+<aside id="mobile-nav-panel" class="mobile-nav-panel md:hidden">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="font-bold text-lg text-white">Mind Mate</span>
+</div>
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+Dashboard
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-background-dark font-medium transition-colors" href="gpa.html">
+<span class="material-symbols-outlined fill-1">trending_up</span>
+GPA Tracker
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="journal.html">
+<span class="material-symbols-outlined">mood</span>
+Mood Journal
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="insights.html">
+<span class="material-symbols-outlined">insights</span>
+Insights
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-800 transition-colors font-medium" href="user-profile.html">
+<span class="material-symbols-outlined">settings</span>
+Profile
+</a>
+</nav>
+<button id="mobile-logout-btn" class="mt-6 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-sm font-medium">Log Out</span>
+</button>
+</aside>
+
 <script type="module">
   import { app } from "./firebase-config.js";
   import { watchAuth } from "./auth.js";
+  import { showToast, attachLogout, initMobileNav, showConfirm } from "./ui.js";
   import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
   const db = getDatabase(app);
-  const gpasRef = ref(db, "gpas");
+  let gpasRef = null;
   let currentUserId = null;
+  const gpaTableBody = document.getElementById("gpa-table-body");
+  const gpaLoading = document.getElementById("gpa-loading");
+  const gpaEmpty = document.getElementById("gpa-empty");
 
   // Check auth
   watchAuth((user) => {
@@ -358,25 +409,29 @@
       return;
     }
     currentUserId = user.uid;
+    gpasRef = ref(db, `users/${currentUserId}/gpas`);
     loadGPAs();
   });
 
   // Load GPAs
   function loadGPAs() {
+    if (gpaLoading) gpaLoading.classList.remove("hidden");
+    if (gpaEmpty) gpaEmpty.classList.add("hidden");
     onValue(gpasRef, (snapshot) => {
-      const tbody = document.querySelector("tbody");
-      if (!tbody) return;
+      if (!gpaTableBody) return;
 
       // Clear existing rows except the add row
-      const existingRows = tbody.querySelectorAll("tr:not(.bg-\\[\\#13ec80\\]\\/5)");
+      const existingRows = gpaTableBody.querySelectorAll("tr:not(.bg-\\[\\#13ec80\\]\\/5)");
       existingRows.forEach(el => el.remove());
 
       let totalPoints = 0;
       let totalCredits = 0;
+      let gpaCount = 0;
 
       snapshot.forEach(child => {
         const gpa = child.val();
-        if (gpa.userId !== currentUserId) return;
+        if (!gpa) return;
+        gpaCount += 1;
 
         const credits = parseFloat(gpa.credits || 0);
         const gradePoints = parseFloat(gpa.gpa || 0);
@@ -384,12 +439,15 @@
         totalCredits += credits;
 
         const row = createGPARow(child.key, gpa);
-        tbody.insertBefore(row, tbody.lastElementChild);
+        gpaTableBody.insertBefore(row, gpaTableBody.lastElementChild);
       });
 
       // Calculate and update cumulative GPA
       const cumulativeGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "0.00";
       updateGPADisplay(cumulativeGPA);
+
+      if (gpaLoading) gpaLoading.classList.add("hidden");
+      if (gpaEmpty) gpaEmpty.classList.toggle("hidden", gpaCount !== 0);
     });
   }
 
@@ -449,16 +507,11 @@
 
   function updateGPADisplay(gpa) {
     // Update main GPA display
-    const gpaDisplays = document.querySelectorAll(".text-5xl, .text-4xl");
-    gpaDisplays.forEach(el => {
-      const text = el.textContent.trim();
-      if (text === "3.8" || /^\d+\.\d+$/.test(text)) {
-        el.textContent = gpa;
-      }
-    });
+    const gpaDisplay = document.getElementById("gpa-display");
+    if (gpaDisplay) gpaDisplay.textContent = gpa;
     
     // Update circular progress
-    const progressCircle = document.querySelector("circle[stroke='#13ec80']");
+    const progressCircle = document.getElementById("gpa-progress-circle");
     if (progressCircle) {
       const circumference = 2 * Math.PI * 45; // radius is 45
       const targetGPA = 4.0;
@@ -468,7 +521,7 @@
     }
     
     // Update goal progress bar
-    const goalBar = document.querySelector(".bg-primary.h-3");
+    const goalBar = document.getElementById("gpa-goal-bar");
     if (goalBar) {
       const targetGPA = 4.0;
       const progress = (parseFloat(gpa) / targetGPA) * 100;
@@ -483,12 +536,17 @@
     const gradeValue = parseFloat(document.getElementById("new-course-grade").value) || 0;
 
     if (!courseName) {
-      alert("Please enter a course name");
+      showToast("Please enter a course name", "warning");
       return;
     }
 
     if (credits <= 0) {
-      alert("Please enter valid credits (greater than 0)");
+      showToast("Please enter valid credits (greater than 0)", "warning");
+      return;
+    }
+
+    if (!gpasRef) {
+      showToast("Please wait for your account to load.", "warning");
       return;
     }
 
@@ -496,9 +554,10 @@
       courseName,
       credits,
       gpa: gradeValue,
-      userId: currentUserId,
       semester: "Fall 2024",
       createdAt: new Date().toISOString()
+    }).catch((error) => {
+      showToast("Create failed: " + error.message, "error");
     });
 
     // Clear inputs
@@ -509,15 +568,32 @@
 
   // Update GPA
   window.updateGPA = (gpaId, field, value) => {
-    update(ref(db, `gpas/${gpaId}`), { [field]: value });
+    update(ref(db, `users/${currentUserId}/gpas/${gpaId}`), { [field]: value })
+      .catch((error) => showToast("Update failed: " + error.message, "error"));
   };
 
   // Delete GPA
-  window.deleteGPA = (gpaId) => {
-    if (confirm("Delete this course?")) {
-      remove(ref(db, `gpas/${gpaId}`));
+  window.deleteGPA = async (gpaId) => {
+    const ok = await showConfirm({
+      title: "Delete Course",
+      message: "Are you sure you want to delete this course?",
+      confirmText: "Delete",
+      cancelText: "Cancel"
+    });
+    if (ok) {
+      remove(ref(db, `users/${currentUserId}/gpas/${gpaId}`))
+        .then(() => showToast("Course deleted.", "success"))
+        .catch((error) => showToast("Delete failed: " + error.message, "error"));
     }
   };
+
+  attachLogout("#logout-btn, #mobile-logout-btn");
+  initMobileNav({
+    button: "#mobile-menu-btn",
+    panel: "#mobile-nav-panel",
+    overlay: "#mobile-nav-overlay",
+    close: "#mobile-nav-close"
+  });
 
 </script>
 
