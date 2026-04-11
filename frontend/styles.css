@@ -174,132 +174,460 @@ body.font-display {
 }
 
 /* =============================================
-   THEME SYSTEM
+   THEME SYSTEM — comprehensive variable overrides
    ============================================= */
 
-/* Default variables (Dark Forest) */
-html {
-  --th-bg:          #111814;
-  --th-surface:     #283930;
-  --th-surface2:    #102219;
-  --th-border:      #3b5447;
-  --th-text:        #ffffff;
-  --th-text-sec:    #9db9ab;
-  --th-primary:     #13ec80;
-  --th-primary-dim: #0fd673;
+/*
+  Color map (dark-forest originals → variables):
+    #111814  → --th-bg           main background
+    #0d1b14  → --th-bg-deep      deep sidebar bg
+    #102219  → --th-bg-alt       alt body bg
+    #18221c  → --th-card         card / section bg
+    #1c2a23  → --th-card-raised  modal / raised card
+    #16201b  → --th-card-dim     table header
+    #283930  → --th-surface      surface / elevated
+    #1c2721  → --th-input        input fields
+    #1f362a  → --th-highlight    highlighted cards
+    #3b5447  → --th-border       main border
+    #304b3d  → --th-border-alt   alt border
+    #283930  → --th-border-soft  soft border (same as surface)
+    #344a3e  → --th-hover        hover bg
+    #32473c  → --th-hover-alt    hover bg alt
+    #25332c  → --th-hover-dim    dimmer hover
+    #9db9ab  → --th-text-sec     secondary text
+    #566860  → --th-text-dim     dimmer text
+    #13ec80  → --th-primary      accent
+    #0fd673  → --th-primary-dim  accent hover
+*/
+
+/* ── Dark Forest (default) ── */
+html, html[data-theme="dark-forest"] {
+  --th-bg:           #111814;
+  --th-bg-deep:      #0d1b14;
+  --th-bg-alt:       #102219;
+  --th-card:         #18221c;
+  --th-card-raised:  #1c2a23;
+  --th-card-dim:     #16201b;
+  --th-surface:      #283930;
+  --th-input:        #1c2721;
+  --th-highlight:    #1f362a;
+  --th-border:       #3b5447;
+  --th-border-alt:   #304b3d;
+  --th-hover:        #344a3e;
+  --th-hover-alt:    #32473c;
+  --th-hover-dim:    #25332c;
+  --th-text:         #ffffff;
+  --th-text-sec:     #9db9ab;
+  --th-text-dim:     #566860;
+  --th-primary:      #13ec80;
+  --th-primary-dim:  #0fd673;
+  --th-primary-on:   #102219;  /* text on primary bg */
 }
 
+/* ── Dark Midnight ── */
 html[data-theme="dark-midnight"] {
-  --th-bg:          #0d1117;
-  --th-surface:     #161b22;
-  --th-surface2:    #090d12;
-  --th-border:      #30363d;
-  --th-text:        #e6edf3;
-  --th-text-sec:    #8b949e;
-  --th-primary:     #38bdf8;
-  --th-primary-dim: #0ea5e9;
+  --th-bg:           #0d1117;
+  --th-bg-deep:      #080c12;
+  --th-bg-alt:       #0b0f18;
+  --th-card:         #151b24;
+  --th-card-raised:  #1c2333;
+  --th-card-dim:     #131920;
+  --th-surface:      #1e2530;
+  --th-input:        #161d27;
+  --th-highlight:    #1a2540;
+  --th-border:       #30363d;
+  --th-border-alt:   #2a3040;
+  --th-hover:        #2a3140;
+  --th-hover-alt:    #252c38;
+  --th-hover-dim:    #1c2230;
+  --th-text:         #e6edf3;
+  --th-text-sec:     #8b949e;
+  --th-text-dim:     #525960;
+  --th-primary:      #38bdf8;
+  --th-primary-dim:  #0ea5e9;
+  --th-primary-on:   #0b1520;
 }
 
+/* ── Light Cloud ── */
 html[data-theme="light-cloud"] {
-  --th-bg:          #f8fafb;
-  --th-surface:     #eef2f7;
-  --th-surface2:    #e2e8f0;
-  --th-border:      #c4cdd8;
-  --th-text:        #111827;
-  --th-text-sec:    #4b6078;
-  --th-primary:     #10b981;
-  --th-primary-dim: #059669;
+  --th-bg:           #f8fafb;
+  --th-bg-deep:      #f0f3f6;
+  --th-bg-alt:       #eef2f5;
+  --th-card:         #ffffff;
+  --th-card-raised:  #ffffff;
+  --th-card-dim:     #f0f4f8;
+  --th-surface:      #e8ecf1;
+  --th-input:        #f5f7fa;
+  --th-highlight:    #e0f0ea;
+  --th-border:       #c8d1db;
+  --th-border-alt:   #b8c4d0;
+  --th-hover:        #dce3eb;
+  --th-hover-alt:    #d4dce6;
+  --th-hover-dim:    #e8edf3;
+  --th-text:         #1a2332;
+  --th-text-sec:     #5a6b7d;
+  --th-text-dim:     #8895a5;
+  --th-primary:      #10b981;
+  --th-primary-dim:  #059669;
+  --th-primary-on:   #ffffff;
 }
 
+/* ── Light Amber ── */
 html[data-theme="light-amber"] {
-  --th-bg:          #fffbf0;
-  --th-surface:     #fef3c7;
-  --th-surface2:    #fde8a0;
-  --th-border:      #d4a017;
-  --th-text:        #1c1917;
-  --th-text-sec:    #7c4f12;
-  --th-primary:     #f59e0b;
-  --th-primary-dim: #d97706;
+  --th-bg:           #fffcf5;
+  --th-bg-deep:      #fdf6e8;
+  --th-bg-alt:       #fef8ee;
+  --th-card:         #ffffff;
+  --th-card-raised:  #fffef8;
+  --th-card-dim:     #fef3dc;
+  --th-surface:      #f5ead0;
+  --th-input:        #fef9f0;
+  --th-highlight:    #fef0c7;
+  --th-border:       #d4b06a;
+  --th-border-alt:   #c9a050;
+  --th-hover:        #f0e0b8;
+  --th-hover-alt:    #ead5a0;
+  --th-hover-dim:    #f5ecd5;
+  --th-text:         #2c1f0a;
+  --th-text-sec:     #7a5f2e;
+  --th-text-dim:     #a08040;
+  --th-primary:      #f59e0b;
+  --th-primary-dim:  #d97706;
+  --th-primary-on:   #ffffff;
 }
 
-/* ── Backgrounds ── */
+
+/* ==============================================
+   BACKGROUND OVERRIDES — every hardcoded bg-[#]
+   ============================================== */
+
+/* #111814 — main bg */
 html[data-theme] .bg-\[\#111814\],
 html[data-theme] .dark\:bg-\[\#111814\] {
   background-color: var(--th-bg) !important;
 }
+
+/* #0d1b14 — deep sidebar bg */
+html[data-theme] .bg-\[\#0d1b14\] {
+  background-color: var(--th-bg-deep) !important;
+}
+
+/* #102219 — alt body bg */
+html[data-theme] .bg-\[\#102219\] {
+  background-color: var(--th-bg-alt) !important;
+}
+
+/* #18221c — card / section bg */
+html[data-theme] .bg-\[\#18221c\] {
+  background-color: var(--th-card) !important;
+}
+
+/* #1c2a23 — raised card / modal bg */
+html[data-theme] .bg-\[\#1c2a23\] {
+  background-color: var(--th-card-raised) !important;
+}
+
+/* #16201b — table header bg */
+html[data-theme] .bg-\[\#16201b\] {
+  background-color: var(--th-card-dim) !important;
+}
+
+/* #283930 — surface / elevated */
 html[data-theme] .bg-\[\#283930\] {
   background-color: var(--th-surface) !important;
 }
-html[data-theme] .bg-\[\#102219\] {
-  background-color: var(--th-surface2) !important;
+
+/* #1c2721 — input field bg */
+html[data-theme] .bg-\[\#1c2721\],
+html[data-theme] .dark\:bg-\[\#1c2721\] {
+  background-color: var(--th-input) !important;
 }
 
-/* ── Borders ── */
+/* #1f362a — highlighted cards */
+html[data-theme] .bg-\[\#1f362a\] {
+  background-color: var(--th-highlight) !important;
+}
+
+/* #344a3e — hover */
+html[data-theme] .bg-\[\#344a3e\] {
+  background-color: var(--th-hover) !important;
+}
+
+/* #32473c — hover alt */
+html[data-theme] .bg-\[\#32473c\] {
+  background-color: var(--th-hover-alt) !important;
+}
+
+/* #25332c — dim hover */
+html[data-theme] .bg-\[\#25332c\] {
+  background-color: var(--th-hover-dim) !important;
+}
+
+/* #3b5447 — border color used as bg */
+html[data-theme] .bg-\[\#3b5447\] {
+  background-color: var(--th-border) !important;
+}
+
+/* Tailwind config colors */
+html[data-theme] .bg-card-dark {
+  background-color: var(--th-bg) !important;
+}
+html[data-theme] .bg-card-inner {
+  background-color: var(--th-surface) !important;
+}
+html[data-theme] .bg-background-dark,
+html[data-theme] .dark\:bg-background-dark {
+  background-color: var(--th-bg-alt) !important;
+}
+html[data-theme] .bg-surface-dark,
+html[data-theme] .dark\:bg-surface-dark {
+  background-color: var(--th-card) !important;
+}
+
+/* bg-[#111814]/50 (semi-transparent) */
+html[data-theme] .bg-\[\#111814\]\/50 {
+  background-color: color-mix(in srgb, var(--th-bg) 50%, transparent) !important;
+}
+
+
+/* ==============================================
+   HOVER BG OVERRIDES
+   ============================================== */
+html[data-theme] .hover\:bg-\[\#283930\]:hover {
+  background-color: var(--th-surface) !important;
+}
+html[data-theme] .hover\:bg-\[\#344a3e\]:hover {
+  background-color: var(--th-hover) !important;
+}
+html[data-theme] .hover\:bg-\[\#3b5447\]:hover {
+  background-color: var(--th-border) !important;
+}
+html[data-theme] .hover\:bg-\[\#32473c\]:hover {
+  background-color: var(--th-hover-alt) !important;
+}
+html[data-theme] .hover\:bg-\[\#25332c\]:hover,
+html[data-theme] .dark\:hover\:bg-\[\#25332c\]:hover {
+  background-color: var(--th-hover-dim) !important;
+}
+html[data-theme] .hover\:bg-\[\#0fd673\]:hover,
+html[data-theme] .hover\:bg-\[\#0fd671\]:hover {
+  background-color: var(--th-primary-dim) !important;
+}
+html[data-theme] .hover\:bg-surface-dark:hover {
+  background-color: var(--th-card) !important;
+}
+
+/* dark: hover variants */
+html[data-theme] .dark\:hover\:bg-gray-800:hover,
+html[data-theme] .dark\:hover\:bg-white\/5:hover,
+html[data-theme] .dark\:hover\:bg-white\/10:hover {
+  background-color: var(--th-surface) !important;
+}
+
+
+/* ==============================================
+   BORDER OVERRIDES
+   ============================================== */
 html[data-theme] .border-\[\#3b5447\] {
   border-color: var(--th-border) !important;
 }
 html[data-theme] .border-\[\#3b5447\]\/30 {
   border-color: color-mix(in srgb, var(--th-border) 30%, transparent) !important;
 }
+html[data-theme] .border-\[\#3b5447\]\/40 {
+  border-color: color-mix(in srgb, var(--th-border) 40%, transparent) !important;
+}
+html[data-theme] .border-\[\#3b5447\]\/50 {
+  border-color: color-mix(in srgb, var(--th-border) 50%, transparent) !important;
+}
+html[data-theme] .border-\[\#283930\] {
+  border-color: var(--th-surface) !important;
+}
+html[data-theme] .border-\[\#304b3d\] {
+  border-color: var(--th-border-alt) !important;
+}
+html[data-theme] .border-\[\#9db9ab\] {
+  border-color: var(--th-text-sec) !important;
+}
+/* dark: border variants */
+html[data-theme] .dark\:border-\[\#3b5447\] {
+  border-color: var(--th-border) !important;
+}
+html[data-theme] .dark\:border-\[\#283930\] {
+  border-color: var(--th-surface) !important;
+}
+html[data-theme] .dark\:border-white\/5,
+html[data-theme] .dark\:border-white\/10 {
+  border-color: color-mix(in srgb, var(--th-border) 30%, transparent) !important;
+}
+html[data-theme] .dark\:border-gray-800 {
+  border-color: var(--th-surface) !important;
+}
+/* hover border */
+html[data-theme] .hover\:border-\[\#3b5447\]:hover {
+  border-color: var(--th-border) !important;
+}
+/* Tailwind config border */
+html[data-theme] .border-background-dark {
+  border-color: var(--th-bg-alt) !important;
+}
 
-/* ── Text ── */
+/* border-b on header for white/5 */
+html[data-theme] .border-white\/5 {
+  border-color: color-mix(in srgb, var(--th-border) 30%, transparent) !important;
+}
+
+
+/* ==============================================
+   TEXT OVERRIDES
+   ============================================== */
 html[data-theme] .text-\[\#9db9ab\] {
   color: var(--th-text-sec) !important;
 }
+html[data-theme] .text-\[\#566860\] {
+  color: var(--th-text-dim) !important;
+}
+html[data-theme] .text-\[\#637587\] {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .text-text-secondary {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .text-\[\#111814\] {
+  color: var(--th-primary-on) !important;
+}
+html[data-theme] .text-\[\#102219\] {
+  color: var(--th-primary-on) !important;
+}
+html[data-theme] .text-background-dark {
+  color: var(--th-primary-on) !important;
+}
+/* dark: text variants */
+html[data-theme] .dark\:text-\[\#9db9ab\] {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .dark\:text-white {
+  color: var(--th-text) !important;
+}
+/* white text in light themes */
 html[data-theme="light-cloud"] .text-white,
-html[data-theme="light-cloud"] .dark\:text-white,
-html[data-theme="light-amber"] .text-white,
-html[data-theme="light-amber"] .dark\:text-white {
+html[data-theme="light-amber"] .text-white {
   color: var(--th-text) !important;
 }
 html[data-theme="light-cloud"] .group:hover .group-hover\:text-white,
 html[data-theme="light-amber"] .group:hover .group-hover\:text-white {
   color: var(--th-text) !important;
 }
-
-/* ── Hover states ── */
-html[data-theme] .hover\:bg-\[\#283930\]:hover {
-  background-color: var(--th-surface) !important;
+/* placeholder */
+html[data-theme] .placeholder-text-secondary\/50::placeholder {
+  color: color-mix(in srgb, var(--th-text-sec) 50%, transparent) !important;
 }
-html[data-theme] .hover\:bg-\[\#3b5447\]:hover {
-  background-color: var(--th-border) !important;
+html[data-theme] .dark\:placeholder\:text-\[\#9db9ab\]::placeholder {
+  color: var(--th-text-sec) !important;
 }
 
-/* ── Primary accent ── */
+
+/* ==============================================
+   PRIMARY ACCENT OVERRIDES
+   ============================================== */
 html[data-theme] .text-primary        { color: var(--th-primary) !important; }
 html[data-theme] .bg-primary          { background-color: var(--th-primary) !important; }
 html[data-theme] .border-primary      { border-color: var(--th-primary) !important; }
-html[data-theme] .hover\:bg-\[\#0fd673\]:hover { background-color: var(--th-primary-dim) !important; }
+html[data-theme] .hover\:bg-primary:hover {
+  background-color: var(--th-primary) !important;
+}
+html[data-theme] .hover\:bg-primary\/90:hover {
+  background-color: var(--th-primary-dim) !important;
+}
+html[data-theme] .text-\[\#13ec80\]   { color: var(--th-primary) !important; }
+html[data-theme] .bg-\[\#13ec80\]     { background-color: var(--th-primary) !important; }
+html[data-theme] .bg-\[\#0fd673\]     { background-color: var(--th-primary-dim) !important; }
+html[data-theme] .bg-\[\#0fd671\]     { background-color: var(--th-primary-dim) !important; }
+/* primary opacity variants */
+html[data-theme] .bg-primary\/5       { background-color: color-mix(in srgb, var(--th-primary) 5%, transparent) !important; }
 html[data-theme] .bg-primary\/10      { background-color: color-mix(in srgb, var(--th-primary) 10%, transparent) !important; }
 html[data-theme] .bg-primary\/20      { background-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
 html[data-theme] .border-primary\/20  { border-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .border-primary\/30  { border-color: color-mix(in srgb, var(--th-primary) 30%, transparent) !important; }
 html[data-theme] .shadow-primary\/20  { --tw-shadow-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
-html[data-theme] .text-\[\#13ec80\]   { color: var(--th-primary) !important; }
 html[data-theme] .border-\[\#13ec80\]\/20 { border-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
-html[data-theme] .from-\[\#13ec80\]\/20  { --tw-gradient-from: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
-
-/* Progress bar gradient */
-html[data-theme] .from-primary        { --tw-gradient-from: var(--th-primary) !important; }
-html[data-theme] .to-\[\#0fd673\]     { --tw-gradient-to:   var(--th-primary-dim) !important; }
-html[data-theme] .to-\[\#111814\]     { --tw-gradient-to:   var(--th-bg) !important; }
-html[data-theme] .bg-gradient-to-r.from-primary {
-  background-image: linear-gradient(to right, var(--th-primary), var(--th-primary-dim)) !important;
+html[data-theme] .bg-\[\#13ec80\]\/5  { background-color: color-mix(in srgb, var(--th-primary) 5%, transparent) !important; }
+html[data-theme] .bg-\[\#13ec80\]\/20 { background-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .hover\:text-\[\#111814\]:hover {
+  color: var(--th-primary-on) !important;
 }
+/* Gradient from/to */
+html[data-theme] .from-\[\#13ec80\]\/20  { --tw-gradient-from: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .from-primary            { --tw-gradient-from: var(--th-primary) !important; }
+html[data-theme] .to-\[\#0fd673\]         { --tw-gradient-to: var(--th-primary-dim) !important; }
+html[data-theme] .to-\[\#111814\]         { --tw-gradient-to: var(--th-bg) !important; }
+html[data-theme] .from-card-dark          { --tw-gradient-from: var(--th-bg) !important; }
+html[data-theme] .to-\[\#16221d\]         { --tw-gradient-to: var(--th-card-dim) !important; }
+html[data-theme] .from-\[\#18221c\]       { --tw-gradient-from: var(--th-card) !important; }
 
-/* ── Light theme body ── */
+
+/* ==============================================
+   BODY & LAYOUT — light themes
+   ============================================== */
 html[data-theme="light-cloud"] body,
 html[data-theme="light-amber"] body {
   background-color: var(--th-bg) !important;
   color: var(--th-text) !important;
 }
 
-/* ── Scrollbar ── */
-html[data-theme] ::-webkit-scrollbar-track { background: var(--th-bg) !important; }
-html[data-theme] ::-webkit-scrollbar-thumb { background: var(--th-surface) !important; }
+/* dark:bg-* in light themes should use light values */
+html[data-theme="light-cloud"] .dark\:bg-background-dark,
+html[data-theme="light-amber"] .dark\:bg-background-dark {
+  background-color: var(--th-bg-alt) !important;
+}
+html[data-theme="light-cloud"] .dark\:bg-surface-dark,
+html[data-theme="light-amber"] .dark\:bg-surface-dark {
+  background-color: var(--th-card) !important;
+}
+
+/* bg-background-light for light themes */
+html[data-theme="light-cloud"] .bg-background-light,
+html[data-theme="light-amber"] .bg-background-light {
+  background-color: var(--th-bg) !important;
+}
+
+/* dark: text in light themes */
+html[data-theme="light-cloud"] .dark\:text-gray-300,
+html[data-theme="light-amber"] .dark\:text-gray-300,
+html[data-theme="light-cloud"] .dark\:text-slate-300,
+html[data-theme="light-amber"] .dark\:text-slate-300 {
+  color: var(--th-text-sec) !important;
+}
+
+/* Focus ring */
+html[data-theme] .focus\:border-primary:focus { border-color: var(--th-primary) !important; }
+html[data-theme] .focus\:ring-primary:focus   { --tw-ring-color: var(--th-primary) !important; }
+html[data-theme] .focus\:ring-primary\/50:focus { --tw-ring-color: color-mix(in srgb, var(--th-primary) 50%, transparent) !important; }
+
+
+/* ==============================================
+   SCROLLBAR
+   ============================================== */
+html[data-theme] ::-webkit-scrollbar-track  { background: var(--th-bg) !important; }
+html[data-theme] ::-webkit-scrollbar-thumb  { background: var(--th-surface) !important; }
 html[data-theme] ::-webkit-scrollbar-thumb:hover { background: var(--th-border) !important; }
 
-/* ── Selection ── */
+/* ==============================================
+   SELECTION
+   ============================================== */
 html[data-theme] ::selection {
   background-color: var(--th-primary) !important;
   color: #000 !important;
+}
+
+/* ==============================================
+   CONIC CHART — recolor to match primary
+   ============================================== */
+html[data-theme] .conic-chart {
+  background: conic-gradient(
+    var(--th-primary) 0% 45%,
+    #a78bfa 45% 70%,
+    #f472b6 70% 85%,
+    var(--th-border) 85% 100%
+  ) !important;
 }
