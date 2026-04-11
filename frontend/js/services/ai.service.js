@@ -49,6 +49,20 @@ export async function triggerAnalytics() {
   return res.json();
 }
 
+export async function parseTranscript(pdfBase64) {
+  const token = await getToken();
+  const res = await fetch(`${API_BASE}/parseTranscript`, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ pdfBase64 })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Failed to parse transcript");
+  }
+  return res.json();
+}
+
 export async function chat(message, history = [], userContext = {}) {
   const token = await getToken();
   const res = await fetch(`${API_BASE}/chat`, {

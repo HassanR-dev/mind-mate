@@ -6,6 +6,7 @@
     "build": "echo 'Static site - no build needed'"
   },
   "dependencies": {
-    "firebase-admin": "^12.0.0"
+    "firebase-admin": "^12.0.0",
+    "pdf-parse": "^1.1.4"
   }
 }
