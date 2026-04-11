@@ -35,7 +35,7 @@
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col md:flex-row">
 <div class="md:hidden flex items-center justify-between p-4 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
 <div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="material-symbols-outlined text-primary">school</span>
 <span class="font-bold text-lg">Mind Mate</span>
 </div>
 <button id="mobile-menu-btn" class="text-gray-500 dark:text-gray-400">
@@ -74,21 +74,25 @@
 <span class="material-symbols-outlined">insights</span>
                     Insights
                 </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-medium" href="stress-reliever.html">
+<span class="material-symbols-outlined">sentiment_calm</span>
+                    Stress Reliever
+                </a>
 </nav>
 </div>
 <div class="mt-auto p-6 border-t border-gray-200 dark:border-gray-800">
 <div class="flex items-center gap-3">
-<div class="size-10 rounded-full bg-cover bg-center" data-alt="User profile picture showing a smiling student" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdWVr0iZ7s7uRvbhdI3W4Y8zO39ee1y0Y4tjsaCCuzezaW-vVXVLn12vXZPlqWRwcG-7El7yLZlFiVDljMLYJgMAl-PmokUNNVaFgqAKgpTFrxZ9B-Bt30ecnN99itd03BLVz8wZAewoJ5mj4B9xKl8dH-WfSNdtxK6l4CJ4t_VI26DZKkirhknCGztSj6HLECWxbrd7ku-eISJH4-3iiFDSzSOo_Gmp2h7BX-ry0VZdf-ERvU22mrD-T4YkjVCH13IXTDFHIbR0NI')"></div>
+<div class="size-10 rounded-full bg-cover bg-center" role="img" aria-label="User avatar" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>')"></div>
 <div class="flex-1 min-w-0">
-<p id="sidebar-user-name" class="font-medium truncate">User</p>
-<p class="text-xs text-gray-500 dark:text-gray-400 truncate">Software Engineering</p>
+<p class="font-medium truncate" data-user-name>Hassan Rehan</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 truncate" data-user-email></p>
 </div>
 <a href="user-profile.html" class="text-gray-400 hover:text-white">
 <span class="material-symbols-outlined">settings</span>
 </a>
 </div>
-<button id="logout-btn" class="mt-4 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
-<span class="material-symbols-outlined text-[20px]">logout</span>
+<button data-action="logout" class="mt-2 flex items-center gap-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 px-3 py-2 rounded-lg transition-colors w-full">
+<span class="material-symbols-outlined">logout</span>
 <span class="text-sm font-medium">Log Out</span>
 </button>
 </div>
@@ -96,15 +100,15 @@
 <main class="flex-1 flex flex-col h-full relative overflow-hidden">
 <header class="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 bg-background-light dark:bg-background-dark z-10 shrink-0">
 <div>
-<h2 class="font-bold text-xl">Good Morning, <span id="greeting-name">User</span> ☀️</h2>
-<p class="text-xs text-gray-500">Here's what's happening today.</p>
+<h2 class="font-bold text-xl">Good Morning, <span data-user-name>there</span> ☀️</h2>
+<p class="text-sm text-gray-400 dark:text-gray-300">Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-4">
-<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700">
+<button id="focus-toggle" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-yellow-500 text-sm">bolt</span>
-<span class="text-xs font-medium">Focus Mode: Off</span>
-</div>
-<button class="text-gray-400 hover:text-white">
+<span class="text-xs font-medium" id="focus-label">Focus Mode: Off</span>
+</button>
+<button id="notif-btn" class="text-gray-400 hover:text-white" aria-label="Notifications">
 <span class="material-symbols-outlined">notifications</span>
 </button>
 </div>
@@ -121,7 +125,7 @@
 <span class="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">+0.2</span>
 </div>
 <p class="text-sm text-gray-500">Current GPA</p>
-<p id="dashboard-gpa" class="text-2xl font-bold font-display">0.0</p>
+<p class="text-2xl font-bold font-display" data-stat-gpa>—</p>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
@@ -131,7 +135,7 @@
 <span class="text-xs text-gray-500">Today</span>
 </div>
 <p class="text-sm text-gray-500">Mood</p>
-<p id="dashboard-mood" class="text-lg font-bold font-display">Neutral</p>
+<p class="text-lg font-bold font-display" data-stat-mood>—</p>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
@@ -141,43 +145,16 @@
 <span class="text-xs text-gray-500">Today</span>
 </div>
 <p class="text-sm text-gray-500">Tasks Left</p>
-<p id="dashboard-tasks-left" class="text-2xl font-bold font-display">0</p>
+<p class="text-2xl font-bold font-display" data-stat-tasks>—</p>
 </div>
 </div>
 <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
 <div class="flex justify-between items-center mb-4">
 <h3 class="font-bold text-lg">Upcoming Deadlines</h3>
-<button class="text-sm text-primary hover:underline">View Calendar</button>
+<a href="tasks.html" class="text-sm text-primary hover:underline">View Tasks</a>
 </div>
-<div class="space-y-4">
-<div class="flex gap-4 items-center p-3 hover:bg-gray-50 dark:hover:bg-background-dark/50 rounded-lg transition-colors group">
-<div class="flex flex-col items-center bg-red-100 dark:bg-red-500/10 rounded-lg p-2 min-w-[60px]">
-<span class="text-xs font-bold text-red-500">OCT</span>
-<span class="text-xl font-bold leading-none text-red-600 dark:text-red-400">24</span>
-</div>
-<div class="flex-1">
-<p class="font-bold text-base leading-tight">OB Assignment</p>
-<p class="text-sm text-gray-500">Requires focus on XYZ</p>
-</div>
-<div class="text-right">
-<span class="inline-block px-2 py-1 text-xs font-medium bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400 rounded-full">High Priority</span>
-<p class="text-xs text-gray-400 mt-1">In 3 days</p>
-</div>
-</div>
-<div class="flex gap-4 items-center p-3 hover:bg-gray-50 dark:hover:bg-background-dark/50 rounded-lg transition-colors group">
-<div class="flex flex-col items-center bg-gray-100 dark:bg-gray-700/30 rounded-lg p-2 min-w-[60px]">
-<span class="text-xs font-bold text-gray-500">OCT</span>
-<span class="text-xl font-bold leading-none text-gray-700 dark:text-gray-300">28</span>
-</div>
-<div class="flex-1">
-<p class="font-bold text-base leading-tight">SPM report</p>
-<p class="text-sm text-gray-500">Topic: Role of devops in SPM</p>
-</div>
-<div class="text-right">
-<span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400 rounded-full">Medium</span>
-<p class="text-xs text-gray-400 mt-1">In 7 days</p>
-</div>
-</div>
+<div id="upcoming-deadlines" class="space-y-4">
+<p class="text-sm text-gray-500 text-center py-4">Loading...</p>
 </div>
 </div>
 </div>
@@ -196,43 +173,31 @@
 </div>
 </div>
 </div>
+<button id="expand-chat-btn" class="text-gray-400 hover:text-primary transition-colors" aria-label="Expand chat">
+<span class="material-symbols-outlined text-xl">open_in_full</span>
+</button>
 </div>
-<!-- Crisis banner — hidden by default, shown when crisisFlag is true -->
-<div id="crisis-banner" class="hidden px-4 py-3 bg-red-500/10 border-b border-red-500/20 text-red-400 text-xs font-medium flex items-start gap-2">
-<span class="material-symbols-outlined text-sm shrink-0 mt-0.5">warning</span>
-<span>If you're in crisis, please reach out to a trusted person or a helpline. You are not alone.</span>
-</div>
-<!-- Chat messages -->
 <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-light/50 dark:bg-background-dark/50 scrollbar-hide">
-<div class="text-center">
-<span class="text-[10px] text-gray-400 bg-gray-100 dark:bg-background-dark px-2 py-0.5 rounded-full">Today</span>
-</div>
-<div class="flex gap-3" id="welcome-message">
-<div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
-<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
-</div>
-<div class="flex flex-col gap-1 max-w-[85%]">
-<div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-200 dark:border-gray-700 text-sm">
-<p class="leading-relaxed">Hi! I'm your Mind Mate companion. How are you feeling today? I'm here to help you reflect, plan, and stay on track. 🌱</p>
-</div>
-</div>
-</div>
 </div>
 <!-- Input area -->
 <div class="p-3 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700 shrink-0">
 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-1">
-<button class="chat-suggestion whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Help me focus</button>
-<button class="chat-suggestion whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">I'm overwhelmed</button>
-<button class="chat-suggestion whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Plan my study session</button>
+<button data-chat-suggestion="Help me make a study plan" class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    Make a study plan
+                                </button>
+<button data-chat-suggestion="I need a break, what should I do?" class="whitespace-nowrap px-3 py-1 rounded-full bg-gray-100 dark:bg-background-dark border border-gray-200 dark:border-gray-600 text-[10px] font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                    I need a break
+                                </button>
 </div>
 <div class="relative flex items-center gap-2">
 <div class="flex-1 relative">
-<input id="chat-input" class="w-full bg-gray-50 dark:bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-4 text-sm focus:ring-1 focus:ring-primary placeholder-gray-400 dark:placeholder-gray-500" placeholder="Ask Mind Mate..." type="text"/>
+<input id="chat-input" class="w-full bg-gray-50 dark:bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-3 text-sm focus:ring-1 focus:ring-primary placeholder-gray-400 dark:placeholder-gray-500" placeholder="Ask Mind Mate..." type="text" aria-label="Chat message"/>
 </div>
-<button id="chat-send-btn" class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+<button id="chat-send" class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors shadow-sm" aria-label="Send message">
 <span class="material-symbols-outlined text-lg fill-1">send</span>
 </button>
 </div>
+<p class="text-[10px] text-gray-400 text-center mt-1 px-2">Mind Mate is an academic companion, not a therapist. For urgent support, contact a professional.</p>
 </div>
 </div>
 </div>
@@ -284,233 +249,200 @@ Profile
 </aside>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth, auth } from "./auth.js";
-  import { attachLogout, initMobileNav } from "./ui.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard, getCurrentUser } from "./js/services/auth.service.js";
+  import { listenToUserData } from "./js/services/db.service.js";
+  import { initNav } from "./js/services/nav.js";
+  import { initChat } from "./js/chat.js";
+  import { showToast } from "./js/services/toast.js";
 
-  const db = getDatabase(app);
-  let currentUser = null;
+  await authGuard();
+  initNav("dashboard");
+  initChat();
 
-  // Check auth and redirect if not logged in
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
+  // Populate user email
+  const user = await getCurrentUser();
+  const emailEl = document.querySelector("[data-user-email]");
+  if (emailEl && user?.email) emailEl.textContent = user.email;
+
+  // Time-based greeting
+  const greetEl = document.querySelector("[data-user-name]");
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+  const headerH2 = greetEl?.closest("h2");
+  if (headerH2 && greetEl) {
+    headerH2.childNodes[0].textContent = `${greeting}, `;
+  }
+
+  // ── Notifications placeholder ──
+  document.getElementById("notif-btn")?.addEventListener("click", () => {
+    showToast("Notifications coming soon!", "info");
+  });
+
+  // ── Focus Mode toggle ──
+  const focusToggle = document.getElementById("focus-toggle");
+  const focusLabel  = document.getElementById("focus-label");
+  const statsRow    = document.querySelector(".grid.grid-cols-1.sm\\:grid-cols-3");
+  const deadlineBox = statsRow?.nextElementSibling;
+  let focusOn = false;
+
+  focusToggle?.addEventListener("click", () => {
+    focusOn = !focusOn;
+    focusLabel.textContent = focusOn ? "Focus Mode: On" : "Focus Mode: Off";
+    focusToggle.classList.toggle("border-primary", focusOn);
+    focusToggle.classList.toggle("bg-primary/10", focusOn);
+    // Hide stats & deadlines in focus mode to reduce distractions
+    if (statsRow) statsRow.style.display = focusOn ? "none" : "";
+    if (deadlineBox) deadlineBox.style.display = focusOn ? "none" : "";
+    showToast(focusOn ? "Focus mode on — distractions hidden" : "Focus mode off", "info");
+  });
+
+  // ── Expand chat fullscreen ──
+  document.getElementById("expand-chat-btn")?.addEventListener("click", () => {
+    const chatCol = document.querySelector(".xl\\:col-span-1");
+    if (!chatCol) return;
+    const overlay = document.createElement("div");
+    overlay.id = "chat-fullscreen";
+    overlay.className = "fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4";
+    overlay.innerHTML = `
+      <div class="w-full max-w-2xl h-[90vh] bg-surface-dark rounded-2xl border border-gray-700 shadow-2xl flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease]">
+        <div class="px-5 py-3 border-b border-gray-700 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary text-sm">smart_toy</span>
+            </div>
+            <h3 class="font-bold">Mind Mate AI</h3>
+          </div>
+          <button id="close-fullscreen-chat" class="text-gray-400 hover:text-white p-1">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div id="fs-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-background-dark/50 scrollbar-hide"></div>
+        <div class="p-3 border-t border-gray-700 shrink-0">
+          <div class="flex gap-2">
+            <input id="fs-chat-input" class="flex-1 bg-background-dark border-none rounded-xl py-2.5 pl-3 pr-3 text-sm focus:ring-1 focus:ring-primary placeholder-gray-500" placeholder="Ask Mind Mate..." type="text"/>
+            <button id="fs-chat-send" class="p-2.5 bg-primary text-background-dark rounded-xl hover:bg-primary/90 transition-colors">
+              <span class="material-symbols-outlined text-lg fill-1">send</span>
+            </button>
+          </div>
+        </div>
+      </div>`;
+    if (!document.getElementById("chat-fs-style")) {
+      const s = document.createElement("style");
+      s.id = "chat-fs-style";
+      s.textContent = "@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}";
+      document.head.appendChild(s);
+    }
+    document.body.appendChild(overlay);
+
+    // Mirror existing chat messages into fullscreen
+    const src = document.getElementById("chat-messages");
+    const dest = document.getElementById("fs-chat-messages");
+    if (src && dest) dest.innerHTML = src.innerHTML;
+
+    // Wire fullscreen send to the real chat
+    const fsInput = document.getElementById("fs-chat-input");
+    const fsSend  = document.getElementById("fs-chat-send");
+    const realInput = document.getElementById("chat-input");
+    const realSend  = document.getElementById("chat-send");
+
+    function syncMessages() { if (src && dest) dest.innerHTML = src.innerHTML; dest.scrollTop = dest.scrollHeight; }
+    const observer = new MutationObserver(syncMessages);
+    if (src) observer.observe(src, { childList: true, subtree: true });
+
+    function fsSendMsg() {
+      if (!fsInput.value.trim()) return;
+      realInput.value = fsInput.value;
+      fsInput.value = "";
+      realSend.click();
+    }
+    fsSend.addEventListener("click", fsSendMsg);
+    fsInput.addEventListener("keypress", e => { if (e.key === "Enter") { e.preventDefault(); fsSendMsg(); } });
+
+    function closeFs() { observer.disconnect(); overlay.remove(); }
+    document.getElementById("close-fullscreen-chat").addEventListener("click", closeFs);
+    overlay.addEventListener("click", e => { if (e.target === overlay) closeFs(); });
+    document.addEventListener("keydown", function esc(e) { if (e.key === "Escape") { closeFs(); document.removeEventListener("keydown", esc); } });
+    fsInput.focus();
+  });
+
+  // Stat elements
+  const gpaEl      = document.querySelector("[data-stat-gpa]");
+  const moodEl     = document.querySelector("[data-stat-mood]");
+  const tasksLeftEl = document.querySelector("[data-stat-tasks]");
+  const deadlinesEl = document.getElementById("upcoming-deadlines");
+
+  // GPA: weighted average across all entries
+  listenToUserData("gpas", snap => {
+    let totalPoints = 0, totalCredits = 0;
+    Object.values(snap || {}).forEach(g => {
+      const credits = parseFloat(g.credits || 0);
+      totalPoints += parseFloat(g.gpa || 0) * credits;
+      totalCredits += credits;
+    });
+    const avg = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(1) : "—";
+    if (gpaEl) gpaEl.textContent = avg;
+  });
+
+  // Mood: most recent journal entry
+  listenToUserData("journals", snap => {
+    const entries = Object.values(snap || {});
+    entries.sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+    const latest = entries[0];
+    const mood = latest?.mood || "—";
+    const label = mood === "positive" ? "Good 😊" : mood === "negative" ? "Stressed 😟" : mood === "neutral" ? "Okay 😐" : "—";
+    if (moodEl) moodEl.textContent = label;
+  });
+
+  // Tasks: count of incomplete + upcoming deadlines
+  listenToUserData("tasks", snap => {
+    const tasks = Object.values(snap || {});
+    const pending = tasks.filter(t => !t.completed).length;
+    if (tasksLeftEl) tasksLeftEl.textContent = pending;
+
+    // Upcoming deadlines: incomplete tasks with due dates, sorted soonest first
+    if (!deadlinesEl) return;
+    const now = new Date();
+    const upcoming = tasks
+      .filter(t => !t.completed && t.dueDate)
+      .map(t => ({ ...t, _due: new Date(t.dueDate) }))
+      .sort((a, b) => a._due - b._due)
+      .slice(0, 4);
+
+    if (upcoming.length === 0) {
+      deadlinesEl.innerHTML = `<p class="text-sm text-gray-500 text-center py-4">No upcoming deadlines. Add tasks with due dates!</p>`;
       return;
     }
-    currentUser = user;
-    updateUserInfo(user);
-    loadDashboardData(user.uid);
-  });
 
-  // Update user info in sidebar
-  function updateUserInfo(user) {
-    const userEmail = user.email || "User";
-    const userName = user.displayName || userEmail.split("@")[0];
-    const sidebarName = document.getElementById("sidebar-user-name");
-    const greetingName = document.getElementById("greeting-name");
-    if (sidebarName) sidebarName.textContent = userName;
-    if (greetingName) greetingName.textContent = userName;
-  }
+    const PRIORITY_STYLE = {
+      high:   { badge: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400", date: "bg-red-100 dark:bg-red-500/10", month: "text-red-500", day: "text-red-600 dark:text-red-400" },
+      medium: { badge: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400", date: "bg-blue-100 dark:bg-blue-500/10", month: "text-blue-500", day: "text-blue-600 dark:text-blue-400" },
+      low:    { badge: "bg-gray-100 text-gray-600 dark:bg-gray-700/30 dark:text-gray-400", date: "bg-gray-100 dark:bg-gray-700/30", month: "text-gray-500", day: "text-gray-700 dark:text-gray-300" },
+    };
 
-  // Load dashboard data
-  function loadDashboardData(uid) {
-    // Load tasks count
-    onValue(ref(db, `users/${uid}/tasks`), (snap) => {
-      let count = 0;
-      let todayCount = 0;
-      const today = new Date().toDateString();
-      
-      snap.forEach(child => {
-        const task = child.val();
-        if (!task) return;
-        count++;
-        if (task.dueDate && new Date(task.dueDate).toDateString() === today) {
-          todayCount++;
-        }
-      });
-      
-      const taskCountEl = document.getElementById("dashboard-tasks-left");
-      if (taskCountEl) taskCountEl.textContent = count;
-    });
+    function _esc(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
 
-    // Load GPA
-    onValue(ref(db, `users/${uid}/gpas`), (snap) => {
-      let total = 0, count = 0;
-      snap.forEach(child => {
-        const g = child.val();
-        if (!g) return;
-        total += parseFloat(g.gpa || 0);
-        count++;
-      });
-      const avgGpa = count ? (total / count).toFixed(1) : "0.0";
-      const gpaEl = document.getElementById("dashboard-gpa");
-      if (gpaEl) gpaEl.textContent = avgGpa;
-    });
-
-    // Load recent mood
-    onValue(ref(db, `users/${uid}/journals`), (snap) => {
-      let lastMood = "Neutral";
-      let lastEntry = null;
-      
-      snap.forEach(child => {
-        const j = child.val();
-        if (!j) return;
-        if (!lastEntry || j.timestamp > lastEntry.timestamp) {
-          lastEntry = j;
-          lastMood = j.mood || "Neutral";
-        }
-      });
-      
-      const moodEl = document.getElementById("dashboard-mood");
-      if (moodEl) moodEl.textContent = lastMood;
-    });
-  }
-
-  attachLogout("#logout-btn, #mobile-logout-btn");
-  initMobileNav({
-    button: "#mobile-menu-btn",
-    panel: "#mobile-nav-panel",
-    overlay: "#mobile-nav-overlay",
-    close: "#mobile-nav-close"
-  });
-
-  // ── Mind Mate Chat ─────────────────────────────────────────
-  const CHAT_URL = "https://us-central1-mind-mate-ff2cf.cloudfunctions.net/chat";
-  const chatMessages = document.getElementById("chat-messages");
-  const chatInput = document.getElementById("chat-input");
-  const chatSendBtn = document.getElementById("chat-send-btn");
-  const crisisBanner = document.getElementById("crisis-banner");
-
-  // In-memory history — lives only for this session (no sensitive data stored)
-  let chatHistory = [];
-  let isChatLoading = false;
-
-  function escapeHtml(str) {
-    const d = document.createElement("div");
-    d.textContent = str;
-    return d.innerHTML;
-  }
-
-  function appendBotMessage(text, isCrisis = false) {
-    // Show crisis banner if needed
-    if (isCrisis && crisisBanner) {
-      crisisBanner.classList.remove("hidden");
-    }
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "flex gap-3";
-    wrapper.innerHTML = `
-      <div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
-        <span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
-      </div>
-      <div class="flex flex-col gap-1 max-w-[85%]">
-        <div class="bg-white dark:bg-surface-dark p-3 rounded-2xl rounded-tl-none shadow-sm border ${isCrisis ? "border-red-500/30" : "border-gray-200 dark:border-gray-700"} text-sm">
-          <p class="leading-relaxed whitespace-pre-line">${escapeHtml(text)}</p>
+    deadlinesEl.innerHTML = upcoming.map(t => {
+      const s = PRIORITY_STYLE[t.priority] || PRIORITY_STYLE.medium;
+      const diffDays = Math.ceil((t._due - now) / 86400000);
+      const timeLabel = diffDays < 0 ? `${Math.abs(diffDays)}d overdue` : diffDays === 0 ? "Today" : diffDays === 1 ? "Tomorrow" : `In ${diffDays} days`;
+      const month = t._due.toLocaleDateString("en-US", { month: "short" }).toUpperCase();
+      const day = t._due.getDate();
+      const pLabel = (t.priority || "medium").charAt(0).toUpperCase() + (t.priority || "medium").slice(1);
+      return `<a href="tasks.html" class="flex gap-4 items-center p-3 hover:bg-gray-50 dark:hover:bg-background-dark/50 rounded-lg transition-colors cursor-pointer">
+        <div class="flex flex-col items-center ${s.date} rounded-lg p-2 min-w-[60px]">
+          <span class="text-xs font-bold ${s.month}">${month}</span>
+          <span class="text-xl font-bold leading-none ${s.day}">${day}</span>
         </div>
-      </div>`;
-    chatMessages.appendChild(wrapper);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function appendUserMessage(text) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "flex gap-3 flex-row-reverse";
-    wrapper.innerHTML = `
-      <div class="flex flex-col gap-1 items-end max-w-[85%]">
-        <div class="bg-primary p-3 rounded-2xl rounded-tr-none shadow-sm text-background-dark font-medium text-sm">
-          <p class="leading-relaxed">${escapeHtml(text)}</p>
+        <div class="flex-1 min-w-0">
+          <p class="font-bold text-base leading-tight truncate">${_esc(t.title || "Untitled")}</p>
         </div>
-      </div>`;
-    chatMessages.appendChild(wrapper);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function showTypingIndicator() {
-    const el = document.createElement("div");
-    el.id = "typing-indicator";
-    el.className = "flex gap-3";
-    el.innerHTML = `
-      <div class="size-8 rounded-full bg-surface-dark border border-gray-700 flex items-center justify-center shrink-0 shadow-sm mt-1">
-        <span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
-      </div>
-      <div class="flex items-center gap-1 bg-white dark:bg-surface-dark px-4 py-3 rounded-2xl rounded-tl-none border border-gray-200 dark:border-gray-700">
-        <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0ms"></span>
-        <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:150ms"></span>
-        <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:300ms"></span>
-      </div>`;
-    chatMessages.appendChild(el);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    return el;
-  }
-
-  async function sendChatMessage(text) {
-    if (!text.trim() || isChatLoading) return;
-    isChatLoading = true;
-    chatSendBtn.disabled = true;
-
-    appendUserMessage(text);
-    chatInput.value = "";
-
-    const typingEl = showTypingIndicator();
-
-    try {
-      const response = await fetch(CHAT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          history: chatHistory,
-          userContext: {
-            moodLabel: document.getElementById("dashboard-mood")?.textContent || "unknown",
-            stressLevel: "unknown",
-            overdueCount: 0,
-          },
-        }),
-      });
-
-      const data = await response.json();
-      typingEl.remove();
-
-      const reply = data.reply || "I'm here — what's on your mind?";
-      appendBotMessage(reply, data.crisisFlag === true);
-
-      // Update in-memory history (keep last 10 turns)
-      chatHistory.push({ role: "user", content: text });
-      chatHistory.push({ role: "assistant", content: reply });
-      if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-
-    } catch (err) {
-      console.error("Chat error:", err);
-      typingEl.remove();
-      appendBotMessage("Hmm, I had trouble connecting. Try again in a moment.");
-    } finally {
-      isChatLoading = false;
-      chatSendBtn.disabled = false;
-      chatInput.focus();
-    }
-  }
-
-  // Send on button click
-  chatSendBtn?.addEventListener("click", () => {
-    sendChatMessage(chatInput.value.trim());
+        <div class="text-right shrink-0">
+          <span class="inline-block px-2 py-1 text-xs font-medium ${s.badge} rounded-full">${pLabel}</span>
+          <p class="text-xs text-gray-400 mt-1">${timeLabel}</p>
+        </div>
+      </a>`;
+    }).join("");
   });
-
-  // Send on Enter key
-  chatInput?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendChatMessage(chatInput.value.trim());
-    }
-  });
-
-  // Suggestion chips
-  document.querySelectorAll(".chat-suggestion").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      sendChatMessage(btn.textContent.trim());
-    });
-  });
-
 </script>
 
 </body>

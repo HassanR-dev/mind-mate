@@ -173,229 +173,461 @@ body.font-display {
     }
 }
 
-/* Toast Notifications */
-.toast-container {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    pointer-events: none;
+/* =============================================
+   THEME SYSTEM — comprehensive variable overrides
+   ============================================= */
+
+/*
+  Color map (dark-forest originals → variables):
+    #111814  → --th-bg           main background
+    #0d1b14  → --th-bg-deep      deep sidebar bg
+    #102219  → --th-bg-alt       alt body bg
+    #18221c  → --th-card         card / section bg
+    #1c2a23  → --th-card-raised  modal / raised card
+    #16201b  → --th-card-dim     table header
+    #283930  → --th-surface      surface / elevated
+    #1c2721  → --th-input        input fields
+    #1f362a  → --th-highlight    highlighted cards
+    #3b5447  → --th-border       main border
+    #304b3d  → --th-border-alt   alt border
+    #283930  → --th-border-soft  soft border (same as surface)
+    #344a3e  → --th-hover        hover bg
+    #32473c  → --th-hover-alt    hover bg alt
+    #25332c  → --th-hover-dim    dimmer hover
+    #9db9ab  → --th-text-sec     secondary text
+    #566860  → --th-text-dim     dimmer text
+    #13ec80  → --th-primary      accent
+    #0fd673  → --th-primary-dim  accent hover
+*/
+
+/* ── Dark Forest (default) ── */
+html, html[data-theme="dark-forest"] {
+  --th-bg:           #111814;
+  --th-bg-deep:      #0d1b14;
+  --th-bg-alt:       #102219;
+  --th-card:         #18221c;
+  --th-card-raised:  #1c2a23;
+  --th-card-dim:     #16201b;
+  --th-surface:      #283930;
+  --th-input:        #1c2721;
+  --th-highlight:    #1f362a;
+  --th-border:       #3b5447;
+  --th-border-alt:   #304b3d;
+  --th-hover:        #344a3e;
+  --th-hover-alt:    #32473c;
+  --th-hover-dim:    #25332c;
+  --th-text:         #ffffff;
+  --th-text-sec:     #9db9ab;
+  --th-text-dim:     #566860;
+  --th-primary:      #13ec80;
+  --th-primary-dim:  #0fd673;
+  --th-primary-on:   #102219;  /* text on primary bg */
 }
 
-.toast {
-    min-width: 220px;
-    max-width: 360px;
-    background: #1c2721;
-    color: #ffffff;
-    border: 1px solid #283930;
-    padding: 10px 14px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    transform: translateY(-10px);
-    opacity: 0;
-    transition: all 0.2s ease;
-    pointer-events: auto;
-    font-size: 0.9rem;
+/* ── Dark Midnight ── */
+html[data-theme="dark-midnight"] {
+  --th-bg:           #0d1117;
+  --th-bg-deep:      #080c12;
+  --th-bg-alt:       #0b0f18;
+  --th-card:         #151b24;
+  --th-card-raised:  #1c2333;
+  --th-card-dim:     #131920;
+  --th-surface:      #1e2530;
+  --th-input:        #161d27;
+  --th-highlight:    #1a2540;
+  --th-border:       #30363d;
+  --th-border-alt:   #2a3040;
+  --th-hover:        #2a3140;
+  --th-hover-alt:    #252c38;
+  --th-hover-dim:    #1c2230;
+  --th-text:         #e6edf3;
+  --th-text-sec:     #8b949e;
+  --th-text-dim:     #525960;
+  --th-primary:      #38bdf8;
+  --th-primary-dim:  #0ea5e9;
+  --th-primary-on:   #0b1520;
 }
 
-.toast.show {
-    transform: translateY(0);
-    opacity: 1;
+/* ── Light Cloud ── */
+html[data-theme="light-cloud"] {
+  --th-bg:           #f8fafb;
+  --th-bg-deep:      #f0f3f6;
+  --th-bg-alt:       #eef2f5;
+  --th-card:         #ffffff;
+  --th-card-raised:  #ffffff;
+  --th-card-dim:     #f0f4f8;
+  --th-surface:      #e8ecf1;
+  --th-input:        #f5f7fa;
+  --th-highlight:    #e0f0ea;
+  --th-border:       #c8d1db;
+  --th-border-alt:   #b8c4d0;
+  --th-hover:        #dce3eb;
+  --th-hover-alt:    #d4dce6;
+  --th-hover-dim:    #e8edf3;
+  --th-text:         #1a2332;
+  --th-text-sec:     #5a6b7d;
+  --th-text-dim:     #8895a5;
+  --th-primary:      #10b981;
+  --th-primary-dim:  #059669;
+  --th-primary-on:   #ffffff;
 }
 
-.toast-info {
-    border-color: #3b5447;
+/* ── Light Amber ── */
+html[data-theme="light-amber"] {
+  --th-bg:           #fffcf5;
+  --th-bg-deep:      #fdf6e8;
+  --th-bg-alt:       #fef8ee;
+  --th-card:         #ffffff;
+  --th-card-raised:  #fffef8;
+  --th-card-dim:     #fef3dc;
+  --th-surface:      #f5ead0;
+  --th-input:        #fef9f0;
+  --th-highlight:    #fef0c7;
+  --th-border:       #d4b06a;
+  --th-border-alt:   #c9a050;
+  --th-hover:        #f0e0b8;
+  --th-hover-alt:    #ead5a0;
+  --th-hover-dim:    #f5ecd5;
+  --th-text:         #2c1f0a;
+  --th-text-sec:     #7a5f2e;
+  --th-text-dim:     #a08040;
+  --th-primary:      #f59e0b;
+  --th-primary-dim:  #d97706;
+  --th-primary-on:   #ffffff;
 }
 
-.toast-success {
-    border-color: #13ec80;
-    color: #13ec80;
+
+/* ==============================================
+   BACKGROUND OVERRIDES — every hardcoded bg-[#]
+   ============================================== */
+
+/* #111814 — main bg */
+html[data-theme] .bg-\[\#111814\],
+html[data-theme] .dark\:bg-\[\#111814\] {
+  background-color: var(--th-bg) !important;
 }
 
-.toast-warning {
-    border-color: #f59e0b;
-    color: #f59e0b;
+/* #0d1b14 — deep sidebar bg */
+html[data-theme] .bg-\[\#0d1b14\] {
+  background-color: var(--th-bg-deep) !important;
 }
 
-.toast-error {
-    border-color: #ef4444;
-    color: #ef4444;
+/* #102219 — alt body bg */
+html[data-theme] .bg-\[\#102219\] {
+  background-color: var(--th-bg-alt) !important;
 }
 
-/* Loading Spinner */
-.spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #13ec80;
-    border-radius: 50%;
-    display: inline-block;
-    animation: spin 0.8s linear infinite;
-    margin-right: 8px;
+/* #18221c — card / section bg */
+html[data-theme] .bg-\[\#18221c\] {
+  background-color: var(--th-card) !important;
 }
 
-.is-loading {
-    opacity: 0.85;
-    cursor: wait;
-    gap: 6px;
+/* #1c2a23 — raised card / modal bg */
+html[data-theme] .bg-\[\#1c2a23\] {
+  background-color: var(--th-card-raised) !important;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+/* #16201b — table header bg */
+html[data-theme] .bg-\[\#16201b\] {
+  background-color: var(--th-card-dim) !important;
 }
 
-/* Empty State */
-.empty-state {
-    padding: 16px;
-    border: 1px dashed #3b5447;
-    border-radius: 12px;
-    text-align: center;
-    color: #9db9ab;
-    background: rgba(16, 34, 25, 0.4);
+/* #283930 — surface / elevated */
+html[data-theme] .bg-\[\#283930\] {
+  background-color: var(--th-surface) !important;
 }
 
-/* Mobile Navigation */
-.mobile-nav-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 40;
+/* #1c2721 — input field bg */
+html[data-theme] .bg-\[\#1c2721\],
+html[data-theme] .dark\:bg-\[\#1c2721\] {
+  background-color: var(--th-input) !important;
 }
 
-.mobile-nav-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
+/* #1f362a — highlighted cards */
+html[data-theme] .bg-\[\#1f362a\] {
+  background-color: var(--th-highlight) !important;
 }
 
-.mobile-nav-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 78%;
-    max-width: 320px;
-    background: #111814;
-    border-right: 1px solid #283930;
-    transform: translateX(-100%);
-    transition: transform 0.2s ease;
-    z-index: 50;
-    padding: 16px;
+/* #344a3e — hover */
+html[data-theme] .bg-\[\#344a3e\] {
+  background-color: var(--th-hover) !important;
 }
 
-.mobile-nav-panel.open {
-    transform: translateX(0);
+/* #32473c — hover alt */
+html[data-theme] .bg-\[\#32473c\] {
+  background-color: var(--th-hover-alt) !important;
 }
 
-body.mobile-nav-open {
-    overflow: hidden;
+/* #25332c — dim hover */
+html[data-theme] .bg-\[\#25332c\] {
+  background-color: var(--th-hover-dim) !important;
 }
 
-/* Modal */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 60;
+/* #3b5447 — border color used as bg */
+html[data-theme] .bg-\[\#3b5447\] {
+  background-color: var(--th-border) !important;
 }
 
-.modal-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
+/* Tailwind config colors */
+html[data-theme] .bg-card-dark {
+  background-color: var(--th-bg) !important;
+}
+html[data-theme] .bg-card-inner {
+  background-color: var(--th-surface) !important;
+}
+html[data-theme] .bg-background-dark,
+html[data-theme] .dark\:bg-background-dark {
+  background-color: var(--th-bg-alt) !important;
+}
+html[data-theme] .bg-surface-dark,
+html[data-theme] .dark\:bg-surface-dark {
+  background-color: var(--th-card) !important;
 }
 
-.modal {
-    width: min(420px, 92%);
-    background: #111814;
-    border: 1px solid #283930;
-    border-radius: 14px;
-    padding: 16px;
-    color: #ffffff;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+/* bg-[#111814]/50 (semi-transparent) */
+html[data-theme] .bg-\[\#111814\]\/50 {
+  background-color: color-mix(in srgb, var(--th-bg) 50%, transparent) !important;
 }
 
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+
+/* ==============================================
+   HOVER BG OVERRIDES
+   ============================================== */
+html[data-theme] .hover\:bg-\[\#283930\]:hover {
+  background-color: var(--th-surface) !important;
+}
+html[data-theme] .hover\:bg-\[\#344a3e\]:hover {
+  background-color: var(--th-hover) !important;
+}
+html[data-theme] .hover\:bg-\[\#3b5447\]:hover {
+  background-color: var(--th-border) !important;
+}
+html[data-theme] .hover\:bg-\[\#32473c\]:hover {
+  background-color: var(--th-hover-alt) !important;
+}
+html[data-theme] .hover\:bg-\[\#25332c\]:hover,
+html[data-theme] .dark\:hover\:bg-\[\#25332c\]:hover {
+  background-color: var(--th-hover-dim) !important;
+}
+html[data-theme] .hover\:bg-\[\#0fd673\]:hover,
+html[data-theme] .hover\:bg-\[\#0fd671\]:hover {
+  background-color: var(--th-primary-dim) !important;
+}
+html[data-theme] .hover\:bg-surface-dark:hover {
+  background-color: var(--th-card) !important;
 }
 
-.modal-header h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
+/* dark: hover variants */
+html[data-theme] .dark\:hover\:bg-gray-800:hover,
+html[data-theme] .dark\:hover\:bg-white\/5:hover,
+html[data-theme] .dark\:hover\:bg-white\/10:hover {
+  background-color: var(--th-surface) !important;
 }
 
-.modal-close {
-    background: transparent;
-    border: none;
-    color: #9db9ab;
-    font-size: 1rem;
-    cursor: pointer;
+
+/* ==============================================
+   BORDER OVERRIDES
+   ============================================== */
+html[data-theme] .border-\[\#3b5447\] {
+  border-color: var(--th-border) !important;
+}
+html[data-theme] .border-\[\#3b5447\]\/30 {
+  border-color: color-mix(in srgb, var(--th-border) 30%, transparent) !important;
+}
+html[data-theme] .border-\[\#3b5447\]\/40 {
+  border-color: color-mix(in srgb, var(--th-border) 40%, transparent) !important;
+}
+html[data-theme] .border-\[\#3b5447\]\/50 {
+  border-color: color-mix(in srgb, var(--th-border) 50%, transparent) !important;
+}
+html[data-theme] .border-\[\#283930\] {
+  border-color: var(--th-surface) !important;
+}
+html[data-theme] .border-\[\#304b3d\] {
+  border-color: var(--th-border-alt) !important;
+}
+html[data-theme] .border-\[\#9db9ab\] {
+  border-color: var(--th-text-sec) !important;
+}
+/* dark: border variants */
+html[data-theme] .dark\:border-\[\#3b5447\] {
+  border-color: var(--th-border) !important;
+}
+html[data-theme] .dark\:border-\[\#283930\] {
+  border-color: var(--th-surface) !important;
+}
+html[data-theme] .dark\:border-white\/5,
+html[data-theme] .dark\:border-white\/10 {
+  border-color: color-mix(in srgb, var(--th-border) 30%, transparent) !important;
+}
+html[data-theme] .dark\:border-gray-800 {
+  border-color: var(--th-surface) !important;
+}
+/* hover border */
+html[data-theme] .hover\:border-\[\#3b5447\]:hover {
+  border-color: var(--th-border) !important;
+}
+/* Tailwind config border */
+html[data-theme] .border-background-dark {
+  border-color: var(--th-bg-alt) !important;
 }
 
-.modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    color: #9db9ab;
+/* border-b on header for white/5 */
+html[data-theme] .border-white\/5 {
+  border-color: color-mix(in srgb, var(--th-border) 30%, transparent) !important;
 }
 
-.modal-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    color: #9db9ab;
+
+/* ==============================================
+   TEXT OVERRIDES
+   ============================================== */
+html[data-theme] .text-\[\#9db9ab\] {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .text-\[\#566860\] {
+  color: var(--th-text-dim) !important;
+}
+html[data-theme] .text-\[\#637587\] {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .text-text-secondary {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .text-\[\#111814\] {
+  color: var(--th-primary-on) !important;
+}
+html[data-theme] .text-\[\#102219\] {
+  color: var(--th-primary-on) !important;
+}
+html[data-theme] .text-background-dark {
+  color: var(--th-primary-on) !important;
+}
+/* dark: text variants */
+html[data-theme] .dark\:text-\[\#9db9ab\] {
+  color: var(--th-text-sec) !important;
+}
+html[data-theme] .dark\:text-white {
+  color: var(--th-text) !important;
+}
+/* white text in light themes */
+html[data-theme="light-cloud"] .text-white,
+html[data-theme="light-amber"] .text-white {
+  color: var(--th-text) !important;
+}
+html[data-theme="light-cloud"] .group:hover .group-hover\:text-white,
+html[data-theme="light-amber"] .group:hover .group-hover\:text-white {
+  color: var(--th-text) !important;
+}
+/* placeholder */
+html[data-theme] .placeholder-text-secondary\/50::placeholder {
+  color: color-mix(in srgb, var(--th-text-sec) 50%, transparent) !important;
+}
+html[data-theme] .dark\:placeholder\:text-\[\#9db9ab\]::placeholder {
+  color: var(--th-text-sec) !important;
 }
 
-.modal-field span {
-    font-size: 0.85rem;
+
+/* ==============================================
+   PRIMARY ACCENT OVERRIDES
+   ============================================== */
+html[data-theme] .text-primary        { color: var(--th-primary) !important; }
+html[data-theme] .bg-primary          { background-color: var(--th-primary) !important; }
+html[data-theme] .border-primary      { border-color: var(--th-primary) !important; }
+html[data-theme] .hover\:bg-primary:hover {
+  background-color: var(--th-primary) !important;
+}
+html[data-theme] .hover\:bg-primary\/90:hover {
+  background-color: var(--th-primary-dim) !important;
+}
+html[data-theme] .text-\[\#13ec80\]   { color: var(--th-primary) !important; }
+html[data-theme] .bg-\[\#13ec80\]     { background-color: var(--th-primary) !important; }
+html[data-theme] .bg-\[\#0fd673\]     { background-color: var(--th-primary-dim) !important; }
+html[data-theme] .bg-\[\#0fd671\]     { background-color: var(--th-primary-dim) !important; }
+/* primary opacity variants */
+html[data-theme] .bg-primary\/5       { background-color: color-mix(in srgb, var(--th-primary) 5%, transparent) !important; }
+html[data-theme] .bg-primary\/10      { background-color: color-mix(in srgb, var(--th-primary) 10%, transparent) !important; }
+html[data-theme] .bg-primary\/20      { background-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .border-primary\/20  { border-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .border-primary\/30  { border-color: color-mix(in srgb, var(--th-primary) 30%, transparent) !important; }
+html[data-theme] .shadow-primary\/20  { --tw-shadow-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .border-\[\#13ec80\]\/20 { border-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .bg-\[\#13ec80\]\/5  { background-color: color-mix(in srgb, var(--th-primary) 5%, transparent) !important; }
+html[data-theme] .bg-\[\#13ec80\]\/20 { background-color: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .hover\:text-\[\#111814\]:hover {
+  color: var(--th-primary-on) !important;
+}
+/* Gradient from/to */
+html[data-theme] .from-\[\#13ec80\]\/20  { --tw-gradient-from: color-mix(in srgb, var(--th-primary) 20%, transparent) !important; }
+html[data-theme] .from-primary            { --tw-gradient-from: var(--th-primary) !important; }
+html[data-theme] .to-\[\#0fd673\]         { --tw-gradient-to: var(--th-primary-dim) !important; }
+html[data-theme] .to-\[\#111814\]         { --tw-gradient-to: var(--th-bg) !important; }
+html[data-theme] .from-card-dark          { --tw-gradient-from: var(--th-bg) !important; }
+html[data-theme] .to-\[\#16221d\]         { --tw-gradient-to: var(--th-card-dim) !important; }
+html[data-theme] .from-\[\#18221c\]       { --tw-gradient-from: var(--th-card) !important; }
+
+
+/* ==============================================
+   BODY & LAYOUT — light themes
+   ============================================== */
+html[data-theme="light-cloud"] body,
+html[data-theme="light-amber"] body {
+  background-color: var(--th-bg) !important;
+  color: var(--th-text) !important;
 }
 
-.modal-field input,
-.modal-field select {
-    background: #1c2721;
-    border: 1px solid #283930;
-    border-radius: 10px;
-    padding: 8px 10px;
-    color: #ffffff;
+/* dark:bg-* in light themes should use light values */
+html[data-theme="light-cloud"] .dark\:bg-background-dark,
+html[data-theme="light-amber"] .dark\:bg-background-dark {
+  background-color: var(--th-bg-alt) !important;
+}
+html[data-theme="light-cloud"] .dark\:bg-surface-dark,
+html[data-theme="light-amber"] .dark\:bg-surface-dark {
+  background-color: var(--th-card) !important;
 }
 
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 12px;
+/* bg-background-light for light themes */
+html[data-theme="light-cloud"] .bg-background-light,
+html[data-theme="light-amber"] .bg-background-light {
+  background-color: var(--th-bg) !important;
 }
 
-.modal-btn {
-    border-radius: 10px;
-    padding: 8px 12px;
-    border: 1px solid transparent;
-    cursor: pointer;
+/* dark: text in light themes */
+html[data-theme="light-cloud"] .dark\:text-gray-300,
+html[data-theme="light-amber"] .dark\:text-gray-300,
+html[data-theme="light-cloud"] .dark\:text-slate-300,
+html[data-theme="light-amber"] .dark\:text-slate-300 {
+  color: var(--th-text-sec) !important;
 }
 
-.modal-cancel {
-    background: transparent;
-    color: #9db9ab;
-    border-color: #283930;
+/* Focus ring */
+html[data-theme] .focus\:border-primary:focus { border-color: var(--th-primary) !important; }
+html[data-theme] .focus\:ring-primary:focus   { --tw-ring-color: var(--th-primary) !important; }
+html[data-theme] .focus\:ring-primary\/50:focus { --tw-ring-color: color-mix(in srgb, var(--th-primary) 50%, transparent) !important; }
+
+
+/* ==============================================
+   SCROLLBAR
+   ============================================== */
+html[data-theme] ::-webkit-scrollbar-track  { background: var(--th-bg) !important; }
+html[data-theme] ::-webkit-scrollbar-thumb  { background: var(--th-surface) !important; }
+html[data-theme] ::-webkit-scrollbar-thumb:hover { background: var(--th-border) !important; }
+
+/* ==============================================
+   SELECTION
+   ============================================== */
+html[data-theme] ::selection {
+  background-color: var(--th-primary) !important;
+  color: #000 !important;
 }
 
-.modal-confirm {
-    background: #13ec80;
-    color: #111814;
-    font-weight: 700;
+/* ==============================================
+   CONIC CHART — recolor to match primary
+   ============================================== */
+html[data-theme] .conic-chart {
+  background: conic-gradient(
+    var(--th-primary) 0% 45%,
+    #a78bfa 45% 70%,
+    #f472b6 70% 85%,
+    var(--th-border) 85% 100%
+  ) !important;
 }

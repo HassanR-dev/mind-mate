@@ -6,7 +6,6 @@
 <title>Mind Mate - Well-Being Insights</title>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -35,9 +34,20 @@
     </script>
 <!-- External Stylesheet -->
 <link rel="stylesheet" href="styles.css">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
 <div class="flex h-screen w-full">
+<div class="lg:hidden flex items-center justify-between p-4 bg-[#111814] border-b border-card-border w-full absolute top-0 z-30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+<span class="font-bold text-lg">Mind Mate</span>
+</div>
+<button aria-label="Open menu" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- SideNavBar -->
 <aside class="hidden lg:flex flex-col w-72 h-full border-r border-card-border bg-[#111814] p-4 justify-between shrink-0">
 <div class="flex flex-col gap-8">
@@ -48,7 +58,7 @@
 </div>
 <div class="flex flex-col">
 <h1 class="text-white text-lg font-bold leading-none">Mind Mate</h1>
-<p class="text-[#9db9ab] text-xs font-normal">Student Portal</p>
+<p class="text-[#9db9ab] text-xs font-normal">Student Companion</p>
 </div>
 </div>
 <!-- Navigation -->
@@ -56,6 +66,10 @@
 <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 border border-primary/20 text-primary transition-all" href="insights.html">
 <span class="material-symbols-outlined fill-1">insights</span>
 <p class="text-sm font-semibold">Insights</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="stress-reliever.html">
+<span class="material-symbols-outlined">sentiment_calm</span>
+<p class="text-sm font-medium">Stress Reliever</p>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="tasks.html">
 <span class="material-symbols-outlined">check_circle</span>
@@ -76,10 +90,14 @@
 <span class="material-symbols-outlined">settings</span>
 <p class="text-sm font-medium">Settings</p>
 </a>
+<button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Log Out</p>
+</button>
 <div class="flex items-center gap-3 mt-4 pt-4 border-t border-card-border px-2">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 border-2 border-primary/50" data-alt="User profile picture of a student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7cNprxBqBBhYoxIRDkFghVg_48S48rCRghJtxVNdOOMfGYgyqy0nkUcUr9G6ppFfTeNbbyO9POdtbNLU8YeCzK-W7fRccdH0ow2e68aslpQJApvfmfhFE9GosLZBeRc3l3IqvhWwzsG_BqY6hx2ciXWaVY_kdFmDFN7U22TiQLc9po9EATSAkTL0jmFUfaraJWHSh_vDQFW0kswCe7-P9OtI8NtXyi0kk-Fw7qCU8U665qJcvzcttwRGjTBZuZbiBsJa2gNYhm0rj");'></div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 border-2 border-primary/50" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
 <div class="flex flex-col overflow-hidden">
-<p class="text-white text-sm font-medium truncate">Hassan Rehan</p>
+<p class="text-white text-sm font-medium truncate" data-user-name>Student</p>
 <p class="text-[#9db9ab] text-xs truncate">Software Engineering</p>
 </div>
 </div>
@@ -99,19 +117,20 @@
 </button>
 <h2 class="text-white text-3xl lg:text-4xl font-black tracking-tight">Well-Being Insights</h2>
 <p class="text-[#9db9ab] text-sm lg:text-base">Visualize the rhythm of your academic and emotional health.</p>
+<p class="text-[10px] text-[#566860] mt-1">Mind Mate is not a mental health professional. Data shown is for self-reflection only.</p>
 </div>
 <div class="flex flex-wrap items-center gap-4">
 <!-- Date Chips -->
-<div class="flex bg-card-dark rounded-xl p-1 border border-card-border">
-<button class="px-4 py-1.5 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-sm">7 Days</button>
-<button class="px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">30 Days</button>
-<button class="px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">Semester</button>
+<div id="period-bar" class="flex bg-card-dark rounded-xl p-1 border border-card-border">
+<button data-period="7" class="period-btn px-4 py-1.5 rounded-lg bg-primary text-background-dark text-sm font-bold shadow-sm">7 Days</button>
+<button data-period="30" class="period-btn px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">30 Days</button>
+<button data-period="120" class="period-btn px-4 py-1.5 rounded-lg text-[#9db9ab] hover:text-white text-sm font-medium transition-colors">Semester</button>
 </div>
 <!-- CTA Button -->
-<button class="flex items-center justify-center gap-2 h-10 px-5 bg-white hover:bg-gray-100 text-background-dark rounded-xl text-sm font-bold transition-colors">
+<a href="journal.html" class="flex items-center justify-center gap-2 h-10 px-5 bg-white hover:bg-gray-100 text-background-dark rounded-xl text-sm font-bold transition-colors">
 <span class="material-symbols-outlined" style="font-size: 20px;">add</span>
                         Log Mood
-                    </button>
+                    </a>
 </div>
 </header>
 <!-- Dashboard Content -->
@@ -128,11 +147,11 @@
 <p class="text-[#9db9ab] text-sm font-medium uppercase tracking-wider">Average Mood</p>
 </div>
 <div class="flex items-end gap-3">
-<p class="text-white text-4xl font-bold">7.2<span class="text-xl text-[#9db9ab] font-medium">/10</span></p>
+<p class="text-white text-4xl font-bold"><span id="stat-avg-mood">—</span><span class="text-xl text-[#9db9ab] font-medium">/10</span></p>
 </div>
 <div class="mt-2 flex items-center gap-1.5 text-primary bg-primary/10 w-fit px-2 py-0.5 rounded-md">
 <span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span>
-<p class="text-xs font-bold">+5% vs last week</p>
+<p id="mood-trend" class="text-xs font-bold">Loading...</p>
 </div>
 </div>
 <!-- Stat 2 -->
@@ -145,7 +164,7 @@
 <p class="text-[#9db9ab] text-sm font-medium uppercase tracking-wider">Task Completion</p>
 </div>
 <div class="flex items-end gap-3">
-<p class="text-white text-4xl font-bold">85<span class="text-xl text-[#9db9ab] font-medium">%</span></p>
+<p class="text-white text-4xl font-bold"><span id="stat-task-pct">—</span><span class="text-xl text-[#9db9ab] font-medium">%</span></p>
 </div>
 <div class="mt-2 flex items-center gap-1.5 text-primary bg-primary/10 w-fit px-2 py-0.5 rounded-md">
 <span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span>
@@ -162,7 +181,7 @@
 <p class="text-[#9db9ab] text-sm font-medium uppercase tracking-wider">Current GPA</p>
 </div>
 <div class="flex items-end gap-3">
-<p class="text-white text-4xl font-bold">3.6</p>
+<p id="stat-gpa" class="text-white text-4xl font-bold">—</p>
 </div>
 <div class="mt-2 flex items-center gap-1.5 text-primary bg-primary/10 w-fit px-2 py-0.5 rounded-md">
 <span class="material-symbols-outlined" style="font-size: 16px;">arrow_upward</span>
@@ -190,40 +209,9 @@
 </div>
 </div>
 </div>
-<!-- Simulated Chart -->
+<!-- Real Chart.js chart -->
 <div class="flex-1 w-full min-h-[300px] relative">
-<!-- Y Axis lines -->
-<div class="absolute inset-0 flex flex-col justify-between text-[#9db9ab]/30 text-xs z-0 pointer-events-none">
-<div class="w-full border-b border-dashed border-white/10 h-0"></div>
-<div class="w-full border-b border-dashed border-white/10 h-0"></div>
-<div class="w-full border-b border-dashed border-white/10 h-0"></div>
-<div class="w-full border-b border-dashed border-white/10 h-0"></div>
-<div class="w-full border-b border-white/20 h-0"></div> <!-- Baseline -->
-</div>
-<!-- Chart Content -->
-<svg class="absolute inset-0 w-full h-full z-10" preserveaspectratio="none" viewbox="0 0 100 50">
-<!-- Gradient Definition -->
-<defs>
-<lineargradient id="moodGradient" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#13ec80" stop-opacity="0.2"></stop>
-<stop offset="100%" stop-color="#13ec80" stop-opacity="0"></stop>
-</lineargradient>
-</defs>
-<!-- Productivity (Purple Line/Area) -->
-<path d="M0,45 L10,35 L20,38 L30,20 L40,25 L50,15 L60,18 L70,30 L80,25 L90,10 L100,15" fill="none" stroke="#a78bfa" stroke-dasharray="2 1" stroke-width="0.5"></path>
-<!-- Mood (Green Curve) -->
-<path class="drop-shadow-[0_0_6px_rgba(19,236,128,0.5)]" d="M0,40 C10,38 15,25 25,22 C35,19 40,30 50,25 C60,20 65,10 75,12 C85,14 90,20 100,18" fill="none" stroke="#13ec80" stroke-linecap="round" stroke-width="1.5"></path>
-<!-- Area under mood -->
-<path d="M0,40 C10,38 15,25 25,22 C35,19 40,30 50,25 C60,20 65,10 75,12 C85,14 90,20 100,18 V50 H0 Z" fill="url(#moodGradient)" stroke="none"></path>
-<!-- Data Points (Interactive Hover Targets in a real app) -->
-<circle cx="25" cy="22" fill="#111814" r="1.5" stroke="#13ec80" stroke-width="0.5"></circle>
-<circle cx="50" cy="25" fill="#111814" r="1.5" stroke="#13ec80" stroke-width="0.5"></circle>
-<circle cx="75" cy="12" fill="#111814" r="1.5" stroke="#13ec80" stroke-width="0.5"></circle>
-</svg>
-</div>
-<!-- X Axis Labels -->
-<div class="flex justify-between text-[#9db9ab] text-xs mt-2 px-1">
-<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+<canvas id="mood-chart" class="w-full h-full"></canvas>
 </div>
 </div>
 <!-- Right Column Stack -->
@@ -232,108 +220,38 @@
 <div class="rounded-xl bg-card-dark border border-card-border p-6 flex-1 min-h-[200px]">
 <h3 class="text-white text-lg font-bold mb-4">Emotions</h3>
 <div class="flex items-center gap-6">
-<!-- CSS Donut Chart -->
-<div class="relative size-32 rounded-full shrink-0" style="background: conic-gradient(#13ec80 0% 45%, #a78bfa 45% 70%, #f472b6 70% 85%, #3b5447 85% 100%);">
-<div class="absolute inset-4 bg-card-dark rounded-full flex items-center justify-center flex-col">
-<span class="text-2xl font-bold text-white">45%</span>
-<span class="text-[10px] text-[#9db9ab] uppercase font-bold">Focused</span>
+<div class="relative size-32 shrink-0">
+<canvas id="emotion-chart"></canvas>
 </div>
-</div>
-<div class="flex flex-col gap-2 w-full">
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-2">
-<div class="size-2 rounded-full bg-primary"></div>
-<span class="text-white">Focused</span>
-</div>
-<span class="text-[#9db9ab]">45%</span>
-</div>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-2">
-<div class="size-2 rounded-full bg-purple-400"></div>
-<span class="text-white">Relaxed</span>
-</div>
-<span class="text-[#9db9ab]">25%</span>
-</div>
-<div class="flex items-center justify-between text-sm">
-<div class="flex items-center gap-2">
-<div class="size-2 rounded-full bg-pink-400"></div>
-<span class="text-white">Stressed</span>
-</div>
-<span class="text-[#9db9ab]">15%</span>
-</div>
+<div id="emotion-legend" class="flex flex-col gap-2 w-full text-sm">
+<!-- populated by JS -->
 </div>
 </div>
 </div>
 <!-- Highlights / Insights -->
 <div class="rounded-xl bg-card-dark border border-card-border p-6 flex-1">
 <h3 class="text-white text-lg font-bold mb-4">Top Insights</h3>
-<div class="flex flex-col gap-3">
-<div class="p-3 rounded-lg bg-primary/5 border border-primary/10 flex gap-3 items-start">
-<span class="material-symbols-outlined text-primary shrink-0 text-sm mt-0.5">lightbulb</span>
-<div>
-<p class="text-white text-sm font-medium leading-snug">Productivity boost</p>
-<p class="text-[#9db9ab] text-xs leading-relaxed">You are 20% more productive on days you exercise in the morning.</p>
-</div>
-</div>
-<div class="p-3 rounded-lg bg-white/5 border border-white/5 flex gap-3 items-start">
-<span class="material-symbols-outlined text-[#9db9ab] shrink-0 text-sm mt-0.5">warning</span>
-<div>
-<p class="text-white text-sm font-medium leading-snug">Late night impact</p>
-<p class="text-[#9db9ab] text-xs leading-relaxed">Mood scores drop by 15% after 2 consecutive late nights.</p>
-</div>
-</div>
+<div id="top-insights" class="flex flex-col gap-3">
+<p class="text-[#9db9ab] text-sm text-center py-2">Log more entries to unlock insights.</p>
 </div>
 </div>
 </div>
 <!-- Calendar Heatmap (Full Width on Mobile, 1/3 on desktop) -->
 <div class="lg:col-span-1 rounded-xl bg-card-dark border border-card-border p-6">
 <div class="flex items-center justify-between mb-4">
-<h3 class="text-white text-lg font-bold">October Heatmap</h3>
-<button class="text-primary text-sm font-medium hover:underline">View All</button>
+<h3 id="heatmap-title" class="text-white text-lg font-bold">This Month</h3>
+<a href="journal.html" class="text-primary text-sm font-medium hover:underline">View All</a>
 </div>
 <div class="grid grid-cols-7 gap-2">
-<!-- Day Labels -->
+<span class="text-center text-xs text-[#566860] font-medium">S</span>
 <span class="text-center text-xs text-[#566860] font-medium">M</span>
 <span class="text-center text-xs text-[#566860] font-medium">T</span>
 <span class="text-center text-xs text-[#566860] font-medium">W</span>
 <span class="text-center text-xs text-[#566860] font-medium">T</span>
 <span class="text-center text-xs text-[#566860] font-medium">F</span>
 <span class="text-center text-xs text-[#566860] font-medium">S</span>
-<span class="text-center text-xs text-[#566860] font-medium">S</span>
-<!-- Calendar Days -->
-<!-- Row 1 -->
-<div class="aspect-square rounded bg-[#283930]"></div> <!-- Empty/Prev Month -->
-<div class="aspect-square rounded bg-[#283930]"></div>
-<div class="aspect-square rounded bg-primary/20 hover:bg-primary/40 transition-colors cursor-pointer" title="Mood: 5/10"></div>
-<div class="aspect-square rounded bg-primary/40 hover:bg-primary/60 transition-colors cursor-pointer" title="Mood: 7/10"></div>
-<div class="aspect-square rounded bg-primary hover:bg-white transition-colors cursor-pointer" title="Mood: 9/10"></div>
-<div class="aspect-square rounded bg-primary/60 hover:bg-primary/80 transition-colors cursor-pointer" title="Mood: 8/10"></div>
-<div class="aspect-square rounded bg-primary/20 hover:bg-primary/40 transition-colors cursor-pointer" title="Mood: 5/10"></div>
-<!-- Row 2 -->
-<div class="aspect-square rounded bg-primary/80 hover:bg-white transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/60 hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-[#283930] hover:bg-white/10 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/40 hover:bg-primary/60 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/80 hover:bg-white transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary hover:bg-white transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/20 hover:bg-primary/40 transition-colors cursor-pointer"></div>
-<!-- Row 3 -->
-<div class="aspect-square rounded bg-primary/40 hover:bg-primary/60 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-[#283930] hover:bg-white/10 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-[#283930] hover:bg-white/10 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/20 hover:bg-primary/40 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/60 hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/40 hover:bg-primary/60 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded bg-primary/80 hover:bg-white transition-colors cursor-pointer"></div>
-<!-- Row 4 -->
-<div class="aspect-square rounded bg-primary hover:bg-white transition-colors cursor-pointer ring-2 ring-white ring-offset-2 ring-offset-[#15281e]"></div> <!-- Today -->
-<div class="aspect-square rounded bg-[#283930]"></div>
-<div class="aspect-square rounded bg-[#283930]"></div>
-<div class="aspect-square rounded bg-[#283930]"></div>
-<div class="aspect-square rounded bg-[#283930]"></div>
-<div class="aspect-square rounded bg-[#283930]"></div>
-<div class="aspect-square rounded bg-[#283930]"></div>
 </div>
+<div id="insights-heatmap" class="grid grid-cols-7 gap-2 mt-2"></div>
 <div class="flex items-center justify-end gap-2 mt-3">
 <span class="text-[10px] text-[#566860]">Less</span>
 <div class="flex gap-1">
@@ -349,40 +267,13 @@
 <div class="lg:col-span-2 rounded-xl bg-card-dark border border-card-border p-6 flex flex-col justify-between">
 <div class="flex items-center justify-between mb-4">
 <h3 class="text-white text-lg font-bold">Journal Highlights</h3>
-<button class="flex items-center gap-1 text-[#9db9ab] hover:text-white text-xs transition-colors">
+<button id="insights-privacy" class="flex items-center gap-1 text-[#9db9ab] hover:text-white text-xs transition-colors">
 <span class="material-symbols-outlined" style="font-size: 14px;">visibility_off</span>
                                 Privacy Mode
                             </button>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
-<div class="flex justify-between items-start mb-2">
-<div class="flex items-center gap-2">
-<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Yesterday</span>
-<span class="text-xs text-[#9db9ab]">3:42 PM</span>
-</div>
-<span class="material-symbols-outlined text-[#9db9ab] group-hover:text-primary" style="font-size: 18px;">arrow_forward</span>
-</div>
-<p class="text-white font-medium mb-1">"Finally finished the history paper..."</p>
-<div class="flex gap-2 mt-2">
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#relieved</span>
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#productive</span>
-</div>
-</div>
-<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
-<div class="flex justify-between items-start mb-2">
-<div class="flex items-center gap-2">
-<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Oct 24</span>
-<span class="text-xs text-[#9db9ab]">10:15 AM</span>
-</div>
-<span class="material-symbols-outlined text-[#9db9ab] group-hover:text-primary" style="font-size: 18px;">arrow_forward</span>
-</div>
-<p class="text-white font-medium mb-1">"Coffee with Sarah at the union."</p>
-<div class="flex gap-2 mt-2">
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#social</span>
-<span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">#happy</span>
-</div>
-</div>
+<div id="journal-highlights" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<p class="text-[#9db9ab] text-sm text-center py-4 md:col-span-2">Loading journal entries...</p>
 </div>
 </div>
 </div>
@@ -430,103 +321,378 @@ Profile
 </aside>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth } from "./auth.js";
-  import { attachLogout, initMobileNav } from "./ui.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData } from "./js/services/db.service.js";
+  import { initNav } from "./js/services/nav.js";
 
-  const db = getDatabase(app);
-  let currentUserId = null;
+  await authGuard();
+  initNav("insights");
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    currentUserId = user.uid;
-    loadInsights();
-  });
+  const avgMoodEl  = document.getElementById("stat-avg-mood");
+  const taskPctEl  = document.getElementById("stat-task-pct");
+  const gpaEl      = document.getElementById("stat-gpa");
+  const legendEl   = document.getElementById("emotion-legend");
 
-  function loadInsights() {
-    // Load mood data
-    onValue(ref(db, `users/${currentUserId}/journals`), (snap) => {
-      let moodSum = 0;
-      let moodCount = 0;
-      const moodMap = { positive: 0, neutral: 0, negative: 0 };
+  // Chart.js instances
+  let moodChart = null;
+  let emotionChart = null;
 
-      snap.forEach(child => {
-        const journal = child.val();
-        if (!journal) return;
+  const CHART_DEFAULTS = {
+    color: "#9db9ab",
+    plugins: { legend: { display: false }, tooltip: { callbacks: {} } }
+  };
 
-        moodCount++;
-        const mood = journal.mood || "neutral";
-        moodMap[mood] = (moodMap[mood] || 0) + 1;
-        
-        if (mood === "positive") moodSum += 8;
-        else if (mood === "neutral") moodSum += 5;
-        else moodSum += 2;
-      });
-
-      const avgMood = moodCount > 0 ? (moodSum / moodCount).toFixed(1) : "0.0";
-      document.querySelectorAll("p").forEach(p => {
-        if (p.textContent.includes("7.2")) {
-          p.textContent = avgMood;
-        }
-      });
-    });
-
-    // Load task completion
-    onValue(ref(db, `users/${currentUserId}/tasks`), (snap) => {
-      let total = 0;
-      let completed = 0;
-
-      snap.forEach(child => {
-        const task = child.val();
-        if (!task) return;
-        total++;
-        if (task.completed) completed++;
-      });
-
-      const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
-      document.querySelectorAll("p").forEach(p => {
-        if (p.textContent.includes("85%")) {
-          p.textContent = completionRate + "%";
-        }
-      });
-    });
-
-    // Load GPA
-    onValue(ref(db, `users/${currentUserId}/gpas`), (snap) => {
-      let totalPoints = 0;
-      let totalCredits = 0;
-
-      snap.forEach(child => {
-        const gpa = child.val();
-        if (!gpa) return;
-        const credits = parseFloat(gpa.credits || 0);
-        const points = parseFloat(gpa.gpa || 0);
-        totalPoints += points * credits;
-        totalCredits += credits;
-      });
-
-      const avgGPA = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(1) : "0.0";
-      document.querySelectorAll("p").forEach(p => {
-        if (p.textContent.includes("3.6")) {
-          p.textContent = avgGPA;
-        }
-      });
+  // ── Mood trend line chart ──────────────────────────────────────────────────
+  function initMoodChart(labels, data) {
+    const ctx = document.getElementById("mood-chart")?.getContext("2d");
+    if (!ctx) return;
+    if (moodChart) moodChart.destroy();
+    moodChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [{
+          label: "Mood Score",
+          data,
+          borderColor: "#13ec80",
+          backgroundColor: "rgba(19,236,128,0.1)",
+          borderWidth: 2,
+          pointBackgroundColor: "#111814",
+          pointBorderColor: "#13ec80",
+          pointRadius: 4,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { min: 0, max: 10, ticks: { color: "#9db9ab", stepSize: 2 }, grid: { color: "rgba(255,255,255,0.05)" } },
+          x: { ticks: { color: "#9db9ab" }, grid: { display: false } }
+        },
+        plugins: CHART_DEFAULTS.plugins
+      }
     });
   }
 
-  attachLogout("#logout-btn, #mobile-logout-btn");
-  initMobileNav({
-    button: "#mobile-menu-btn",
-    panel: "#mobile-nav-panel",
-    overlay: "#mobile-nav-overlay",
-    close: "#mobile-nav-close"
+  // ── Emotion distribution doughnut ─────────────────────────────────────────
+  function initEmotionChart(positive, neutral, negative) {
+    const ctx = document.getElementById("emotion-chart")?.getContext("2d");
+    if (!ctx) return;
+    if (emotionChart) emotionChart.destroy();
+    const total = positive + neutral + negative || 1;
+    const pct = v => Math.round((v / total) * 100);
+    emotionChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Positive", "Neutral", "Negative"],
+        datasets: [{ data: [positive, neutral, negative], backgroundColor: ["#13ec80","#a78bfa","#f472b6"], borderWidth: 0 }]
+      },
+      options: { responsive: true, maintainAspectRatio: true, cutout: "70%", plugins: CHART_DEFAULTS.plugins }
+    });
+    if (legendEl) {
+      legendEl.innerHTML = [
+        { label: "Positive", color: "bg-primary",      pct: pct(positive) },
+        { label: "Neutral",  color: "bg-purple-400",   pct: pct(neutral)  },
+        { label: "Negative", color: "bg-pink-400",     pct: pct(negative) }
+      ].map(({ label, color, pct: p }) => `
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="size-2 rounded-full ${color}"></div>
+            <span class="text-white">${label}</span>
+          </div>
+          <span class="text-[#9db9ab]">${p}%</span>
+        </div>`).join("");
+    }
+  }
+
+  // ── Period filter state ──
+  let allJournalEntries = [];
+  let activePeriod = 7;
+
+  // Maps all 5 new moods + 3 legacy moods to a 0-10 score
+  const MOOD_SCORE = {
+    great: 10, good: 8, okay: 5, bad: 3, awful: 1,
+    positive: 8, neutral: 5, negative: 2
+  };
+
+  // Group any mood into positive/neutral/negative for the donut chart
+  function moodCategory(mood) {
+    if (["great", "good", "positive"].includes(mood)) return "positive";
+    if (["bad", "awful", "negative"].includes(mood)) return "negative";
+    return "neutral";
+  }
+
+  function renderJournalCharts() {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - activePeriod);
+    const filtered = allJournalEntries.filter(e => new Date(e.timestamp) >= cutoff);
+
+    const dist = { positive: 0, neutral: 0, negative: 0 };
+
+    // Build day buckets for the selected period
+    const buckets = {};
+    const numDays = Math.min(activePeriod, 30);
+    const labelFmt = activePeriod <= 7 ? { weekday: "short" } : { month: "short", day: "numeric" };
+    for (let i = numDays - 1; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      buckets[d.toLocaleDateString("en-US", labelFmt)] = { sum: 0, count: 0, dateStr: d.toDateString() };
+    }
+
+    filtered.forEach(e => {
+      const mood = e.detectedMood || e.mood || "okay";
+      const cat = moodCategory(mood);
+      dist[cat]++;
+      const score = MOOD_SCORE[mood] ?? 5;
+      const entryDate = new Date(e.timestamp);
+      for (const [, bucket] of Object.entries(buckets)) {
+        if (entryDate.toDateString() === bucket.dateStr) {
+          bucket.sum += score;
+          bucket.count++;
+          break;
+        }
+      }
+    });
+
+    // Average mood across ALL entries
+    const avgMood = allJournalEntries.length > 0
+      ? (allJournalEntries.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / allJournalEntries.length).toFixed(1)
+      : "—";
+    if (avgMoodEl) avgMoodEl.textContent = avgMood;
+
+    // Mood trend indicator — compare this week vs last week
+    updateMoodTrend();
+
+    const labels = Object.keys(buckets);
+    const data   = labels.map(d => buckets[d].count > 0 ? +(buckets[d].sum / buckets[d].count).toFixed(1) : null);
+    initMoodChart(labels, data);
+    initEmotionChart(dist.positive, dist.neutral, dist.negative);
+
+    // Heatmap
+    renderHeatmap();
+  }
+
+  // Dynamic trend indicators
+  function updateMoodTrend() {
+    const trendEl = document.getElementById("mood-trend");
+    if (!trendEl) return;
+    const now = new Date();
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    const thisWeek = allJournalEntries.filter(e => new Date(e.timestamp) >= weekAgo);
+    const lastWeek = allJournalEntries.filter(e => { const d = new Date(e.timestamp); return d >= twoWeeksAgo && d < weekAgo; });
+    if (thisWeek.length === 0 || lastWeek.length === 0) { trendEl.textContent = "Log more to see trends"; return; }
+    const avgThis = thisWeek.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / thisWeek.length;
+    const avgLast = lastWeek.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / lastWeek.length;
+    const diff = Math.round(((avgThis - avgLast) / avgLast) * 100);
+    if (diff > 0) trendEl.textContent = `+${diff}% vs last week`;
+    else if (diff < 0) trendEl.textContent = `${diff}% vs last week`;
+    else trendEl.textContent = "Same as last week";
+  }
+
+  // ── Dynamic heatmap for current month ──
+  function renderHeatmap() {
+    const grid = document.getElementById("insights-heatmap");
+    const titleEl = document.getElementById("heatmap-title");
+    if (!grid) return;
+
+    const now = new Date();
+    const year = now.getFullYear(), month = now.getMonth();
+    if (titleEl) titleEl.textContent = now.toLocaleDateString("en-US", { month: "long" }) + " Heatmap";
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const todayStr = now.toDateString();
+
+    // Build mood score per day
+    const dayScores = {};
+    allJournalEntries.forEach(e => {
+      if (!e.timestamp) return;
+      const d = new Date(e.timestamp);
+      if (d.getFullYear() !== year || d.getMonth() !== month) return;
+      const ds = d.toDateString();
+      if (!dayScores[ds]) dayScores[ds] = { sum: 0, count: 0 };
+      dayScores[ds].sum += MOOD_SCORE[e.detectedMood || e.mood] ?? 5;
+      dayScores[ds].count++;
+    });
+
+    let html = "";
+    for (let i = 0; i < firstDay; i++) html += `<div class="aspect-square rounded bg-[#283930]"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const ds = date.toDateString();
+      const isToday = ds === todayStr;
+      const info = dayScores[ds];
+      let bg = "bg-[#283930]";
+      let title = "";
+      if (info) {
+        const avg = info.sum / info.count;
+        title = `Mood: ${avg.toFixed(0)}/10`;
+        if (avg >= 8) bg = "bg-primary";
+        else if (avg >= 6) bg = "bg-primary/60";
+        else if (avg >= 4) bg = "bg-primary/30";
+        else bg = "bg-red-400/50";
+      }
+      const ring = isToday ? " ring-2 ring-white ring-offset-1 ring-offset-[#15281e]" : "";
+      html += `<div class="aspect-square rounded ${bg}${ring} transition-colors${title ? ' cursor-pointer' : ''}" ${title ? `title="${title}"` : ''}></div>`;
+    }
+    grid.innerHTML = html;
+  }
+
+  // Period button click handlers
+  document.querySelectorAll(".period-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activePeriod = parseInt(btn.dataset.period);
+      document.querySelectorAll(".period-btn").forEach(b => {
+        b.classList.remove("bg-primary", "text-background-dark", "font-bold", "shadow-sm");
+        b.classList.add("text-[#9db9ab]", "hover:text-white", "font-medium");
+      });
+      btn.classList.remove("text-[#9db9ab]", "hover:text-white", "font-medium");
+      btn.classList.add("bg-primary", "text-background-dark", "font-bold", "shadow-sm");
+      renderJournalCharts();
+    });
   });
 
+  // ── Load journals ──────────────────────────────────────────────────────────
+  listenToUserData("journals", snap => {
+    allJournalEntries = Object.values(snap || {})
+      .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+
+    renderJournalCharts();
+    renderTopInsights();
+
+    // ── Journal highlights (latest 2 entries) ──
+    const highlightsEl = document.getElementById("journal-highlights");
+    if (highlightsEl) {
+      if (allJournalEntries.length === 0) {
+        highlightsEl.innerHTML = `<p class="text-[#9db9ab] text-sm text-center py-4 md:col-span-2">No journal entries yet. <a href="journal.html" class="text-primary hover:underline">Write your first one</a>.</p>`;
+      } else {
+        const MOOD_TAG = {
+          great: "#amazing", good: "#happy", okay: "#reflective", bad: "#struggling", awful: "#tough",
+          positive: "#happy", neutral: "#reflective", negative: "#struggling"
+        };
+        function _esc(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+        function _relDate(ts) {
+          const d = new Date(ts);
+          const now = new Date();
+          const diff = Math.floor((now - d) / 86400000);
+          if (diff === 0) return "Today";
+          if (diff === 1) return "Yesterday";
+          return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+        }
+        function _time(ts) {
+          return new Date(ts).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+        }
+
+        highlightsEl.innerHTML = allJournalEntries.slice(0, 2).map(e => {
+          const preview = (e.text || "").length > 60 ? e.text.slice(0, 60) + "..." : (e.text || "No text");
+          const tag = MOOD_TAG[e.detectedMood || e.mood] || "#journal";
+          return `<div class="p-4 rounded-xl bg-[#1f362a] border border-[#304b3d] hover:border-primary/50 transition-colors cursor-pointer group">
+            <div class="flex justify-between items-start mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">${_relDate(e.timestamp)}</span>
+                <span class="text-xs text-[#9db9ab]">${_time(e.timestamp)}</span>
+              </div>
+              <a href="journal.html" class="material-symbols-outlined text-[#9db9ab] group-hover:text-primary" style="font-size: 18px;">arrow_forward</a>
+            </div>
+            <p class="text-white font-medium mb-1">"${_esc(preview)}"</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-[10px] text-[#9db9ab] bg-black/20 px-2 py-1 rounded-full">${tag}</span>
+            </div>
+          </div>`;
+        }).join("");
+      }
+    }
+  });
+
+  // ── Dynamic Top Insights ──
+  function renderTopInsights() {
+    const el = document.getElementById("top-insights");
+    if (!el) return;
+    if (allJournalEntries.length < 2) {
+      el.innerHTML = `<p class="text-[#9db9ab] text-sm text-center py-2">Log more entries to unlock insights.</p>`;
+      return;
+    }
+    const insights = [];
+
+    // Best mood day of the week
+    const dayScores = {};
+    const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    allJournalEntries.forEach(e => {
+      const day = new Date(e.timestamp).getDay();
+      if (!dayScores[day]) dayScores[day] = { sum: 0, count: 0 };
+      dayScores[day].sum += MOOD_SCORE[e.detectedMood || e.mood] ?? 5;
+      dayScores[day].count++;
+    });
+    let bestDay = null, bestAvg = 0;
+    for (const [day, d] of Object.entries(dayScores)) {
+      const avg = d.sum / d.count;
+      if (avg > bestAvg) { bestAvg = avg; bestDay = day; }
+    }
+    if (bestDay !== null) {
+      insights.push({ icon: "lightbulb", primary: true, title: "Best day", desc: `${DAYS[bestDay]}s tend to be your happiest days (avg ${bestAvg.toFixed(1)}/10).` });
+    }
+
+    // Most common tag
+    const tagCounts = {};
+    allJournalEntries.forEach(e => (e.tags || []).forEach(t => tagCounts[t] = (tagCounts[t] || 0) + 1));
+    const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0];
+    if (topTag) {
+      insights.push({ icon: "sell", primary: false, title: "Top factor", desc: `"${topTag[0]}" appears in ${topTag[1]} of your entries — it's your most logged impact.` });
+    }
+
+    // Mood streak direction
+    const recent = allJournalEntries.slice(0, 5);
+    if (recent.length >= 3) {
+      const recentAvg = recent.reduce((s, e) => s + (MOOD_SCORE[e.detectedMood || e.mood] ?? 5), 0) / recent.length;
+      if (recentAvg >= 7) insights.push({ icon: "trending_up", primary: true, title: "On a roll", desc: `Your last ${recent.length} entries average ${recentAvg.toFixed(1)}/10. Keep it up!` });
+      else if (recentAvg <= 4) insights.push({ icon: "warning", primary: false, title: "Check in", desc: `Your recent entries average ${recentAvg.toFixed(1)}/10. Consider talking to someone you trust.` });
+    }
+
+    if (insights.length === 0) {
+      el.innerHTML = `<p class="text-[#9db9ab] text-sm text-center py-2">Keep logging to see personalized insights.</p>`;
+      return;
+    }
+    el.innerHTML = insights.slice(0, 3).map(i => `
+      <div class="p-3 rounded-lg ${i.primary ? 'bg-primary/5 border border-primary/10' : 'bg-white/5 border border-white/5'} flex gap-3 items-start">
+        <span class="material-symbols-outlined ${i.primary ? 'text-primary' : 'text-[#9db9ab]'} shrink-0 text-sm mt-0.5">${i.icon}</span>
+        <div>
+          <p class="text-white text-sm font-medium leading-snug">${i.title}</p>
+          <p class="text-[#9db9ab] text-xs leading-relaxed">${i.desc}</p>
+        </div>
+      </div>`).join("");
+  }
+
+  // ── Load tasks ─────────────────────────────────────────────────────────────
+  listenToUserData("tasks", snap => {
+    const tasks = Object.values(snap || {});
+    const completed = tasks.filter(t => t.completed).length;
+    const pct = tasks.length > 0 ? Math.round((completed / tasks.length) * 100) : 0;
+    if (taskPctEl) taskPctEl.textContent = pct;
+  });
+
+  // ── Load GPA ───────────────────────────────────────────────────────────────
+  listenToUserData("gpas", snap => {
+    let pts = 0, creds = 0;
+    Object.values(snap || {}).forEach(g => {
+      const c = parseFloat(g.credits || 0);
+      pts += parseFloat(g.gpa || 0) * c; creds += c;
+    });
+    if (gpaEl) gpaEl.textContent = creds > 0 ? (pts / creds).toFixed(1) : "—";
+  });
+
+  // ── Privacy Mode toggle on journal highlights ──
+  let privacyOn = false;
+  const highlightsEl = document.getElementById("journal-highlights");
+  document.getElementById("insights-privacy")?.addEventListener("click", () => {
+    privacyOn = !privacyOn;
+    if (highlightsEl) {
+      highlightsEl.classList.toggle("blur-sm", privacyOn);
+      highlightsEl.classList.toggle("select-none", privacyOn);
+      highlightsEl.classList.toggle("pointer-events-none", privacyOn);
+    }
+  });
 </script>
 
 </body></html>

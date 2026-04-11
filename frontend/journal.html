@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script>
       tailwind.config = {
         darkMode: "class",
@@ -40,14 +39,23 @@
 </head>
 <body class="bg-background-light dark:bg-[#111814] text-slate-900 dark:text-white font-display overflow-x-hidden">
 <div class="flex h-screen w-full overflow-hidden">
+<div class="lg:hidden flex items-center justify-between p-4 bg-[#111814] border-b border-[#3b5447]/30 w-full absolute top-0 z-30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+<span class="font-bold text-lg">Mind Mate</span>
+</div>
+<button aria-label="Open menu" class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 <!-- Side Navigation -->
 <div class="hidden lg:flex w-72 flex-col justify-between border-r border-[#3b5447]/30 bg-[#111814] p-5">
 <div class="flex flex-col gap-8">
 <div class="flex gap-3 items-center">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-[#283930]" data-alt="Mind Mate Logo, abstract green gradient circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAK3Nhs3wvu0Tm_9PbIIArYt7_o9o3KcOZ0B7DCXCm0hr6Oqllqh-pMAqo3NzNi41vZctWa30w4kjFOjPQvKV6_sLNSPCf0HmFMF7Qy0KTIT-gJ9437qFuywcUOnI238c-djDzJqXVHVEk_PN8v-wGmy9zZia5TVBqQAwNHGg4O_z6TbmnlJBDFPdTutMqDmDBhnbqfPEYcqYDJei5NXTb7VbOF7Nnve-pHXW4ArArlo7gVcsTkGj0E9au1QDKJoKsKTyhP0Jyp6bsM");'></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-[#283930]" role="img" aria-label="Mind Mate logo" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
 <div class="flex flex-col">
 <h1 class="text-white text-lg font-bold leading-tight tracking-tight">Mind Mate</h1>
-<p class="text-text-secondary text-xs font-normal">Student Wellness</p>
+<p class="text-text-secondary text-xs font-normal">Student Companion</p>
 </div>
 </div>
 <nav class="flex flex-col gap-2">
@@ -72,6 +80,10 @@
 <span class="material-symbols-outlined text-text-secondary group-hover:text-white">insights</span>
 <p class="text-text-secondary group-hover:text-white text-sm font-medium">Insights</p>
 </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="stress-reliever.html">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white">sentiment_calm</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium">Stress Reliever</p>
+</a>
 </nav>
 </div>
 <div class="flex flex-col gap-4">
@@ -79,10 +91,14 @@
 <p class="text-white text-sm font-bold mb-1">Daily Quote</p>
 <p class="text-text-secondary text-xs italic">"Believe you can and you're halfway there."</p>
 </div>
-<div class="flex items-center gap-3 px-2">
-<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPdcKhJJE_0L9mqVXJs4xhPZ3MFJ_0qn8c95kjQvgkjX00AdxYrAJLcbQMG6lXrxtqUYJ6Ioq0s7pxxd7mByBc8bcXRiCZXZUS7pujWsyaH2EFDe60XQoOxZDscSs3glrHC7Hpq_JtjZkemi32wk2s_ET588PA-OB8sujEID7XdcMohCC9_ZGjwmtW6Sxmb6NQFKOfRgiMF8vGP33kW6qR5bZdBUE8v4jWbhC769joL_A1WkPw5grChC-CaOPb56eNEcxi_DSclf5R");'></div>
+<button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Log Out</p>
+</button>
+<div class="flex items-center gap-3 px-2 pt-4 border-t border-[#283930]">
+<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
 <div class="flex flex-col">
-<p class="text-white text-sm font-medium">Hassan Rehan</p>
+<p class="text-white text-sm font-medium" data-user-name>Student</p>
 <p class="text-text-secondary text-xs">Software Engineering</p>
 </div>
 </div>
@@ -107,7 +123,7 @@
 <header class="w-full px-6 py-8 md:px-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div class="flex flex-col gap-2">
 <h1 class="text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">Mood Journal</h1>
-<p class="text-text-secondary text-base">How are you feeling today, Alex?</p>
+<p class="text-text-secondary text-base">How are you feeling today, <span data-user-name>Student</span>?</p>
 </div>
 <!-- Streak Counter -->
 <div class="flex items-center gap-4 bg-[#283930] px-5 py-3 rounded-xl border border-[#3b5447]">
@@ -115,7 +131,7 @@
 <p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Current Streak</p>
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary fill">local_fire_department</span>
-<p class="text-white text-2xl font-bold leading-none">12 Days</p>
+<p id="streak-count" class="text-white text-2xl font-bold leading-none">— Days</p>
 </div>
 </div>
 </div>
@@ -133,15 +149,15 @@
 <div class="flex justify-between gap-2 sm:gap-4">
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_very_dissatisfied</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Awful</span>
+<span class="text-[10px] font-medium">Awful</span>
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_dissatisfied</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Bad</span>
+<span class="text-[10px] font-medium">Bad</span>
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_neutral</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Okay</span>
+<span class="text-[10px] font-medium">Okay</span>
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-primary text-[#102219] shadow-[0_0_15px_rgba(19,236,128,0.4)] transition-all flex flex-col items-center justify-center gap-2 transform scale-105">
 <span class="material-symbols-outlined text-3xl fill">sentiment_satisfied</span>
@@ -149,20 +165,20 @@
 </button>
 <button class="flex-1 aspect-square rounded-2xl bg-[#283930] hover:bg-[#3b5447] text-text-secondary hover:text-white transition-all flex flex-col items-center justify-center gap-2 group focus:ring-2 focus:ring-primary focus:bg-[#283930]">
 <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">sentiment_very_satisfied</span>
-<span class="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Great</span>
+<span class="text-[10px] font-medium">Great</span>
 </button>
 </div>
 </div>
 <!-- Tags -->
 <div class="flex flex-col gap-3">
 <label class="text-text-secondary text-sm font-medium">What's impacting you?</label>
-<div class="flex flex-wrap gap-2">
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Exams</button>
-<button class="px-3 py-1.5 rounded-full border border-primary bg-primary/10 text-primary text-sm font-medium">#Sleep</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Social</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Health</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Family</button>
-<button class="px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">+ Add</button>
+<div id="impact-tags" class="flex flex-wrap gap-2">
+<button data-tag="Exams" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Exams</button>
+<button data-tag="Sleep" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Sleep</button>
+<button data-tag="Social" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Social</button>
+<button data-tag="Health" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Health</button>
+<button data-tag="Family" class="impact-tag px-3 py-1.5 rounded-full border border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">#Family</button>
+<button id="add-tag-btn" class="px-3 py-1.5 rounded-full border border-dashed border-[#3b5447] text-text-secondary text-sm hover:bg-[#283930] hover:text-white transition-colors">+ Add</button>
 </div>
 </div>
 <!-- Text Input -->
@@ -182,14 +198,12 @@
 <div class="flex items-center justify-between pt-4">
 <h2 class="text-white text-xl font-bold">Recent Logs</h2>
 <div class="flex items-center gap-2">
-<button class="text-text-secondary hover:text-white text-sm">View All</button>
+<a href="#journal-feed" class="text-text-secondary hover:text-white text-sm">View All</a>
 </div>
 </div>
 <!-- Timeline Feed -->
-<div class="flex flex-col gap-4">
-  <div id="journal-loading" class="empty-state">Loading entries...</div>
-  <div id="journal-empty" class="empty-state hidden">No entries yet. Write your first log above.</div>
-  <div id="journal-entries" class="flex flex-col gap-4"></div>
+<div id="journal-feed" class="flex flex-col gap-4">
+<!-- Entries populated by JS -->
 </div>
 </div>
 <!-- Right Column: Reflection Zone -->
@@ -205,16 +219,14 @@
 </div>
 <label class="relative flex h-[28px] w-[48px] cursor-pointer items-center rounded-full border-none bg-[#283930] p-1 has-[:checked]:justify-end has-[:checked]:bg-primary transition-colors">
 <div class="h-5 w-5 rounded-full bg-white shadow-sm"></div>
-<input class="invisible absolute" type="checkbox"/>
+<input id="privacy-toggle" class="invisible absolute" type="checkbox"/>
 </label>
 </div>
 <!-- Mood Trends / Calendar -->
 <section class="flex flex-col gap-4 bg-[#18221c] p-6 rounded-2xl border border-[#283930]">
 <div class="flex items-center justify-between">
 <h2 class="text-white text-lg font-bold">Mood Trends</h2>
-<select class="bg-[#283930] text-white text-xs px-3 py-1.5 rounded-lg border-none outline-none cursor-pointer">
-<option>October 2023</option>
-<option>September 2023</option>
+<select id="mood-month-select" class="bg-[#283930] text-white text-xs px-3 py-1.5 rounded-lg border-none outline-none cursor-pointer">
 </select>
 </div>
 <!-- Calendar Grid -->
@@ -228,39 +240,7 @@
 <span class="text-center text-xs text-text-secondary">F</span>
 <span class="text-center text-xs text-text-secondary">S</span>
 </div>
-<div class="grid grid-cols-7 gap-2">
-<!-- Example Calendar Data -->
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer" title="Neutral"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer" title="Great"></div>
-<div class="aspect-square rounded-md bg-primary/60 hover:bg-primary/70 transition-colors cursor-pointer" title="Good"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer" title="Neutral"></div>
-<div class="aspect-square rounded-md bg-[#283930]/50 border border-[#3b5447] hover:border-primary transition-colors cursor-pointer" title="Bad"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary/60 hover:bg-primary/70 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-[#283930]/50 border border-[#3b5447]"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary/60 hover:bg-primary/70 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-[#283930]/50 border border-[#3b5447]"></div>
-<div class="aspect-square rounded-md bg-primary/20 hover:bg-primary/30 transition-colors cursor-pointer"></div>
-<div class="aspect-square rounded-md bg-primary hover:bg-primary/80 transition-colors cursor-pointer relative group">
-<!-- Today Indicator -->
-<div class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></div>
-</div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
-<div class="aspect-square rounded-md bg-[#283930]"></div>
+<div id="mood-calendar" class="grid grid-cols-7 gap-2">
 </div>
 </div>
 <div class="flex items-center justify-between mt-2 pt-4 border-t border-[#283930]">
@@ -281,11 +261,11 @@
 <h3 class="text-white text-base font-bold mb-4 relative z-10">Weekly Vibe</h3>
 <div class="flex items-center gap-4 relative z-10">
 <div class="w-16 h-16 rounded-full border-4 border-[#283930] border-t-primary border-r-primary flex items-center justify-center bg-[#111814]">
-<span class="text-white font-bold text-lg">78%</span>
+<span id="vibe-pct" class="text-white font-bold text-lg">—</span>
 </div>
 <div class="flex flex-col">
-<p class="text-white font-medium">Mostly Positive</p>
-<p class="text-text-secondary text-xs">You're doing better than last week!</p>
+<p id="vibe-label" class="text-white font-medium">Loading...</p>
+<p id="vibe-sub" class="text-text-secondary text-xs"></p>
 </div>
 </div>
 </div>
@@ -339,185 +319,307 @@ Profile
 </aside>
 
 <script type="module">
-  import { app } from "./firebase-config.js";
-  import { watchAuth } from "./auth.js";
-  import { showToast, setButtonLoading, attachLogout, initMobileNav } from "./ui.js";
-  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  import { authGuard } from "./js/services/auth.service.js";
+  import { listenToUserData, pushUserData, removeUserData } from "./js/services/db.service.js";
+  import { triggerAnalytics, analyzeMood } from "./js/services/ai.service.js";
+  import { showToast, showPrompt, showConfirm } from "./js/services/toast.js";
+  import { validateJournalText, sanitizeHtml, formatDateTime } from "./js/services/validators.js";
+  import { initNav } from "./js/services/nav.js";
 
-  const db = getDatabase(app);
-  let journalRef = null;
-  let currentUserId = null;
-  const journalLoading = document.getElementById("journal-loading");
-  const journalEmpty = document.getElementById("journal-empty");
-  const entriesContainer = document.getElementById("journal-entries");
-  const submitButton = document.getElementById("submit-journal");
+  await authGuard();
+  initNav("journal");
 
-  const crisisKeywords = [
-    "i want to die", "can't go on", "hopeless", "hurt myself",
-    "done with everything", "ending it", "feel like giving up"
-  ];
+  const feedEl = document.getElementById("journal-feed");
 
-  // Check auth
-  watchAuth((user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
+  // ── Impact tag toggling ──
+  const selectedTags = new Set();
+  const TAG_ACTIVE = ["border-primary", "bg-primary/10", "text-primary", "font-medium"];
+  const TAG_INACTIVE = ["border-[#3b5447]", "text-text-secondary"];
+
+  document.getElementById("impact-tags")?.addEventListener("click", e => {
+    const tagBtn = e.target.closest(".impact-tag");
+    if (!tagBtn) return;
+    const tag = tagBtn.dataset.tag;
+    if (selectedTags.has(tag)) {
+      selectedTags.delete(tag);
+      tagBtn.classList.remove(...TAG_ACTIVE);
+      tagBtn.classList.add(...TAG_INACTIVE);
+    } else {
+      selectedTags.add(tag);
+      tagBtn.classList.remove(...TAG_INACTIVE);
+      tagBtn.classList.add(...TAG_ACTIVE);
     }
-    currentUserId = user.uid;
-    journalRef = ref(db, `users/${currentUserId}/journals`);
-    loadJournalEntries();
   });
 
-  // Submit journal entry
-  document.getElementById("submit-journal").onclick = async () => {
-    const text = document.getElementById("journal-text").value.trim();
-    if (!text) {
-      showToast("Please write something.", "warning");
-      return;
-    }
-
-    const lower = text.toLowerCase();
-    if (crisisKeywords.some(k => lower.includes(k))) {
-      showToast("You deserve support. Please reach out to someone you trust or a local helpline.", "warning", 6000);
-    }
-
-    // Get selected mood (from mood buttons)
-    let selectedMood = "neutral";
-    const moodButtons = document.querySelectorAll("button.flex-1.aspect-square");
-    moodButtons.forEach(btn => {
-      if (btn.classList.contains("bg-primary")) {
-        const icon = btn.querySelector("span.material-symbols-outlined");
-        if (icon) {
-          const iconText = icon.textContent;
-          if (iconText.includes("very_dissatisfied")) selectedMood = "negative";
-          else if (iconText.includes("dissatisfied")) selectedMood = "negative";
-          else if (iconText.includes("neutral")) selectedMood = "neutral";
-          else if (iconText.includes("satisfied") && !iconText.includes("very")) selectedMood = "positive";
-          else if (iconText.includes("very_satisfied")) selectedMood = "positive";
-        }
-      }
-    });
-
-    // ── Call the Cloud Function for sentiment analysis
-    // The API key lives securely in the backend — never in this file.
-    const SENTIMENT_URL = "https://us-central1-mind-mate-ff2cf.cloudfunctions.net/sentiment";
-    let mood = selectedMood;
-    let moodScore = 0.5;
-    try {
-      setButtonLoading(submitButton, true, "Analyzing...");
-      const response = await fetch(SENTIMENT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        mood = data.mood || selectedMood;
-        moodScore = data.score ?? 0.5;
-      } else {
-        showToast("Mood analysis unavailable. Using your selection.", "warning");
-      }
-    } catch (err) {
-      console.error("Sentiment analysis error:", err);
-      showToast("Mood analysis unavailable. Using your selection.", "warning");
-    } finally {
-      setButtonLoading(submitButton, false);
-    }
-
-    // Save to Firebase
-    if (!journalRef) {
-      showToast("Please wait for your account to load.", "warning");
-      return;
-    }
-
-    push(journalRef, {
-      text,
-      mood,
-      moodScore,
-      timestamp: new Date().toISOString()
-    }).catch((error) => {
-      showToast("Save failed: " + error.message, "error");
-    });
-
-    document.getElementById("journal-text").value = "";
-    showToast("Journal entry saved!", "success");
-    loadJournalEntries();
-  };
-
-  // Load journal entries
-  function loadJournalEntries() {
-    if (journalLoading) journalLoading.classList.remove("hidden");
-    if (journalEmpty) journalEmpty.classList.add("hidden");
-    onValue(journalRef, (snapshot) => {
-      if (!entriesContainer) return;
-
-      entriesContainer.innerHTML = "";
-      if (journalLoading) journalLoading.classList.add("hidden");
-
-      let entryCount = 0;
-      snapshot.forEach(child => {
-        const entry = child.val();
-        if (!entry) return;
-        entryCount += 1;
-
-        const entryDiv = document.createElement("div");
-        entryDiv.className = "group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all";
-        entryDiv.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div class="flex items-center gap-3">
-              <div class="bg-[#283930] p-2 rounded-lg text-primary">
-                <span class="material-symbols-outlined fill">sentiment_satisfied</span>
-              </div>
-              <div>
-                <p class="text-white font-medium">Feeling ${escapeHtml(entry.mood || "neutral")}</p>
-                <p class="text-text-secondary text-xs">${new Date(entry.timestamp).toLocaleString()}</p>
-              </div>
-            </div>
-          </div>
-          <p class="text-slate-300 text-sm leading-relaxed">${escapeHtml(entry.text)}</p>
-        `;
-        entriesContainer.appendChild(entryDiv);
-      });
-
-      if (journalEmpty) {
-        journalEmpty.classList.toggle("hidden", entryCount !== 0);
-      }
-    });
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement("div");
-    div.textContent = text || "";
-    return div.innerHTML;
-  }
+  // Custom tag
+  document.getElementById("add-tag-btn")?.addEventListener("click", async () => {
+    const name = await showPrompt("Enter a custom tag:");
+    if (!name || !name.trim()) return;
+    const tag = name.trim();
+    const container = document.getElementById("impact-tags");
+    const addBtn = document.getElementById("add-tag-btn");
+    const btn = document.createElement("button");
+    btn.dataset.tag = tag;
+    btn.className = "impact-tag px-3 py-1.5 rounded-full border border-primary bg-primary/10 text-primary text-sm font-medium transition-colors";
+    btn.textContent = `#${tag}`;
+    container.insertBefore(btn, addBtn);
+    selectedTags.add(tag);
+  });
 
   // Mood button selection
   const moodButtons = document.querySelectorAll("button.flex-1.aspect-square.rounded-2xl");
   moodButtons.forEach(btn => {
-    btn.onclick = () => {
-      // Reset all buttons
+    btn.addEventListener("click", () => {
       moodButtons.forEach(b => {
-        b.classList.remove("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105", "fill");
+        b.classList.remove("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
         b.classList.add("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
-        const icon = b.querySelector("span.material-symbols-outlined");
-        if (icon) icon.classList.remove("fill");
+        b.querySelector("span.material-symbols-outlined")?.classList.remove("fill");
       });
-      
-      // Set selected button
       btn.classList.remove("bg-[#283930]", "text-text-secondary", "hover:bg-[#3b5447]", "hover:text-white");
       btn.classList.add("bg-primary", "text-[#102219]", "shadow-[0_0_15px_rgba(19,236,128,0.4)]", "scale-105");
-      const icon = btn.querySelector("span.material-symbols-outlined");
-      if (icon) icon.classList.add("fill");
-    };
+      btn.querySelector("span.material-symbols-outlined")?.classList.add("fill");
+    });
   });
 
-  attachLogout("#logout-btn, #mobile-logout-btn");
-  initMobileNav({
-    button: "#mobile-menu-btn",
-    panel: "#mobile-nav-panel",
-    overlay: "#mobile-nav-overlay",
-    close: "#mobile-nav-close"
+  // Maps each button icon to a distinct mood value
+  const ICON_TO_MOOD = {
+    "sentiment_very_dissatisfied": "awful",
+    "sentiment_dissatisfied": "bad",
+    "sentiment_neutral": "okay",
+    "sentiment_satisfied": "good",
+    "sentiment_very_satisfied": "great"
+  };
+
+  function getSelectedMood() {
+    for (const btn of moodButtons) {
+      if (!btn.classList.contains("bg-primary")) continue;
+      const icon = (btn.querySelector("span.material-symbols-outlined")?.textContent || "").trim();
+      return ICON_TO_MOOD[icon] || "okay";
+    }
+    return "okay";
+  }
+
+  // Submit journal entry
+  document.getElementById("submit-journal")?.addEventListener("click", async () => {
+    const textEl = document.getElementById("journal-text");
+    const text = textEl?.value.trim() || "";
+    const v = validateJournalText(text);
+    if (!v.valid) { showToast(v.error, "warning"); return; }
+
+    const btn = document.getElementById("submit-journal");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    const mood = getSelectedMood();
+
+    // Analyze journal text with fine-tuned emotion model
+    let detectedMood = null;
+    try {
+      const analysis = await analyzeMood(text);
+      detectedMood = analysis.moodLabel || null;
+    } catch { /* don't block save if analysis fails */ }
+
+    const tags = [...selectedTags];
+    await pushUserData("journals", { text, mood, detectedMood, tags, timestamp: new Date().toISOString() });
+
+    // Mismatch warning: user says good/great but text reveals distress
+    const MOOD_RANK = { awful: 1, bad: 2, okay: 3, good: 4, great: 5 };
+    if (detectedMood && MOOD_RANK[mood] >= 4 && MOOD_RANK[detectedMood] <= 1) {
+      showToast("Your words suggest you may be going through a tough time. It's okay to not be okay — please reach out to someone you trust or text HOME to 741741.", "warning", 8000);
+    } else if (detectedMood && MOOD_RANK[mood] >= 4 && MOOD_RANK[detectedMood] <= 2) {
+      showToast("Your entry suggests you might be feeling worse than you selected. It's okay to be honest with yourself — that's what this journal is for.", "info", 5000);
+    }
+
+    // Recompute weekly analytics in the background
+    triggerAnalytics().catch(() => {});
+
+    textEl.value = "";
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined text-lg">save</span> Log Entry';
+    // Reset tags
+    selectedTags.clear();
+    document.querySelectorAll(".impact-tag").forEach(t => {
+      t.classList.remove(...TAG_ACTIVE);
+      t.classList.add(...TAG_INACTIVE);
+    });
+    showToast("Entry saved!", "success");
+  });
+
+  // Load and render journal entries + compute streak + weekly vibe
+  const streakEl = document.getElementById("streak-count");
+  const vibePct  = document.getElementById("vibe-pct");
+  const vibeLbl  = document.getElementById("vibe-label");
+  const vibeSub  = document.getElementById("vibe-sub");
+
+  listenToUserData("journals", snap => {
+    if (!feedEl) return;
+    feedEl.innerHTML = "";
+    const rawEntries = Object.entries(snap || {});
+    const entries = rawEntries
+      .map(([id, e]) => ({ ...e, _id: id }))
+      .sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
+
+    // Update mood calendar
+    allEntries = rawEntries;
+    renderMoodCalendar(allEntries);
+
+    // ── Streak calculation ──
+    if (streakEl) {
+      let streak = 0;
+      const daySet = new Set(entries.map(e => new Date(e.timestamp).toDateString()));
+      const d = new Date();
+      // If no entry today, start checking from yesterday
+      if (!daySet.has(d.toDateString())) d.setDate(d.getDate() - 1);
+      while (daySet.has(d.toDateString())) {
+        streak++;
+        d.setDate(d.getDate() - 1);
+      }
+      streakEl.textContent = `${streak} Day${streak !== 1 ? "s" : ""}`;
+    }
+
+    // ── Weekly vibe: % positive in last 7 days ──
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    const weekEntries = entries.filter(e => new Date(e.timestamp) >= weekAgo);
+    if (vibePct && vibeLbl) {
+      if (weekEntries.length === 0) {
+        vibePct.textContent = "—";
+        vibeLbl.textContent = "No data yet";
+        if (vibeSub) vibeSub.textContent = "Log moods this week to see your vibe";
+      } else {
+        const posCount = weekEntries.filter(e => ["great", "good", "positive"].includes(e.detectedMood || e.mood)).length;
+        const pct = Math.round((posCount / weekEntries.length) * 100);
+        vibePct.textContent = pct + "%";
+        vibeLbl.textContent = pct >= 70 ? "Mostly Positive" : pct >= 40 ? "Mixed Feelings" : "Rough Week";
+        if (vibeSub) vibeSub.textContent = `Based on ${weekEntries.length} entr${weekEntries.length === 1 ? "y" : "ies"} this week`;
+      }
+    }
+
+    // ── Render feed ──
+    if (entries.length === 0) {
+      feedEl.innerHTML = `<p class="text-text-secondary text-sm text-center py-8">No entries yet. Write your first one above!</p>`;
+      return;
+    }
+
+    const MOOD_ICON = {
+      great: "sentiment_very_satisfied", good: "sentiment_satisfied",
+      okay: "sentiment_neutral", bad: "sentiment_dissatisfied", awful: "sentiment_very_dissatisfied",
+      // Legacy fallback for old entries saved as positive/neutral/negative
+      positive: "sentiment_satisfied", neutral: "sentiment_neutral", negative: "sentiment_dissatisfied"
+    };
+    const MOOD_LABEL = {
+      great: "Feeling Great 🤩", good: "Feeling Good 😊",
+      okay: "Feeling Okay 😐", bad: "Feeling Bad 😔", awful: "Feeling Awful 😢",
+      positive: "Feeling Good 😊", neutral: "Feeling Okay 😐", negative: "Feeling Low 😟"
+    };
+
+    entries.forEach(entry => {
+      const div = document.createElement("div");
+      div.className = "group flex flex-col gap-3 bg-[#18221c] p-5 rounded-xl border border-[#283930] hover:border-[#3b5447] transition-all";
+      const displayMood = entry.detectedMood || entry.mood;
+      const icon  = MOOD_ICON[displayMood] || "sentiment_neutral";
+      const label = MOOD_LABEL[displayMood] || "Feeling Okay";
+      div.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-3">
+            <div class="bg-[#283930] p-2 rounded-lg text-primary">
+              <span class="material-symbols-outlined fill">${icon}</span>
+            </div>
+            <div>
+              <p class="text-white font-medium">${label}</p>
+              <p class="text-text-secondary text-xs">${formatDateTime(entry.timestamp)}</p>
+            </div>
+          </div>
+          <button data-delete-journal="${entry._id}" aria-label="Delete entry" class="text-[#9db9ab] hover:text-red-400 hover:bg-red-500/10 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed">${sanitizeHtml(entry.text)}</p>
+        ${(entry.tags && entry.tags.length) ? `<div class="flex flex-wrap gap-1.5 mt-1">${entry.tags.map(t => `<span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-full">#${sanitizeHtml(t)}</span>`).join("")}</div>` : ""}`;
+      feedEl.appendChild(div);
+    });
+  });
+
+  // Delegated delete handler for journal entries
+  feedEl?.addEventListener("click", async e => {
+    const deleteBtn = e.target.closest("[data-delete-journal]");
+    if (!deleteBtn) return;
+    const id = deleteBtn.dataset.deleteJournal;
+    const ok = await showConfirm("Delete this journal entry?");
+    if (ok) {
+      await removeUserData(`journals/${id}`);
+      showToast("Entry deleted", "info");
+    }
+  });
+
+  // ── Dynamic Mood Calendar ──
+  const moodMonthSelect = document.getElementById("mood-month-select");
+  const moodCalendar    = document.getElementById("mood-calendar");
+
+  // Build last 6 months as options
+  (function buildMonthOptions() {
+    if (!moodMonthSelect) return;
+    const now = new Date();
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const label = d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+      const opt = document.createElement("option");
+      opt.value = `${d.getFullYear()}-${d.getMonth()}`;
+      opt.textContent = label;
+      moodMonthSelect.appendChild(opt);
+    }
+  })();
+
+  function renderMoodCalendar(entries) {
+    if (!moodCalendar || !moodMonthSelect) return;
+    const [year, month] = moodMonthSelect.value.split("-").map(Number);
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const todayStr = new Date().toDateString();
+
+    // Map entries by date string
+    const moodByDate = {};
+    entries.forEach(([, e]) => {
+      if (!e.timestamp) return;
+      const ds = new Date(e.timestamp).toDateString();
+      moodByDate[ds] = e.mood || "neutral";
+    });
+
+    const MOOD_BG = {
+      great: "bg-primary", good: "bg-primary/70", okay: "bg-primary/30",
+      bad: "bg-red-400/40", awful: "bg-red-400/70",
+      positive: "bg-primary", neutral: "bg-primary/30", negative: "bg-red-400/50"
+    };
+    let html = "";
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) html += `<div class="aspect-square rounded-md bg-[#283930]"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const ds = date.toDateString();
+      const mood = moodByDate[ds];
+      const isToday = ds === todayStr;
+      const bg = mood ? MOOD_BG[mood] || "bg-primary/30" : "bg-[#283930]";
+      const title = mood ? mood.charAt(0).toUpperCase() + mood.slice(1) : "";
+      html += `<div class="aspect-square rounded-md ${bg} transition-colors relative${title ? ' cursor-pointer' : ''}" ${title ? `title="${title}"` : ''}>
+        ${isToday ? '<div class="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></div>' : ''}
+      </div>`;
+    }
+    moodCalendar.innerHTML = html;
+  }
+
+  moodMonthSelect?.addEventListener("change", () => renderMoodCalendar(allEntries));
+
+  // Store entries reference for calendar
+  let allEntries = [];
+
+  // ── Privacy Mode toggle ──
+  const privacyToggle = document.getElementById("privacy-toggle");
+  const journalFeed   = document.getElementById("journal-feed");
+  privacyToggle?.addEventListener("change", () => {
+    if (privacyToggle.checked) {
+      journalFeed?.classList.add("blur-sm", "select-none", "pointer-events-none");
+    } else {
+      journalFeed?.classList.remove("blur-sm", "select-none", "pointer-events-none");
+    }
   });
 </script>
 
