@@ -78,8 +78,16 @@ pglite-debug.log
 
 # IDE and Editor files
 .vs/
+.vscode/
 .idea/
 *.swp
 *.swo
 *~
 .vercel
+
+# Secrets
+.env.local
+.env*.local
+
+# Claude worktrees
+.claude/worktrees/
