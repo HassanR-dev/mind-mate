@@ -20,7 +20,7 @@ function injectMobileNav(activePage) {
     const active = n.page === activePage;
     const cls = active
       ? "bg-primary text-black font-bold"
-      : "text-slate-300 hover:bg-white/10";
+      : "text-white/80 hover:bg-white/10";
     return `<a href="${n.href}" class="flex items-center gap-3 px-4 py-3 rounded-xl ${cls} transition-colors">
       <span class="material-symbols-outlined">${n.icon}</span>${n.label}</a>`;
   }).join("");
@@ -33,7 +33,7 @@ function injectMobileNav(activePage) {
     <nav class="absolute left-0 top-0 bottom-0 w-72 bg-[#111814] p-6 flex flex-col gap-2 overflow-y-auto shadow-2xl animate-[slideIn_0.2s_ease]">
       <div class="flex items-center justify-between mb-6">
         <span class="font-bold text-lg text-white">Mind Mate</span>
-        <button data-close class="text-slate-400 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+        <button type="button" data-close class="text-slate-400 hover:text-white"><span class="material-symbols-outlined">close</span></button>
       </div>
       ${links}
       <div class="mt-auto pt-4 border-t border-white/10">

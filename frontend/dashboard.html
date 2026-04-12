@@ -3,6 +3,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Mind Mate Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23102219' rx='20' width='100' height='100'/><text x='50' y='62' text-anchor='middle' font-size='48' font-weight='bold' fill='%2313ec80' font-family='sans-serif'>M</text></svg>">
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -33,6 +34,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen overflow-hidden flex flex-col md:flex-row">
+<a href="#main-content" class="mm-skip-link">Skip to main content</a>
 <div class="md:hidden flex items-center justify-between p-4 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary">school</span>
@@ -97,14 +99,14 @@
 </button>
 </div>
 </aside>
-<main class="flex-1 flex flex-col h-full relative overflow-hidden">
+<main id="main-content" role="main" aria-label="Dashboard" class="flex-1 flex flex-col h-full relative overflow-hidden">
 <header class="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 bg-background-light dark:bg-background-dark z-10 shrink-0">
 <div>
 <h2 class="font-bold text-xl">Good Morning, <span data-user-name>there</span> ☀️</h2>
 <p class="text-sm text-gray-400 dark:text-gray-300">Here's what's happening today.</p>
 </div>
 <div class="flex items-center gap-4">
-<button id="focus-toggle" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
+<button id="focus-toggle" class="flex items-center gap-2 px-3 py-1.5 bg-surface-light dark:bg-surface-dark rounded-full border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-yellow-500 text-sm">bolt</span>
 <span class="text-xs font-medium" id="focus-label">Focus Mode: Off</span>
 </button>
@@ -113,16 +115,29 @@
 </button>
 </div>
 </header>
+<!-- Email Verification Banner (hidden by default) -->
+<div id="verify-banner" class="hidden bg-amber-500/10 border-b border-amber-500/20 px-6 py-3 flex items-center justify-between gap-4 shrink-0">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-amber-500">mark_email_unread</span>
+<p class="text-sm text-amber-200"><strong>Verify your email</strong> to secure your account. Check your inbox for a verification link.</p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button id="resend-verify-btn" class="text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition-colors">Resend Email</button>
+<button id="dismiss-verify-btn" class="text-amber-500/50 hover:text-amber-400 transition-colors" aria-label="Dismiss">
+<span class="material-symbols-outlined text-lg">close</span>
+</button>
+</div>
+</div>
 <div class="flex-1 overflow-y-auto p-6 scrollbar-hide">
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 h-full">
 <div class="xl:col-span-2 flex flex-col gap-6">
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mm-stagger">
 <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
 <div class="flex justify-between items-start mb-2">
 <div class="p-2 bg-blue-500/10 rounded-lg text-blue-500">
 <span class="material-symbols-outlined">school</span>
 </div>
-<span class="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">+0.2</span>
+<span id="gpa-change-badge" class="text-xs font-bold text-gray-500 bg-gray-500/10 px-2 py-1 rounded hidden"></span>
 </div>
 <p class="text-sm text-gray-500">Current GPA</p>
 <p class="text-2xl font-bold font-display" data-stat-gpa>—</p>
@@ -206,13 +221,13 @@
 </main>
 
 <div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
-<aside id="mobile-nav-panel" class="mobile-nav-panel lg:hidden">
+<aside id="mobile-nav-panel" class="mobile-nav-panel lg:hidden" aria-label="Mobile navigation">
 <div class="flex items-center justify-between mb-6">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary">smart_toy</span>
 <span class="font-bold text-lg text-white">Mind Mate</span>
 </div>
-<button id="mobile-nav-close" class="text-gray-400 hover:text-white">
+<button id="mobile-nav-close" class="text-gray-400 hover:text-white" aria-label="Close menu">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
@@ -249,11 +264,12 @@ Profile
 </aside>
 
 <script type="module">
-  import { authGuard, getCurrentUser } from "./js/services/auth.service.js";
+  import { authGuard, auth, getCurrentUser } from "./js/services/auth.service.js";
   import { listenToUserData } from "./js/services/db.service.js";
   import { initNav } from "./js/services/nav.js";
   import { initChat } from "./js/chat.js";
   import { showToast } from "./js/services/toast.js";
+  import { sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
   await authGuard();
   initNav("dashboard");
@@ -271,6 +287,33 @@ Profile
   const headerH2 = greetEl?.closest("h2");
   if (headerH2 && greetEl) {
     headerH2.childNodes[0].textContent = `${greeting}, `;
+  }
+
+  // ── Email verification banner ──
+  const verifyBanner = document.getElementById("verify-banner");
+  if (user && !user.emailVerified && user.providerData?.[0]?.providerId === "password") {
+    // Only show for email/password accounts (not Google SSO)
+    if (verifyBanner) verifyBanner.classList.remove("hidden");
+
+    document.getElementById("resend-verify-btn")?.addEventListener("click", async (e) => {
+      e.target.disabled = true;
+      e.target.textContent = "Sending...";
+      try {
+        await sendEmailVerification(auth.currentUser);
+        showToast("Verification email sent! Check your inbox.", "success");
+        e.target.textContent = "Sent!";
+      } catch (err) {
+        showToast(err.code === "auth/too-many-requests"
+          ? "Too many requests. Try again later."
+          : "Failed to send verification email.", "error");
+        e.target.textContent = "Resend Email";
+        e.target.disabled = false;
+      }
+    });
+
+    document.getElementById("dismiss-verify-btn")?.addEventListener("click", () => {
+      verifyBanner?.classList.add("hidden");
+    });
   }
 
   // ── Notifications placeholder ──
@@ -388,8 +431,12 @@ Profile
     const entries = Object.values(snap || {});
     entries.sort((a, b) => (b.timestamp || "").localeCompare(a.timestamp || ""));
     const latest = entries[0];
-    const mood = latest?.mood || "—";
-    const label = mood === "positive" ? "Good 😊" : mood === "negative" ? "Stressed 😟" : mood === "neutral" ? "Okay 😐" : "—";
+    const mood = latest?.detectedMood || latest?.mood || "—";
+    const MOOD_LABELS = {
+      great: "Amazing 🤩", good: "Good 😊", okay: "Okay 😐", bad: "Rough 😟", awful: "Tough 😞",
+      positive: "Good 😊", neutral: "Okay 😐", negative: "Stressed 😟"
+    };
+    const label = MOOD_LABELS[mood] || "—";
     if (moodEl) moodEl.textContent = label;
   });
 

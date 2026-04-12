@@ -35,11 +35,14 @@ export function onUserReady(callback) {
 }
 
 export function authGuard() {
-  onUserReady((user) => {
-    if (!user) window.location.href = "login.html";
-  });
-  onAuthStateChanged(auth, (user) => {
-    if (!user && _authReady) window.location.href = "login.html";
+  return new Promise((resolve) => {
+    onUserReady((user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        resolve(user);
+      }
+    });
   });
 }
 

@@ -49,7 +49,11 @@ export function showToast(message, type = "info", duration = 4000) {
   const dismiss = () => { clearTimeout(timer); el.style.opacity = "0"; setTimeout(() => el.remove(), 300); };
   el.onclick = dismiss;
   const timer = setTimeout(dismiss, duration);
-  getContainer().appendChild(el);
+  const container = getContainer();
+  // Cap visible toasts at 4 to prevent stacking overflow
+  const existing = container.querySelectorAll("div");
+  if (existing.length >= 4) existing[0]?.remove();
+  container.appendChild(el);
   return el;
 }
 

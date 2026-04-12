@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>GPA Tracker - Mind Mate</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23102219' rx='20' width='100' height='100'/><text x='50' y='62' text-anchor='middle' font-size='48' font-weight='bold' fill='%2313ec80' font-family='sans-serif'>M</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -32,12 +33,10 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark text-[#111814] dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<a href="#main-content" class="mm-skip-link">Skip to main content</a>
 <!-- Top Navigation -->
 <header class="sticky top-0 z-50 w-full border-b border-[#283930] bg-background-dark/95 backdrop-blur-sm">
 <div class="flex h-16 items-center justify-between px-6 lg:px-10 max-w-[1400px] mx-auto w-full">
-<button aria-label="Open menu" class="md:hidden text-gray-400 hover:text-white mr-2">
-<span class="material-symbols-outlined">menu</span>
-</button>
 <div class="flex items-center gap-4">
 <button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white transition-colors">
 <span class="material-symbols-outlined">menu</span>
@@ -68,7 +67,7 @@
 </div>
 </header>
 <!-- Main Content -->
-<main class="flex-1 w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-10 flex flex-col gap-8">
+<main id="main-content" role="main" aria-label="GPA Tracker" class="flex-1 w-full max-w-[1400px] mx-auto p-4 md:p-6 lg:p-10 flex flex-col gap-8">
 <!-- Page Header -->
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>

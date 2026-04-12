@@ -631,3 +631,246 @@ html[data-theme] .conic-chart {
     var(--th-border) 85% 100%
   ) !important;
 }
+
+
+/* ==============================================
+   MICRO-ANIMATIONS — Antigravity  
+   ============================================== */
+
+/* ── Keyframes ── */
+@keyframes mm-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes mm-slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mm-slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mm-scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes mm-pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(19, 236, 128, 0.3); }
+  50%      { box-shadow: 0 0 0 8px rgba(19, 236, 128, 0); }
+}
+
+@keyframes mm-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Entrance Animations ── */
+
+/* Page content fade in */
+main {
+  animation: mm-fadeIn 0.35s ease-out;
+}
+
+/* Cards & stat blocks slide up with stagger */
+.mm-animate-in,
+[class*="rounded-2xl"][class*="bg-surface"],
+section[class*="rounded-2xl"],
+[class*="rounded-xl"][class*="border"][class*="shadow"] {
+  animation: mm-slideUp 0.4s ease-out both;
+}
+
+/* Stagger children: 1st, 2nd, 3rd... */
+.mm-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.mm-stagger > *:nth-child(2) { animation-delay: 60ms; }
+.mm-stagger > *:nth-child(3) { animation-delay: 120ms; }
+.mm-stagger > *:nth-child(4) { animation-delay: 180ms; }
+.mm-stagger > *:nth-child(5) { animation-delay: 240ms; }
+.mm-stagger > *:nth-child(6) { animation-delay: 300ms; }
+
+/* Nav links slide in from left */
+nav a {
+  animation: mm-slideInLeft 0.3s ease-out both;
+}
+nav a:nth-child(1) { animation-delay: 40ms; }
+nav a:nth-child(2) { animation-delay: 80ms; }
+nav a:nth-child(3) { animation-delay: 120ms; }
+nav a:nth-child(4) { animation-delay: 160ms; }
+nav a:nth-child(5) { animation-delay: 200ms; }
+nav a:nth-child(6) { animation-delay: 240ms; }
+nav a:nth-child(7) { animation-delay: 280ms; }
+
+/* Hover micro-interactions */
+nav a {
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+nav a:hover {
+  transform: translateX(4px);
+}
+nav a[class*="bg-primary"]:hover,
+nav a[class*="bg-[#283930]"]:hover {
+  transform: translateX(0); /* active item doesn't shift */
+}
+
+/* Button press micro-animation */
+button:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.08s ease;
+}
+
+/* Card hover lift effect */
+[class*="rounded-2xl"][class*="bg-surface"]:hover,
+[class*="rounded-xl"][class*="border"][class*="bg-surface"]:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Smooth stat number transitions */
+[id^="stat-"], [id^="dashboard-"], [id$="-count"] {
+  transition: color 0.3s ease;
+}
+
+/* Skeleton loading placeholder */
+.mm-skeleton {
+  background: linear-gradient(90deg, var(--th-surface, #283930) 25%, var(--th-hover, #344a3e) 50%, var(--th-surface, #283930) 75%);
+  background-size: 200% 100%;
+  animation: mm-shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* Pulse effect for active/online indicators */
+.mm-pulse {
+  animation: mm-pulseGlow 2s ease-in-out infinite;
+}
+
+
+/* ==============================================
+   ACCESSIBILITY — Focus Indicators & A11y
+   ============================================== */
+
+/* Global focus-visible ring */
+*:focus-visible {
+  outline: 2px solid var(--th-primary, #13ec80) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+/* Remove outline for mouse clicks */
+*:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* Enhanced focus for inputs */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--th-primary, #13ec80) !important;
+  outline-offset: 0 !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--th-primary, #13ec80) 20%, transparent) !important;
+}
+
+/* Focus styles for nav links */
+nav a:focus-visible {
+  outline: 2px solid var(--th-primary, #13ec80) !important;
+  outline-offset: -2px !important;
+  background-color: var(--th-surface, #283930) !important;
+}
+
+/* Focus styles for filter chips and buttons */
+.filter-chip:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--th-primary, #13ec80) !important;
+  outline-offset: 2px !important;
+}
+
+/* Skip to content link (hidden until focused) */
+.mm-skip-link {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  background: var(--th-primary, #13ec80);
+  color: var(--th-primary-on, #102219);
+  padding: 12px 24px;
+  border-radius: 0 0 12px 12px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.mm-skip-link:focus {
+  top: 0;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+
+/* ==============================================
+   MOBILE NAV PANEL — Slide-over
+   ============================================== */
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.mobile-nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 85vw;
+  background: var(--th-bg, #111814);
+  border-right: 1px solid var(--th-border, #3b5447);
+  z-index: 91;
+  padding: 24px;
+  transform: translateX(-100%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mobile-nav-panel.open {
+  transform: translateX(0);
+}
+
+
+/* ==============================================
+   REDUCED MOTION — Respect user preferences
+   ============================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

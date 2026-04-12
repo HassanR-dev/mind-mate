@@ -3,7 +3,8 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Mind Mate - Mood Journal</title>
+<title>Mood Journal - Mind Mate</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23102219' rx='20' width='100' height='100'/%3E%3Ctext x='50' y='62' text-anchor='middle' font-size='48' font-weight='bold' fill='%2313ec80' font-family='sans-serif'%3EM%3C/text%3E%3C/svg%3E">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -38,6 +39,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-background-light dark:bg-[#111814] text-slate-900 dark:text-white font-display overflow-x-hidden">
+<a href="#main-content" class="mm-skip-link">Skip to main content</a>
 <div class="flex h-screen w-full overflow-hidden">
 <div class="lg:hidden flex items-center justify-between p-4 bg-[#111814] border-b border-[#3b5447]/30 w-full absolute top-0 z-30">
 <div class="flex items-center gap-2">
@@ -102,14 +104,10 @@
 <p class="text-text-secondary text-xs">Software Engineering</p>
 </div>
 </div>
-<button id="logout-btn" class="flex items-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
-<span class="material-symbols-outlined text-[20px]">logout</span>
-<span class="text-xs font-medium">Log Out</span>
-</button>
 </div>
 </div>
 <!-- Main Content -->
-<main class="flex-1 flex flex-col h-full overflow-y-auto bg-[#111814] relative">
+<main id="main-content" role="main" aria-label="Mood Journal" class="flex-1 flex flex-col h-full overflow-y-auto bg-[#111814] relative">
 <div class="lg:hidden flex items-center justify-between px-6 py-4 border-b border-[#283930]">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary">mood</span>
@@ -184,7 +182,11 @@
 <!-- Text Input -->
 <div class="flex flex-col gap-3">
 <label class="text-text-secondary text-sm font-medium">Thoughts &amp; Reflections</label>
-<textarea id="journal-text" class="w-full h-40 bg-[#111814] border border-[#3b5447] rounded-xl p-4 text-white placeholder-text-secondary/50 resize-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Write about your day, how you're feeling, or what's on your mind..."></textarea>
+<textarea id="journal-text" class="w-full h-40 bg-[#111814] border border-[#3b5447] rounded-xl p-4 text-white placeholder-text-secondary/50 resize-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Write about your day, how you're feeling, or what's on your mind..." oninput="document.getElementById('char-count').textContent=this.value.length; document.getElementById('char-count').className=this.value.length<20?'text-amber-400 font-medium':this.value.length>5000?'text-red-400 font-medium':'text-[#9db9ab]'"></textarea>
+<div class="flex justify-between text-xs mt-1 text-[#566860]">
+  <span>Min 20 characters</span>
+  <span><span id="char-count" class="text-[#9db9ab]">0</span> / 5000</span>
+</div>
 </div>
 <!-- Action -->
 <div class="flex justify-end pt-2">
