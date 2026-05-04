@@ -19,10 +19,6 @@ async function _userRef(path) {
   return ref(db, `users/${user.uid}/${path}`);
 }
 
-export async function getUserRef(path) {
-  return _userRef(path);
-}
-
 export async function listenToUserData(path, callback) {
   const dbRef = await _userRef(path);
   return onValue(dbRef, (snapshot) => callback(snapshot.val()));

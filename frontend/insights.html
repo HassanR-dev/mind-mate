@@ -8,31 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ec80",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#102219",
-                        "card-dark": "#15281e",
-                        "card-border": "#283930"
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
+<script src="js/tailwind-config.js"></script>
 <!-- External Stylesheet -->
 <link rel="stylesheet" href="styles.css">
 <!-- Chart.js -->
@@ -81,7 +57,7 @@
 <!-- Dashboard Content -->
 <div class="p-6 lg:p-10 flex flex-col gap-6 max-w-[1600px] mx-auto w-full">
 <!-- Stats Row -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mm-stagger">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mm-stagger">
 <!-- Stat 1 -->
 <div class="flex flex-col gap-1 rounded-xl p-6 bg-card-dark border border-card-border relative overflow-hidden group">
 <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -132,6 +108,24 @@
 <span class="material-symbols-outlined" style="font-size: 16px;">arrow_upward</span>
 <p id="gpa-trend" class="text-xs font-bold">Loading...</p>
 </div>
+</div>
+<!-- Stat 4: Stress Level -->
+<div class="flex flex-col gap-1 rounded-xl p-6 bg-card-dark border border-card-border relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-size: 80px;">psychology</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[#9db9ab]" style="font-size: 20px;">speed</span>
+<p class="text-[#9db9ab] text-sm font-medium uppercase tracking-wider">Stress Level</p>
+</div>
+<div class="flex items-end gap-3">
+<p id="stat-stress" class="text-white text-4xl font-bold capitalize">—</p>
+</div>
+<div id="stress-trend-badge" class="mt-2 flex items-center gap-1.5 text-primary bg-primary/10 w-fit px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined" style="font-size: 16px;">monitor_heart</span>
+<p id="stress-trend" class="text-xs font-bold">Loading...</p>
+</div>
+<div id="stress-factors" class="mt-2 flex flex-wrap gap-1"></div>
 </div>
 </div>
 <!-- Bento Grid -->
@@ -268,6 +262,7 @@ Profile
 <script type="module">
   import { authGuard } from "./js/services/auth.service.js";
   import { listenToUserData } from "./js/services/db.service.js";
+  import { predictStress } from "./js/services/ai.service.js";
   import { initNav } from "./js/services/nav.js";
 
   await authGuard();
@@ -674,6 +669,59 @@ Profile
       highlightsEl.classList.toggle("pointer-events-none", privacyOn);
     }
   });
+
+  // ── Stress Prediction Widget ──────────────────────────────────────────────
+  const FACTOR_LABELS = {
+    low_mood: "Low mood this week",
+    overdue_tasks: "Overdue tasks piling up",
+    gpa_decline: "GPA trending down",
+    journal_streak_positive: "Journal streak 💪"
+  };
+  const STRESS_COLORS = {
+    low: { text: "text-primary", bg: "bg-primary/10" },
+    moderate: { text: "text-amber-400", bg: "bg-amber-400/10" },
+    high: { text: "text-red-400", bg: "bg-red-400/10" }
+  };
+
+  (async () => {
+    try {
+      const data = await predictStress();
+      const stressEl = document.getElementById("stat-stress");
+      const trendEl = document.getElementById("stress-trend");
+      const badgeEl = document.getElementById("stress-trend-badge");
+      const factorsEl = document.getElementById("stress-factors");
+
+      if (stressEl) stressEl.textContent = data.stressLevel || "—";
+      const colors = STRESS_COLORS[data.stressLevel] || STRESS_COLORS.low;
+
+      // Update badge color
+      if (badgeEl) {
+        badgeEl.classList.remove("text-primary", "bg-primary/10", "text-amber-400", "bg-amber-400/10", "text-red-400", "bg-red-400/10");
+        badgeEl.classList.add(colors.text, colors.bg);
+      }
+
+      // Trend text
+      if (trendEl) {
+        if (data.journalStreak >= 3) trendEl.textContent = `${data.journalStreak}-day journal streak`;
+        else if (data.overdueCount > 0) trendEl.textContent = `${data.overdueCount} overdue tasks`;
+        else trendEl.textContent = `Mood score: ${data.avgMoodScore}`;
+      }
+
+      // Render factor pills
+      if (factorsEl && data.factors?.length) {
+        factorsEl.innerHTML = data.factors.map(f => {
+          const label = FACTOR_LABELS[f] || f;
+          const isPositive = f.includes("positive");
+          return `<span class="text-[10px] ${isPositive ? 'text-primary bg-primary/10' : 'text-[#9db9ab] bg-[#283930]'} px-2 py-0.5 rounded-full">${label}</span>`;
+        }).join("");
+      }
+    } catch (err) {
+      console.warn("Stress prediction unavailable:", err.message);
+      const trendEl = document.getElementById("stress-trend");
+      if (trendEl) trendEl.textContent = "Log entries to predict";
+    }
+  })();
+
 </script>
 
 </body></html>
