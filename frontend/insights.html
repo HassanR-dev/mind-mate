@@ -51,64 +51,7 @@
 </button>
 </div>
 <!-- SideNavBar -->
-<aside class="hidden lg:flex flex-col w-72 h-full border-r border-card-border bg-[#111814] p-4 justify-between shrink-0">
-<div class="flex flex-col gap-8">
-<!-- Branding -->
-<div class="flex items-center gap-3 px-2">
-<div class="bg-primary/20 flex items-center justify-center rounded-xl size-10">
-<span class="material-symbols-outlined text-primary">mindfulness</span>
-</div>
-<div class="flex flex-col">
-<h1 class="text-white text-lg font-bold leading-none">Mind Mate</h1>
-<p class="text-[#9db9ab] text-xs font-normal">Student Companion</p>
-</div>
-</div>
-<!-- Navigation -->
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 border border-primary/20 text-primary transition-all" href="insights.html">
-<span class="material-symbols-outlined fill-1">insights</span>
-<p class="text-sm font-semibold">Insights</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="stress-reliever.html">
-<span class="material-symbols-outlined">sentiment_calm</span>
-<p class="text-sm font-medium">Stress Reliever</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="tasks.html">
-<span class="material-symbols-outlined">check_circle</span>
-<p class="text-sm font-medium">Tasks</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="journal.html">
-<span class="material-symbols-outlined">book_2</span>
-<p class="text-sm font-medium">Journal</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="dashboard.html">
-<span class="material-symbols-outlined">dashboard</span>
-<p class="text-sm font-medium">Dashboard</p>
-</a>
-</nav>
-</div>
-<div class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-[#9db9ab] hover:text-white transition-all" href="user-profile.html">
-<span class="material-symbols-outlined">settings</span>
-<p class="text-sm font-medium">Settings</p>
-</a>
-<button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
-<span class="material-symbols-outlined">logout</span>
-<p class="text-sm font-medium">Log Out</p>
-</button>
-<div class="flex items-center gap-3 mt-4 pt-4 border-t border-card-border px-2">
-<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 border-2 border-primary/50" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
-<div class="flex flex-col overflow-hidden">
-<p class="text-white text-sm font-medium truncate" data-user-name>Student</p>
-<p class="text-[#9db9ab] text-xs truncate">Software Engineering</p>
-</div>
-</div>
-<button id="logout-btn" class="mt-4 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors">
-<span class="material-symbols-outlined text-[20px]">logout</span>
-<span class="text-sm font-medium">Log Out</span>
-</button>
-</div>
-</aside>
+<div id="nav-sidebar"></div>
 <!-- Main Content -->
 <main id="main-content" role="main" aria-label="Well-Being Insights" class="flex-1 flex flex-col h-full overflow-y-auto relative no-scrollbar">
 <!-- Header Area -->

@@ -9,6 +9,12 @@ if (!document.getElementById("toast-styles")) {
   document.head.appendChild(style);
 }
 
+// Escape HTML special characters to prevent XSS
+function _esc(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text || '').replace(/[&<>"']/g, m => map[m]);
+}
+
 let _container = null;
 function getContainer() {
   if (!_container) {
@@ -43,7 +49,7 @@ export function showToast(message, type = "info", duration = 4000) {
   `;
   el.innerHTML = `
     <span class="material-symbols-outlined" style="font-size:20px;flex-shrink:0">${cfg.icon}</span>
-    <span style="flex:1">${message}</span>
+    <span style="flex:1">${_esc(message)}</span>
     <span class="material-symbols-outlined" style="font-size:16px;opacity:0.6;flex-shrink:0">close</span>
   `;
   const dismiss = () => { clearTimeout(timer); el.style.opacity = "0"; setTimeout(() => el.remove(), 300); };
@@ -63,7 +69,7 @@ export function showConfirm(message) {
     const modal = document.createElement("div");
     modal.style.cssText = _modalStyle();
     modal.innerHTML = `
-      <p style="font-size:15px;margin-bottom:20px;line-height:1.5;color:#e8f5ee">${message}</p>
+      <p style="font-size:15px;margin-bottom:20px;line-height:1.5;color:#e8f5ee">${_esc(message)}</p>
       <div style="display:flex;gap:10px;justify-content:flex-end">
         <button id="mm-cancel" style="${_btnStyle("#283930","#9db9ab")}">Cancel</button>
         <button id="mm-ok"     style="${_btnStyle("#13ec80","#102219",true)}">Confirm</button>
@@ -80,8 +86,8 @@ export function showPrompt(message, defaultValue = "") {
     const modal = document.createElement("div");
     modal.style.cssText = _modalStyle();
     modal.innerHTML = `
-      <p style="font-size:15px;margin-bottom:12px;color:#e8f5ee">${message}</p>
-      <input id="mm-input" type="text" value="${defaultValue}"
+      <p style="font-size:15px;margin-bottom:12px;color:#e8f5ee">${_esc(message)}</p>
+      <input id="mm-input" type="text" value="${_esc(defaultValue)}"
         style="width:100%;padding:10px 14px;border-radius:8px;background:#102219;
                border:1px solid rgba(19,236,128,0.3);color:#e8f5ee;font-family:inherit;
                font-size:14px;outline:none;box-sizing:border-box;margin-bottom:16px"/>

@@ -36,78 +36,20 @@
 <!-- External Stylesheet -->
 <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col overflow-x-hidden">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased h-screen overflow-hidden flex">
 <a href="#main-content" class="mm-skip-link">Skip to main content</a>
-<!-- Top Navigation -->
-<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-white/10 bg-background-light dark:bg-background-dark px-6 py-3 lg:px-10">
-<div class="flex items-center gap-4">
-<div class="size-8 flex items-center justify-center rounded-lg bg-primary/20 text-primary">
-<span class="material-symbols-outlined">school</span>
+<!-- Mobile Header -->
+<div class="md:hidden flex items-center justify-between p-4 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800 absolute top-0 left-0 right-0 z-30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+<span class="font-bold text-lg">Mind Mate</span>
 </div>
-<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">Mind Mate</h2>
-</div>
-<div class="flex items-center gap-8">
-<nav class="hidden md:flex items-center gap-9">
-<a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-medium leading-normal transition-colors" href="dashboard.html">Dashboard</a>
-<a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-medium leading-normal transition-colors" href="tasks.html">Tasks</a>
-<a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-medium leading-normal transition-colors" href="journal.html">Journal</a>
-<a class="text-slate-900 dark:text-white text-sm font-medium leading-normal border-b-2 border-primary" href="user-profile.html">Profile</a>
-</nav>
-<div class="flex items-center gap-4">
-<button class="relative text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-0 right-0 size-2 bg-primary rounded-full"></span>
+<button id="mobile-menu-btn" class="text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">menu</span>
 </button>
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'>
 </div>
-</div>
-</div>
-</header>
-<div class="flex flex-1 w-full max-w-[1440px] mx-auto">
-<!-- Sidebar Navigation -->
-<aside class="hidden lg:flex flex-col w-72 shrink-0 border-r border-gray-200 dark:border-white/10 px-4 py-6 h-[calc(100vh-65px)] sticky top-[65px] overflow-y-auto">
-<!-- User info aligned under the Mind Mate logo -->
-<div class="flex gap-3 items-center px-2 mb-6">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shrink-0 border-2 border-primary/20" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'>
-</div>
-<div class="flex flex-col min-w-0">
-<h1 class="text-slate-900 dark:text-white text-sm font-bold leading-normal truncate"><span data-user-name>Student</span></h1>
-<p class="text-slate-500 dark:text-[#9db9ab] text-xs font-normal leading-normal truncate">Software Engineering</p>
-</div>
-</div>
-<!-- Navigation links -->
-<nav class="flex flex-col gap-1">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary/10 text-primary dark:bg-primary dark:text-black shadow-sm transition-all" href="user-profile.html">
-<span class="material-symbols-outlined text-[20px]">person</span>
-<p class="text-sm font-bold leading-normal">Profile Details</p>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="gpa.html">
-<span class="material-symbols-outlined text-[20px]">school</span>
-<p class="text-sm font-medium leading-normal">Academic Info</p>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="dashboard.html">
-<span class="material-symbols-outlined text-[20px]">dashboard</span>
-<p class="text-sm font-medium leading-normal">Dashboard</p>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="insights.html">
-<span class="material-symbols-outlined text-[20px]">insights</span>
-<p class="text-sm font-medium leading-normal">Insights</p>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="stress-reliever.html">
-<span class="material-symbols-outlined text-[20px]">sentiment_calm</span>
-<p class="text-sm font-medium leading-normal">Stress Reliever</p>
-</a>
-<div class="h-px w-full bg-gray-200 dark:bg-white/10 my-2"></div>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-all" href="dashboard.html">
-<span class="material-symbols-outlined text-[20px]">help</span>
-<p class="text-sm font-medium leading-normal">Help &amp; Support</p>
-</a>
-<button data-action="logout" class="flex items-center gap-3 px-3 py-2.5 w-full text-left text-red-500 hover:bg-red-500/10 rounded-xl transition-colors">
-<span class="material-symbols-outlined text-[20px]">logout</span>
-<span class="text-sm font-medium">Log Out</span>
-</button>
-</nav>
-</aside>
+<!-- Sidebar Nav -->
+<div id="nav-sidebar"></div>
 <!-- Main Content -->
 <main id="main-content" role="main" aria-label="User Profile" class="flex-1 flex flex-col min-w-0 overflow-y-auto">
 <div class="p-4 md:p-8 lg:p-12 max-w-5xl mx-auto w-full">

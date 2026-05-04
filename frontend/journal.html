@@ -51,61 +51,7 @@
 </button>
 </div>
 <!-- Side Navigation -->
-<div class="hidden lg:flex w-72 flex-col justify-between border-r border-[#3b5447]/30 bg-[#111814] p-5">
-<div class="flex flex-col gap-8">
-<div class="flex gap-3 items-center">
-<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-[#283930]" role="img" aria-label="Mind Mate logo" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
-<div class="flex flex-col">
-<h1 class="text-white text-lg font-bold leading-tight tracking-tight">Mind Mate</h1>
-<p class="text-text-secondary text-xs font-normal">Student Companion</p>
-</div>
-</div>
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="dashboard.html">
-<span class="material-symbols-outlined text-text-secondary group-hover:text-white">dashboard</span>
-<p class="text-text-secondary group-hover:text-white text-sm font-medium">Dashboard</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="tasks.html">
-<span class="material-symbols-outlined text-text-secondary group-hover:text-white">check_box</span>
-<p class="text-text-secondary group-hover:text-white text-sm font-medium">Tasks</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="gpa.html">
-<span class="material-symbols-outlined text-text-secondary group-hover:text-white">school</span>
-<p class="text-text-secondary group-hover:text-white text-sm font-medium">GPA Tracker</p>
-</a>
-<!-- Active State -->
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#283930] border border-[#3b5447]" href="journal.html">
-<span class="material-symbols-outlined text-primary fill">mood</span>
-<p class="text-white text-sm font-medium">Mood Journal</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="insights.html">
-<span class="material-symbols-outlined text-text-secondary group-hover:text-white">insights</span>
-<p class="text-text-secondary group-hover:text-white text-sm font-medium">Insights</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#283930] transition-colors group" href="stress-reliever.html">
-<span class="material-symbols-outlined text-text-secondary group-hover:text-white">sentiment_calm</span>
-<p class="text-text-secondary group-hover:text-white text-sm font-medium">Stress Reliever</p>
-</a>
-</nav>
-</div>
-<div class="flex flex-col gap-4">
-<div class="p-4 rounded-xl bg-gradient-to-br from-[#13ec80]/20 to-[#111814] border border-[#13ec80]/20">
-<p class="text-white text-sm font-bold mb-1">Daily Quote</p>
-<p class="text-text-secondary text-xs italic">"Believe you can and you're halfway there."</p>
-</div>
-<button data-action="logout" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors w-full">
-<span class="material-symbols-outlined">logout</span>
-<p class="text-sm font-medium">Log Out</p>
-</button>
-<div class="flex items-center gap-3 px-2 pt-4 border-t border-[#283930]">
-<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" role="img" aria-label="User avatar" style='background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23283930%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 dy=%22.1em%22 font-size=%2240%22 fill=%22%2313ec80%22 font-family=%22sans-serif%22>MM</text></svg>");'></div>
-<div class="flex flex-col">
-<p class="text-white text-sm font-medium" data-user-name>Student</p>
-<p class="text-text-secondary text-xs">Software Engineering</p>
-</div>
-</div>
-</div>
-</div>
+<div id="nav-sidebar"></div>
 <!-- Main Content -->
 <main id="main-content" role="main" aria-label="Mood Journal" class="flex-1 flex flex-col h-full overflow-y-auto bg-[#111814] relative">
 <div class="lg:hidden flex items-center justify-between px-6 py-4 border-b border-[#283930]">
